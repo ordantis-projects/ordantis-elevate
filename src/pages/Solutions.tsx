@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { PredictionDemo } from "@/components/demos/PredictionDemo";
-import { OptimizationDemo } from "@/components/demos/OptimizationDemo";
-import { BIDemo } from "@/components/demos/BIDemo";
-import { AgentDemo } from "@/components/demos/AgentDemo";
-import { DocumentDemo } from "@/components/demos/DocumentDemo";
-import { RAGDemo } from "@/components/demos/RAGDemo";
-import { GovernanceDemo } from "@/components/demos/GovernanceDemo";
-import { InfraDemo } from "@/components/demos/InfraDemo";
-import { VisionDemo } from "@/components/demos/VisionDemo";
+import {
+  PredictionDemo, OptimizationDemo, BIDemo, AgentDemo, DocumentDemo,
+  RAGDemo, GovernanceDemo, InfraDemo, VisionDemo,
+} from "@/components/demos";
 
 type Solution = {
   id: string;
