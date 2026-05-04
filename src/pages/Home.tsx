@@ -119,19 +119,6 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="hero-meta grid grid-cols-2 md:grid-cols-4 gap-px bg-hairline border border-hairline">
-            {[
-              ["+5%", "Productividad"],
-              ["−30%", "Inactividad"],
-              ["−20%", "Costes mant."],
-              ["24/7", "Operación IA"],
-            ].map(([k, v]) => (
-              <div key={k} className="bg-background p-6">
-                <p className="text-display text-3xl text-primary mb-1">{k}</p>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">{v}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
