@@ -6,11 +6,32 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import artecoinLogo from "@/assets/partners/artecoin.svg";
+import odeonLogo from "@/assets/partners/odeon.png";
+import startupvLogo from "@/assets/backers/startupv.svg";
+import sherpaLogo from "@/assets/backers/sherpa.svg";
+import talentoJovenLogo from "@/assets/backers/talento-joven.svg";
+import catedraHpLogo from "@/assets/backers/catedra-hp.png";
+import incibeLogo from "@/assets/backers/incibe.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const partners = ["Artecoin", "Indiva", "Odeon Multicines", "Cofriman"];
+type Partner = { name: string; logo?: string; invert?: boolean };
+const partners: Partner[] = [
+  { name: "Artecoin", logo: artecoinLogo },
+  { name: "Indiva" },
+  { name: "Odeon Multicines", logo: odeonLogo },
+  { name: "Cofriman" },
+];
 const partnersLoop = [...partners, ...partners, ...partners];
+
+const backers: Partner[] = [
+  { name: "StartupV", logo: startupvLogo, invert: true },
+  { name: "Proyecto Sherpa", logo: sherpaLogo, invert: true },
+  { name: "Premios Talento Joven", logo: talentoJovenLogo },
+  { name: "Cátedra HP", logo: catedraHpLogo, invert: true },
+  { name: "Incibe", logo: incibeLogo, invert: true },
+];
 
 const impact = [
   { stat: "85%", text: "de las empresas españolas ya consideran la IA una prioridad estratégica para su supervivencia, pero carecen de hoja de ruta clara." },
