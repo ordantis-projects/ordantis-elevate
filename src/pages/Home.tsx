@@ -6,8 +6,10 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
-import artecoinLogo from "@/assets/partners/artecoin.svg";
+import artecoinLogo from "@/assets/partners/artecoin.png";
 import odeonLogo from "@/assets/partners/odeon.png";
+import cofrimanLogo from "@/assets/partners/cofriman.png"
+import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import talentoJovenLogo from "@/assets/backers/talento-joven.svg";
@@ -19,9 +21,9 @@ gsap.registerPlugin(ScrollTrigger);
 type Partner = { name: string; logo?: string; invert?: boolean };
 const partners: Partner[] = [
   { name: "Artecoin", logo: artecoinLogo },
-  { name: "Indiva" },
+  { name: "Indiva", logo: indivaLogo },
   { name: "Odeon Multicines", logo: odeonLogo },
-  { name: "Cofriman" },
+  { name: "Cofriman", logo: cofrimanLogo },
 ];
 const partnersLoop = [...partners, ...partners, ...partners];
 
