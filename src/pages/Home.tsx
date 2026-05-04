@@ -28,7 +28,7 @@ const partnersLoop = [...partners, ...partners, ...partners];
 const backers: Partner[] = [
   { name: "StartupV", logo: startupvLogo, invert: true },
   { name: "Proyecto Sherpa", logo: sherpaLogo, invert: true },
-  { name: "Premios Talento Joven", logo: talentoJovenLogo },
+  { name: "Premios Talento Joven", logo: talentoJovenLogo, invert: true },
   { name: "Cátedra HP", logo: catedraHpLogo, invert: true },
   { name: "Incibe", logo: incibeLogo, invert: true },
 ];
@@ -96,7 +96,7 @@ const Home = () => {
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl" />
 
         <div className="container-luxe relative">
-          <p className="hero-eyebrow text-eyebrow mb-8">— Datos · Inteligencia Artificial · Resultados</p>
+          <p className="hero-eyebrow text-eyebrow mb-8">— Ciencia de Datos & Inteligencia Artificial</p>
 
           <h1 className="text-display text-[clamp(3rem,9vw,9rem)] mb-10">
             <span className="block hero-line">Rompe la</span>
@@ -106,7 +106,7 @@ const Home = () => {
           </h1>
 
           <p className="hero-sub max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed mb-12">
-            Conviértete en una empresa <em className="text-foreground not-italic">data-driven</em> y empieza a mejorar la eficiencia y disminuir costes — sin contratar un departamento técnico interno.
+            Conviértete en una empresa <em className="text-foreground italic">data-driven</em> y empieza a mejorar la eficiencia y disminuir costes — sin contratar un departamento técnico interno.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 mb-24">
@@ -157,7 +157,7 @@ const Home = () => {
               La ventaja competitiva de ser <em className="not-italic text-primary">data-driven</em>.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Basar las decisiones corporativas en la intuición ha dejado de ser viable. Las empresas que adoptan una cultura data-driven logran productividad, rentabilidad y resiliencia significativamente superiores. Democratizar la IA y construir una infraestructura sólida ya no es un lujo: es el factor que determina el crecimiento y la supervivencia.
+              Basar las decisiones corporativas en la intuición ha dejado de ser viable. Las empresas que adoptan una cultura data-driven logran productividad, rentabilidad y resiliencia significativamente superiores. Democratizar la IA y construir una infraestructura digital sólida ya no es un lujo: es el factor que determina el crecimiento y la supervivencia.
             </p>
           </div>
 
