@@ -180,39 +180,128 @@ export const BIDemo = () => {
 };
 
 /* 04 — AGENT */
+type TraceEntry = { t: string; system: string; action: string; status: "run" | "ok" };
+
 export const AgentDemo = () => {
   const [running, setRunning] = useState(false);
   const [step, setStep] = useState(0);
-  const tasks = ["Cuenta de email creada", "Invitación a Slack enviada", "Licencia de Jira asignada", "Contrato generado y firmado", "Agenda semana 1 enviada"];
+  const [trace, setTrace] = useState<TraceEntry[]>([]);
+  const [activeSystem, setActiveSystem] = useState<string | null>(null);
+
+  const tasks = [
+    "Cuenta de email creada",
+    "Invitación a Slack enviada",
+    "Licencia de Jira asignada",
+    "Contrato generado y firmado",
+    "Agenda semana 1 enviada",
+  ];
+
+  const traceFor: { system: string; logs: string[] }[] = [
+    { system: "Google Workspace", logs: ["POST /users → marta@ordantis.com", "Alias creado · MFA forzado", "Buzón provisionado (30 GB)"] },
+    { system: "Slack API", logs: ["users.admin.invite → #general, #equipo", "Canal #onboarding-marta creado", "Bot de bienvenida enviado"] },
+    { system: "Atlassian Jira", logs: ["Licencia 'Software' asignada", "Permisos: Project ORD · Developer", "Board personal generado"] },
+    { system: "DocuSign + ERP", logs: ["Plantilla CT-2026 rellenada", "Envelope enviado a firma", "Webhook firma recibida ✓"] },
+    { system: "Calendar + Notion", logs: ["5 reuniones programadas", "Página onboarding clonada", "Email resumen enviado a manager"] },
+  ];
+
+  const now = () => new Date().toLocaleTimeString("es", { hour12: false });
 
   const run = () => {
-    setRunning(true); setStep(0);
-    tasks.forEach((_, i) => setTimeout(() => setStep(i + 1), (i + 1) * 600));
-    setTimeout(() => setRunning(false), tasks.length * 600 + 800);
+    setRunning(true);
+    setStep(0);
+    setTrace([]);
+    setActiveSystem(null);
+
+    let elapsed = 0;
+    tasks.forEach((task, i) => {
+      const sys = traceFor[i];
+      sys.logs.forEach((log, j) => {
+        elapsed += 380;
+        setTimeout(() => {
+          setActiveSystem(sys.system);
+          setTrace((prev) => [...prev, { t: now(), system: sys.system, action: log, status: "run" }]);
+        }, elapsed);
+      });
+      elapsed += 250;
+      setTimeout(() => {
+        setStep(i + 1);
+        setTrace((prev) => [...prev, { t: now(), system: sys.system, action: `✓ ${task}`, status: "ok" }]);
+      }, elapsed);
+    });
+
+    setTimeout(() => {
+      setRunning(false);
+      setActiveSystem(null);
+    }, elapsed + 600);
   };
 
   return (
-    <DemoFrame label="Onboarding integral">
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="border border-hairline p-4 bg-surface-3/40">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">Manual · ~75 min</p>
-          <ul className="space-y-2 text-xs text-muted-foreground/70">
-            {tasks.map((t) => <li key={t} className="flex gap-2"><span>○</span>{t}</li>)}
+    <DemoFrame label="Onboarding integral · trazabilidad en vivo">
+      <div className="grid md:grid-cols-2 gap-3">
+        {/* LEFT — checklist */}
+        <div className="border border-primary/40 p-4 bg-primary/5">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[10px] uppercase tracking-wider text-primary">Plan del agente</p>
+            <p className="text-[10px] text-muted-foreground tabular-nums">{step}/{tasks.length}</p>
+          </div>
+          <ul className="space-y-2 text-xs">
+            {tasks.map((t, i) => {
+              const done = i < step;
+              const current = running && i === step;
+              return (
+                <li
+                  key={t}
+                  className={`flex gap-2 items-center transition-all ${
+                    done ? "text-foreground" : current ? "text-primary" : "text-muted-foreground/40"
+                  }`}
+                >
+                  <span className={done ? "text-primary" : current ? "text-primary animate-pulse" : ""}>
+                    {done ? "●" : current ? "◐" : "○"}
+                  </span>
+                  <span className="flex-1">{t}</span>
+                  {current && <span className="text-[9px] uppercase tracking-wider text-primary">en curso</span>}
+                </li>
+              );
+            })}
           </ul>
         </div>
-        <div className="border border-primary/40 p-4 bg-primary/5">
-          <p className="text-[10px] uppercase tracking-wider text-primary mb-3">Agente IA · {"<"} 10s</p>
-          <ul className="space-y-2 text-xs">
-            {tasks.map((t, i) => (
-              <li key={t} className={`flex gap-2 transition-all ${i < step ? "text-foreground" : "text-muted-foreground/40"}`}>
-                <span className={i < step ? "text-primary" : ""}>{i < step ? "●" : "○"}</span>{t}
-              </li>
+
+        {/* RIGHT — live trace terminal */}
+        <div className="border border-hairline bg-background/80 flex flex-col">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-hairline">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono">agent.trace</p>
+            <div className="flex items-center gap-1.5">
+              <span className={`w-1.5 h-1.5 rounded-full ${running ? "bg-primary animate-pulse" : "bg-foreground/20"}`} />
+              <span className="text-[10px] text-muted-foreground font-mono">
+                {activeSystem ?? (running ? "init" : "idle")}
+              </span>
+            </div>
+          </div>
+          <div className="p-3 h-56 overflow-y-auto font-mono text-[10px] space-y-1 leading-relaxed">
+            {trace.length === 0 && (
+              <p className="text-muted-foreground/50">$ esperando ejecución...</p>
+            )}
+            {trace.map((e, idx) => (
+              <div key={idx} className="flex gap-2 animate-fade-in">
+                <span className="text-muted-foreground/50 shrink-0">{e.t}</span>
+                <span className="text-primary/70 shrink-0">[{e.system}]</span>
+                <span className={e.status === "ok" ? "text-primary" : "text-foreground/80"}>{e.action}</span>
+              </div>
             ))}
-          </ul>
+            {running && (
+              <div className="flex gap-1 text-primary">
+                <span className="animate-pulse">▍</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <button onClick={run} disabled={running}
-        className="mt-5 w-full py-3 bg-primary text-primary-foreground text-xs uppercase tracking-[0.2em] hover:shadow-glow transition-all disabled:opacity-50">
+
+      <button
+        onClick={run}
+        disabled={running}
+        className="mt-5 w-full py-3 bg-primary text-primary-foreground text-xs uppercase tracking-[0.2em] hover:shadow-glow transition-all disabled:opacity-50"
+      >
         {running ? "Ejecutando..." : "Iniciar onboarding de Marta"}
       </button>
     </DemoFrame>
