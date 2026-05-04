@@ -6,11 +6,32 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import artecoinLogo from "@/assets/partners/artecoin.svg";
+import odeonLogo from "@/assets/partners/odeon.png";
+import startupvLogo from "@/assets/backers/startupv.svg";
+import sherpaLogo from "@/assets/backers/sherpa.svg";
+import talentoJovenLogo from "@/assets/backers/talento-joven.svg";
+import catedraHpLogo from "@/assets/backers/catedra-hp.png";
+import incibeLogo from "@/assets/backers/incibe.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const partners = ["Artecoin", "Indiva", "Odeon Multicines", "Cofriman"];
+type Partner = { name: string; logo?: string; invert?: boolean };
+const partners: Partner[] = [
+  { name: "Artecoin", logo: artecoinLogo },
+  { name: "Indiva" },
+  { name: "Odeon Multicines", logo: odeonLogo },
+  { name: "Cofriman" },
+];
 const partnersLoop = [...partners, ...partners, ...partners];
+
+const backers: Partner[] = [
+  { name: "StartupV", logo: startupvLogo, invert: true },
+  { name: "Proyecto Sherpa", logo: sherpaLogo, invert: true },
+  { name: "Premios Talento Joven", logo: talentoJovenLogo },
+  { name: "Cátedra HP", logo: catedraHpLogo, invert: true },
+  { name: "Incibe", logo: incibeLogo, invert: true },
+];
 
 const impact = [
   { stat: "85%", text: "de las empresas españolas ya consideran la IA una prioridad estratégica para su supervivencia, pero carecen de hoja de ruta clara." },
@@ -37,7 +58,7 @@ const tech = [
   { label: "Integración", items: ["Oracle", "Salesforce", "ERPs líderes"] },
 ];
 
-const backers = ["StartupV", "Proyecto Sherpa", "Premios Talento Joven", "Cátedra HP", "Incibe"];
+
 
 const faqs = [
   { q: "¿Cuál es el ROI de implementar IA y cuándo veré resultados?", a: "Nuestra metodología exige que toda implementación tenga impacto directo en rentabilidad. Priorizamos casos de uso que reducen costes o aumentan ventas de manera medible. Para acelerar resultados, comenzamos con proyectos piloto en áreas concretas que demuestran valor rápidamente antes de escalar." },
@@ -121,9 +142,19 @@ const Home = () => {
         </div>
         <div className="relative overflow-hidden">
           <div className="flex gap-20 marquee-track w-max">
-            {partnersLoop.map((name, i) => (
-              <div key={i} className="text-display text-2xl md:text-3xl text-muted-foreground/60 hover:text-primary transition-colors whitespace-nowrap">
-                {name}
+            {partnersLoop.map((p, i) => (
+              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-60 hover:opacity-100 transition-opacity duration-500">
+                {p.logo ? (
+                  <img
+                    src={p.logo}
+                    alt={p.name}
+                    className="max-h-12 w-auto object-contain brightness-0 invert"
+                  />
+                ) : (
+                  <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
+                    {p.name}
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -235,7 +266,17 @@ const Home = () => {
           <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
           <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
             {backers.map((b) => (
-              <span key={b} className="text-display text-xl text-muted-foreground/80">{b}</span>
+              <div key={b.name} className="flex items-center justify-center h-12 opacity-70 hover:opacity-100 transition-opacity duration-500">
+                {b.logo ? (
+                  <img
+                    src={b.logo}
+                    alt={b.name}
+                    className={`max-h-10 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
+                  />
+                ) : (
+                  <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
+                )}
+              </div>
             ))}
           </div>
         </div>
