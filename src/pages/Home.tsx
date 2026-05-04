@@ -143,12 +143,12 @@ const Home = () => {
         <div className="relative overflow-hidden">
           <div className="flex gap-20 marquee-track w-max">
             {partnersLoop.map((p, i) => (
-              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-60 hover:opacity-100 transition-opacity duration-500">
+              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-90 hover:opacity-100 transition-opacity duration-500">
                 {p.logo ? (
                   <img
                     src={p.logo}
                     alt={p.name}
-                    className="max-h-12 w-auto object-contain brightness-0 invert"
+                    className="max-h-12 w-auto object-contain"
                   />
                 ) : (
                   <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
@@ -266,12 +266,12 @@ const Home = () => {
           <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
           <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
             {backers.map((b) => (
-              <div key={b.name} className="flex items-center justify-center h-12 opacity-70 hover:opacity-100 transition-opacity duration-500">
+              <div key={b.name} className="flex items-center justify-center h-12 opacity-90 hover:opacity-100 transition-opacity duration-500">
                 {b.logo ? (
                   <img
                     src={b.logo}
                     alt={b.name}
-                    className={`max-h-10 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
+                    className="max-h-10 w-auto object-contain"
                   />
                 ) : (
                   <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
