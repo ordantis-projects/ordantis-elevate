@@ -385,39 +385,176 @@ export const InfraDemo = () => (
 );
 
 /* 09 — VISION */
-export const VisionDemo = () => {
-  const [ai, setAi] = useState(false);
-  const [defect, setDefect] = useState(false);
+type Shape = "circle" | "square" | "triangle" | "star";
+
+const ShapeIcon = ({ shape, className = "" }: { shape: Shape; className?: string }) => {
+  const common = { fill: "currentColor", stroke: "none" } as const;
   return (
-    <DemoFrame label="Inspector de calidad">
-      <div className="aspect-video bg-surface-3/60 border border-hairline relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center gap-6 px-8" style={{ animation: "marquee 4s linear infinite" }}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="relative w-12 h-12 bg-secondary/40 border border-hairline flex-shrink-0">
-              {defect && i === 3 && <div className="absolute inset-2 border border-destructive" />}
-              {ai && defect && i === 3 && (
-                <div className="absolute -inset-1 border-2 border-destructive animate-pulse">
-                  <span className="absolute -top-5 left-0 text-[9px] text-destructive whitespace-nowrap">Anomalía 99.7%</span>
+    <svg viewBox="0 0 24 24" className={className}>
+      {shape === "circle" && <circle cx="12" cy="12" r="9" {...common} />}
+      {shape === "square" && <rect x="3" y="3" width="18" height="18" {...common} />}
+      {shape === "triangle" && <polygon points="12,3 22,21 2,21" {...common} />}
+      {shape === "star" && (
+        <polygon
+          points="12,2 14.6,9 22,9.5 16.2,14 18.2,21 12,17 5.8,21 7.8,14 2,9.5 9.4,9"
+          {...common}
+        />
+      )}
+    </svg>
+  );
+};
+
+// Three fixed "scenes", each with a layout of shapes.
+const SCENES: { x: number; y: number; shape: Shape; rot: number; size: number }[][] = [
+  [
+    { x: 18, y: 28, shape: "circle", rot: 0, size: 22 },
+    { x: 62, y: 22, shape: "triangle", rot: 12, size: 24 },
+    { x: 38, y: 64, shape: "square", rot: -8, size: 20 },
+    { x: 78, y: 70, shape: "star", rot: 18, size: 22 },
+    { x: 25, y: 80, shape: "triangle", rot: -20, size: 18 },
+  ],
+  [
+    { x: 22, y: 32, shape: "star", rot: -10, size: 22 },
+    { x: 70, y: 30, shape: "circle", rot: 0, size: 26 },
+    { x: 30, y: 70, shape: "square", rot: 14, size: 22 },
+    { x: 65, y: 72, shape: "triangle", rot: 0, size: 20 },
+    { x: 48, y: 45, shape: "circle", rot: 0, size: 16 },
+  ],
+  [
+    { x: 20, y: 30, shape: "square", rot: 6, size: 22 },
+    { x: 55, y: 25, shape: "star", rot: 22, size: 24 },
+    { x: 80, y: 55, shape: "circle", rot: 0, size: 20 },
+    { x: 35, y: 72, shape: "triangle", rot: -14, size: 22 },
+    { x: 70, y: 78, shape: "star", rot: -6, size: 18 },
+  ],
+];
+
+export const VisionDemo = () => {
+  const shapes: Shape[] = ["circle", "square", "triangle", "star"];
+  const labels: Record<Shape, string> = {
+    circle: "Círculo",
+    square: "Cuadrado",
+    triangle: "Triángulo",
+    star: "Estrella",
+  };
+  const [target, setTarget] = useState<Shape>("star");
+  const [scanning, setScanning] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const run = (next: Shape) => {
+    setTarget(next);
+    setDone(false);
+    setScanning(true);
+    setTimeout(() => {
+      setScanning(false);
+      setDone(true);
+    }, 1400);
+  };
+
+  return (
+    <DemoFrame label="Reconocimiento de figuras">
+      <div className="space-y-4">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+            Selecciona la figura objetivo
+          </p>
+          <div className="grid grid-cols-4 gap-2">
+            {shapes.map((s) => (
+              <button
+                key={s}
+                onClick={() => run(s)}
+                className={`flex flex-col items-center gap-1 py-3 border transition-colors ${
+                  target === s
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-hairline text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                }`}
+              >
+                <ShapeIcon shape={s} className="w-5 h-5" />
+                <span className="text-[9px] uppercase tracking-wider">{labels[s]}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2">
+          {SCENES.map((scene, idx) => (
+            <div
+              key={idx}
+              className="relative aspect-square bg-surface-3/60 border border-hairline overflow-hidden"
+            >
+              {/* Shapes */}
+              {scene.map((item, i) => {
+                const matches = item.shape === target;
+                const reveal = done && matches;
+                return (
+                  <div
+                    key={i}
+                    className={`absolute transition-colors duration-300 ${
+                      reveal ? "text-primary" : "text-foreground/40"
+                    }`}
+                    style={{
+                      left: `${item.x}%`,
+                      top: `${item.y}%`,
+                      width: `${item.size}%`,
+                      height: `${item.size}%`,
+                      transform: `translate(-50%, -50%) rotate(${item.rot}deg)`,
+                    }}
+                  >
+                    <ShapeIcon shape={item.shape} className="w-full h-full" />
+                    {reveal && (
+                      <div className="absolute -inset-1 border border-primary animate-pulse">
+                        <span className="absolute -top-3 left-0 text-[8px] text-primary whitespace-nowrap font-mono">
+                          {(95 + Math.floor(Math.random() * 5))}%
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Scan line */}
+              {scanning && (
+                <div
+                  className="absolute inset-x-0 h-px pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)",
+                    boxShadow: "0 0 12px hsl(var(--primary))",
+                    animation: `scanY 1.4s linear`,
+                  }}
+                />
+              )}
+
+              {/* Status badge */}
+              <div className="absolute top-1.5 left-1.5 text-[8px] uppercase tracking-wider font-mono text-muted-foreground">
+                CAM_{idx + 1}
+              </div>
+              {done && (
+                <div className="absolute bottom-1.5 right-1.5 text-[8px] uppercase tracking-wider font-mono text-primary">
+                  {scene.filter((s) => s.shape === target).length} match
                 </div>
               )}
             </div>
           ))}
         </div>
-        {ai && <div className="absolute inset-0 pointer-events-none" style={{
-          background: "linear-gradient(180deg, transparent 49%, hsl(var(--primary)) 50%, transparent 51%)",
-          animation: "marquee 1.5s linear infinite reverse"
-        }} />}
+
+        <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest">
+          {scanning
+            ? `Escaneando · buscando ${labels[target].toLowerCase()}…`
+            : done
+            ? `Detección completada · objetivo: ${labels[target].toLowerCase()}`
+            : "Pulsa una figura para iniciar el reconocimiento"}
+        </p>
       </div>
-      <div className="flex gap-2 mt-4">
-        <button onClick={() => setAi((a) => !a)}
-          className={`flex-1 py-2 text-[10px] uppercase tracking-[0.2em] border ${ai ? "bg-primary text-primary-foreground border-primary" : "border-hairline"}`}>
-          IA: {ai ? "ON" : "OFF"}
-        </button>
-        <button onClick={() => setDefect((d) => !d)}
-          className="flex-1 py-2 text-[10px] uppercase tracking-[0.2em] border border-hairline">
-          {defect ? "Pieza ok" : "Forzar defecto"}
-        </button>
-      </div>
+
+      <style>{`
+        @keyframes scanY {
+          0% { top: 0%; opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 100%; opacity: 0; }
+        }
+      `}</style>
     </DemoFrame>
   );
 };
