@@ -58,7 +58,7 @@ const tech = [
   { label: "Integración", items: ["Oracle", "Salesforce", "ERPs líderes"] },
 ];
 
-const backers = ["StartupV", "Proyecto Sherpa", "Premios Talento Joven", "Cátedra HP", "Incibe"];
+
 
 const faqs = [
   { q: "¿Cuál es el ROI de implementar IA y cuándo veré resultados?", a: "Nuestra metodología exige que toda implementación tenga impacto directo en rentabilidad. Priorizamos casos de uso que reducen costes o aumentan ventas de manera medible. Para acelerar resultados, comenzamos con proyectos piloto en áreas concretas que demuestran valor rápidamente antes de escalar." },
