@@ -253,8 +253,6 @@ const Solutions = () => {
                       </div>
                     );
                   })()}
-                    ))}
-                  </div>
                 </div>
               </div>
             </section>
