@@ -612,45 +612,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SOLUTIONS OVERVIEW */}
-      <section className="py-32">
-        <div className="container-luxe">
-          <div className="reveal grid lg:grid-cols-12 gap-16 mb-16">
-            <div className="lg:col-span-5">
-              <p className="text-eyebrow mb-6">— Soluciones</p>
-              <h2 className="text-display text-5xl md:text-7xl mb-8">
-                Un departamento de IA y datos, <em className="italic text-primary">a medida</em>.
-              </h2>
-            </div>
-            <div className="lg:col-span-7 lg:pt-6">
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Cubrimos toda la cadena de valor del dato: desde la infraestructura y la gobernanza, hasta la analítica avanzada, la automatización con agentes de IA y la visión por computador. Cada solución se diseña para integrarse con tu operativa y generar retorno medible desde el primer piloto.
-              </p>
-              <Link to="/solutions" className="inline-flex items-center gap-3 text-sm font-medium uppercase tracking-[0.18em] text-primary hover:gap-5 transition-all">
-                Ver más información <span>→</span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="reveal grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
-            {solutionsOverview.map((s) => (
-              <Link
-                key={s.num}
-                to="/solutions"
-                className="bg-background p-8 group hover:bg-surface-1 transition-colors duration-500 flex items-start gap-5"
-              >
-                <span className="text-eyebrow text-primary tabular-nums">{s.num}</span>
-                <div className="flex-1">
-                  <h3 className="text-display text-lg leading-snug group-hover:text-primary transition-colors">
-                    {s.title}
-                  </h3>
-                </div>
-                <span className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">→</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* PARTNERS MARQUEE */}
       <section className="border-y border-hairline py-10 overflow-hidden">
