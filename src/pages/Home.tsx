@@ -271,7 +271,7 @@ const Home = () => {
           <div className="reveal max-w-3xl mb-20">
             <p className="text-eyebrow mb-6">— Metodología</p>
             <h2 className="text-display text-5xl md:text-7xl">
-              Cuatro bloques. Una transformación garantizada.
+              Cuatro fases. Una transformación garantizada.
             </h2>
           </div>
 
@@ -367,7 +367,7 @@ const Home = () => {
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl pointer-events-none" />
             <p className="text-eyebrow mb-6 relative">— Empieza hoy</p>
             <h2 className="text-display text-5xl md:text-7xl mb-8 relative">
-              Convierte tus datos en tu <em className="not-italic text-primary">mayor ventaja</em>.
+              Convierte tus datos en tu <em className="italic text-primary">mayor ventaja</em>.
             </h2>
             <p className="max-w-2xl mx-auto text-muted-foreground text-lg mb-10 relative">
               Solicita un diagnóstico de madurez gratuito y recibe una hoja de ruta personalizada para tu empresa.
