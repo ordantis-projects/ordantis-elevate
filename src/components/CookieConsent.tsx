@@ -128,7 +128,7 @@ const CookieBanner = () => {
           <button
             type="button"
             onClick={rejectAll}
-            className="px-5 py-3 border border-hairline text-xs font-medium uppercase tracking-[0.18em] hover:border-primary hover:text-primary transition-all duration-300"
+            className="px-5 py-3 bg-primary text-primary-foreground text-xs font-medium uppercase tracking-[0.18em] hover:shadow-glow transition-all duration-300"
           >
             Rechazar todas
           </button>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -64,13 +64,18 @@ const advantages = [
   { title: "Innovación estratégica", body: "Aprovechar la ciencia de datos fomenta la introducción de mejores innovaciones en procesos y productos, asegurando supervivencia y liderazgo." },
 ];
 
-type MethodPoint = { title: string; body: string };
+type DetailPoint = { title: string; body: string };
+type ServiceLink = { num: string; title: string; id: string };
 type MethodPhase = {
   n: string;
   tag: string;
   title: string;
   lead: string;
-  points: MethodPoint[];
+  intro: string[];
+  pointsHeader: string;
+  points: DetailPoint[];
+  outro: string;
+  services: ServiceLink[];
 };
 
 const methodology: MethodPhase[] = [
@@ -78,72 +83,124 @@ const methodology: MethodPhase[] = [
     n: "1",
     tag: "Fase 1",
     title: "Estrategia",
-    lead: "La IA no es una moda, es una herramienta de negocio. Nos aseguramos de que la tecnología se adapte a tu negocio, y no al revés.",
+    lead: "Antes de invertir un solo euro en tecnología, hay que saber exactamente dónde está su empresa, dónde quiere llegar y qué camino le va a generar más rentabilidad. La estrategia es la fase donde transformamos las ganas de implementar IA en un plan concreto, medible y rentable.",
+    intro: [
+      "La mayoría de proyectos de IA fracasan no por problemas técnicos, sino porque se lanzaron sin una estrategia sólida detrás. Las empresas se dejan llevar por la presión del mercado, copian lo que hace la competencia o caen en manos de proveedores que les venden tecnología que no necesitan. El resultado siempre es el mismo: inversiones sin retorno y equipos frustrados.",
+      "La fase de Estrategia existe para evitar exactamente eso. Es donde nos sentamos con la dirección, entendemos su modelo de negocio, sus restricciones financieras y sus objetivos reales, y construimos un mapa que conecta cada decisión tecnológica con un resultado concreto en el negocio.",
+    ],
+    pointsHeader: "Esta fase responde a tres preguntas fundamentales que ninguna empresa debería evitar:",
     points: [
       {
-        title: "Análisis de la Situación",
-        body: "Evaluamos tu infraestructura actual (tu nube, tus datos, tu software) para detectar qué tienes y qué te falta. Sin tecnicismos: te decimos claramente dónde están los huecos que frenan tu crecimiento.",
+        title: "¿Dónde estamos realmente?",
+        body: "No basta con intuiciones. Es imprescindible una evaluación objetiva del estado actual: qué infraestructura tecnológica existe, qué calidad tienen los datos, qué procesos están maduros y cuáles funcionan a base de Excel y voluntarismo. Sin este diagnóstico honesto, cualquier estrategia se construye sobre arena.",
       },
       {
-        title: "Foco en Rentabilidad (ROI)",
-        body: "Olvídate de \"hacer algo con IA\" solo por presión del mercado. Identificamos las oportunidades de alto impacto: aquellas que reducen costes o aumentan tus ventas. Si no es rentable para tu negocio, no lo proponemos.",
+        title: "¿Hacia dónde queremos ir y por qué?",
+        body: "Implementar IA \"porque toca\" es una manera segura de perder dinero. La estrategia debe partir de objetivos de negocio concretos: aumentar la facturación, reducir costes operativos, mejorar la retención de clientes, acelerar el time-to-market. Cada inversión en tecnología debe estar atada a una métrica financiera o estratégica que la justifique.",
       },
       {
-        title: "Plan de Ejecución Paso a Paso",
-        body: "Nada de informes teóricos. Te entregamos un plan de acción claro y por fases: qué tecnología usar, qué inversión necesitas y qué resultados (KPIs) vamos a medir. Una hoja de ruta diseñada para crecer con seguridad.",
+        title: "¿Cuál es el camino más rentable para llegar?",
+        body: "Existen mil formas de transformar una empresa, pero solo unas pocas tienen sentido para cada caso concreto. La estrategia prioriza las iniciativas con mayor impacto y menor riesgo, define el orden lógico de ejecución y establece los hitos que permitirán a la dirección saber en cada momento si el proyecto está funcionando.",
       },
+    ],
+    outro: "Una buena fase de Estrategia ahorra meses de trabajo y cientos de miles de euros en pasos en falso. Es la inversión más rentable de toda la transformación, porque evita las decisiones equivocadas antes de tomarlas.",
+    services: [
+      { num: "1.1", title: "Auditoría de Madurez Digital y Datos", id: "auditoria" },
     ],
   },
   {
     n: "2",
     tag: "Fase 2",
     title: "Preparación",
-    lead: "La IA es un motor potente, pero necesita gasolina de calidad para funcionar. Si tus datos son un caos, los resultados serán un caos. Preparamos y modernizamos tu entorno para que puedas escalar.",
+    lead: "La IA es un motor potente, pero necesita gasolina de calidad para funcionar. Si los datos de su empresa son un caos disperso, los resultados serán un caos amplificado. La fase de Preparación construye los cimientos sobre los que se sostendrá toda la transformación.",
+    intro: [
+      "Hay un problema universal en las empresas: los datos están dispersos, contradictorios y, con frecuencia, son inutilizables. Información de clientes en un sistema, ventas en otro, finanzas en un tercero, operaciones en hojas de cálculo que solo entienden tres personas. Cada departamento llama a un mismo concepto de manera distinta. Lo que en marketing se llama \"cliente\", en finanzas se llama \"cuenta\", y en logística \"destinatario\". Esta fragmentación no solo ralentiza el día a día: hace literalmente imposible aplicar IA con resultados fiables.",
+      "La fase de Preparación existe para resolver este problema de raíz. No es la fase más visible ni la más vendible, pero es probablemente la más decisiva. Sin datos limpios, integrados y gobernados, cualquier modelo de inteligencia artificial generará predicciones incorrectas, los dashboards mostrarán números contradictorios y los agentes automatizados ejecutarán acciones equivocadas. Saltarse la Preparación es la causa principal por la que los proyectos de IA fracasan en su primer año.",
+    ],
+    pointsHeader: "Esta fase aborda tres dimensiones críticas:",
     points: [
       {
-        title: "Ingeniería de Datos",
-        body: "Transformamos la información dispersa en un ecosistema digital integrado. Diseñamos una arquitectura sólida que conecta todas tus herramientas actuales (CRM, ERP, Nube) para crear una base de datos centralizada, fiable y siempre accesible para todo tu equipo.",
+        title: "Construir una infraestructura sólida y escalable",
+        body: "Su empresa necesita una arquitectura técnica que conecte todos los sistemas existentes (CRM, ERP, herramientas SaaS, bases de datos legacy) y los unifique en un ecosistema coherente. Ya sea en la nube, en local o en un modelo híbrido, los datos deben fluir de manera automática, segura y en tiempo real. Esta infraestructura es lo que permitirá, más adelante, desplegar cualquier solución de IA sin tener que reconstruir nada cada vez.",
       },
       {
-        title: "Optimización y Fiabilidad de los Datos",
-        body: "La agilidad de tu negocio depende de la precisión de tu información. Depuramos y estandarizamos tu entorno para asegurar la integridad de cada registro, garantizando que tu equipo y tus sistemas operen con información veraz en tiempo real, acelerando la toma de decisiones y mejorando la respuesta al cliente.",
+        title: "Asegurar la calidad y fiabilidad de la información",
+        body: "No basta con tener datos: tienen que ser correctos, consistentes, completos y actualizados. La depuración, deduplicación y estandarización de la información es un trabajo silencioso pero transformador. Cuando los equipos pueden confiar plenamente en los datos que ven en sus pantallas, la velocidad de toma de decisiones se multiplica y los errores operativos desaparecen.",
       },
+      {
+        title: "Establecer una gobernanza sólida",
+        body: "Los datos son uno de los activos más valiosos de cualquier empresa, y también uno de los más sensibles. Definir quién accede a qué información, cómo se protege, cómo se cumplen las normativas (RGPD, sectoriales) y cómo se garantiza la trazabilidad es imprescindible. Una buena gobernanza no es burocracia: es el seguro que permite escalar la IA sin asumir riesgos legales ni reputacionales.",
+      },
+    ],
+    outro: "Cuando esta fase se hace bien, todo lo que viene después fluye con facilidad. Cuando se hace mal o se omite, cada proyecto posterior arrastra problemas que se vuelven más caros de resolver con el tiempo.",
+    services: [
+      { num: "2.1", title: "Preparación de la Infraestructura de Datos", id: "infraestructura" },
+      { num: "2.2", title: "Ingeniería de Datos y Limpieza de Información", id: "ingenieria" },
+      { num: "2.3", title: "Gobernanza de Datos y Cumplimiento Normativo", id: "gobernanza" },
     ],
   },
   {
     n: "3",
     tag: "Fase 3",
     title: "Implementación",
-    lead: "El 75% de los proyectos de IA fracasan porque se quedan en la teoría o usan plantillas genéricas. Nosotros construimos sistemas que se adaptan a tus operaciones, enfocados en dar resultados desde el primer día y generar confianza total.",
+    lead: "Aquí es donde la inversión empieza a generar resultados visibles. La fase de Implementación es donde desplegamos las soluciones de IA que transforman los procesos de su empresa, siempre con un enfoque controlado y medible que asegura el éxito desde el primer día.",
+    intro: [
+      "Llega el momento de pasar del plan a la realidad. Tras una estrategia clara y unos cimientos sólidos, la fase de Implementación es donde se materializan los resultados que justifican toda la transformación. Pero implementar IA no es comprar software y darle al botón de \"instalar\". Es un proceso quirúrgico que requiere disciplina, control y una orientación obsesiva al ROI.",
+      "Existe un mito peligroso en el mundo de la IA: el del \"big bang\", la idea de que una empresa puede transformarse de la noche a la mañana desplegando una gran solución que lo cambia todo. Es un mito que se cobra víctimas constantemente. Las transformaciones exitosas no son revolucionarias: son evolutivas. Empiezan con proyectos piloto pequeños, controlados, en áreas concretas donde el éxito es medible y el riesgo está acotado. Solo cuando esos pilotos demuestran resultados reales se escala al resto de la organización.",
+    ],
+    pointsHeader: "Esta fase se asienta en tres principios que evitan los errores más comunes:",
     points: [
       {
-        title: "Desarrollo e Integración a Medida",
-        body: "Tu empresa es única, y tu IA también debe serlo. Construimos sistemas de inteligencia artificial, como la automatización de procesos repetitivos o la asistencia inteligente en la toma de decisiones, diseñados para resolver tus problemas del día a día y obtener una gran ventaja competitiva.",
+        title: "Implementación gradual y controlada",
+        body: "No tiene sentido revolucionar toda la operativa de una empresa antes de saber si la solución funciona en un solo departamento. Empezamos por casos de uso específicos, los validamos con datos reales, ajustamos lo que haga falta y solo entonces expandimos. Este enfoque protege la operación diaria, construye confianza interna en cada paso y garantiza que cada euro invertido genera retorno.",
       },
       {
-        title: "Implementación Gradual",
-        body: "Las grandes mejoras tecnológicas no tienen por qué ser caóticas. Empezamos con proyectos piloto en áreas muy concretas para demostrar su rentabilidad en un entorno seguro. Solo cuando comprobamos que la herramienta funciona perfectamente y aporta valor, la expandimos al resto de la empresa sin frenar tu operativa diaria.",
+        title: "Soluciones a medida, no plantillas genéricas",
+        body: "Cada empresa es única, y por tanto cada implementación debe diseñarse específicamente para resolver los problemas concretos de ese negocio, integrarse con sus sistemas existentes y respetar sus particularidades operativas. Las soluciones genéricas suelen ser baratas en el corto plazo y carísimas en el medio plazo, porque obligan a adaptar el negocio a la herramienta en lugar de adaptar la herramienta al negocio.",
       },
       {
-        title: "IA Segura y Responsable",
-        body: "Para que la IA sea rentable, debe ser confiable. Blindamos tus operaciones implementando sistemas éticos que protegen la privacidad de tus datos y cumplen estrictamente con la normativa. Una tecnología segura que reduce riesgos legales, retiene a tu talento y genera confianza en tus clientes.",
+        title: "Seguridad, ética y trazabilidad desde el primer día",
+        body: "Cualquier sistema que se despliegue debe cumplir estrictamente la normativa, proteger la información sensible y mantener registros auditables de cada decisión que tome la IA. Para que la tecnología sea verdaderamente rentable, debe ser confiable. Una solución que genera dudas legales o expone datos confidenciales no es una ventaja: es un riesgo financiero.",
       },
+    ],
+    outro: "La fase de Implementación es donde se ven los resultados, pero solo si se ejecuta con la disciplina adecuada. Bien hecha, transforma procesos, libera tiempo, reduce costes y mejora decisiones. Mal hecha, genera frustración, pérdidas económicas y un rechazo interno que paraliza cualquier futuro intento de innovar.",
+    services: [
+      { num: "3.1", title: "Inteligencia de Negocio", id: "bi" },
+      { num: "3.2", title: "Análisis Predictivo y Modelado de Escenarios", id: "prediccion" },
+      { num: "3.3", title: "Optimización de Recursos y Procesos", id: "optimizacion" },
+      { num: "3.4", title: "Automatización con Agentes de IA", id: "agentes" },
+      { num: "3.5", title: "Automatización Inteligente de Documentos", id: "documentos" },
+      { num: "3.6", title: "Sistemas de Búsqueda Semántica y RAG", id: "rag" },
+      { num: "3.7", title: "Reconocimiento de Imágenes", id: "vision" },
     ],
   },
   {
     n: "4",
     tag: "Fase 4",
     title: "Capacitación",
-    lead: "La mejor tecnología del mundo es un gasto inútil si tu equipo sigue trabajando como hace diez años. El 94% de los empleados quiere usar IA para ser más eficientes, pero casi nadie les enseña cómo. Nosotros cerramos esa brecha para que la transición sea un éxito.",
+    lead: "La mejor tecnología del mundo es un gasto inútil si los equipos siguen trabajando como hace diez años. La fase de Capacitación garantiza que su gente integre las nuevas herramientas en su rutina diaria con soltura, convicción y resultados.",
+    intro: [
+      "Hay una verdad incómoda que pocos consultores se atreven a decir en voz alta: la mayoría de las transformaciones digitales fracasan no por la tecnología, sino por las personas. No porque los equipos sean incapaces, sino porque nadie les ha acompañado realmente en el proceso de cambio. Se les entrega una herramienta, se les hace una formación de tres horas y se espera que la usen con naturalidad al día siguiente. No funciona así.",
+      "Los empleados quieren usar IA para ser más eficientes. La barrera no es la voluntad, es la falta de un acompañamiento serio que les permita integrar las nuevas formas de trabajar en su día a día. La fase de Capacitación existe precisamente para cerrar esa brecha. No se trata de impartir clases teóricas, sino de transformar la mentalidad colectiva y construir competencias reales que se traduzcan en resultados medibles.",
+    ],
+    pointsHeader: "Esta fase aborda tres dimensiones imprescindibles para que la transformación sea sostenible:",
     points: [
       {
-        title: "Talleres Prácticos",
-        body: "Nada de clases teóricas aburridas ni ejemplos de empresas que no tienen nada que ver con la tuya. Diseñamos sesiones prácticas e interactivas donde tu equipo aprende a usar la IA aplicándola directamente sobre sus tareas diarias y vuestra propia información.",
+        title: "Capacitación práctica adaptada a cada rol",
+        body: "Un director financiero no necesita aprender lo mismo que un operario de planta o que un comercial de campo. Los talleres deben construirse alrededor de los flujos de trabajo reales de cada departamento, usando los datos reales de la empresa y abordando los problemas concretos a los que cada equipo se enfrenta cada mañana. Cuando la formación es relevante, el aprendizaje es inmediato y la adopción es natural.",
       },
       {
-        title: "Soporte y Acompañamiento Continuo",
-        body: "Un cambio de mentalidad requiere un proceso. Nos comprometemos con el éxito de tu equipo a largo plazo ofreciendo seguimiento, guías prácticas y línea directa para consultas. Les acompañamos paso a paso para asegurar que integren las nuevas soluciones en su rutina con total soltura y sin bloqueos técnicos.",
+        title: "Acompañamiento sostenido más allá de la formación inicial",
+        body: "El verdadero reto no está en el primer taller, sino en lo que ocurre después. Cuando los empleados se enfrentan a sus tareas reales sin un formador a su lado, surgen dudas, fricciones y momentos de tentación de volver a los métodos antiguos. Si en ese punto crítico no hay soporte, todo el esfuerzo previo se evapora. Por eso, el acompañamiento continuo es lo que diferencia las transformaciones exitosas de las inversiones desperdiciadas.",
       },
+      {
+        title: "Gestión del cambio cultural",
+        body: "Más allá de las herramientas concretas, una transformación profunda requiere un cambio de mentalidad colectiva. Los miedos sobre el futuro laboral, las resistencias políticas internas, las inercias departamentales: todo eso es real y debe abordarse con honestidad y método. Cuando se gestiona bien, la cultura se convierte en aceleradora del cambio. Cuando se ignora, se convierte en su principal enemigo.",
+      },
+    ],
+    outro: "La Capacitación es la fase donde el retorno de inversión se consolida o se evapora. Es donde se decide si la tecnología desplegada se convierte en una ventaja competitiva real o en un proyecto bonito en una presentación. Y es la fase a la que más empresas dedican recursos insuficientes, con consecuencias previsibles.",
+    services: [
+      { num: "4.1", title: "Talleres Prácticos de IA y Capacitación Técnica", id: "talleres" },
     ],
   },
 ];
@@ -206,7 +263,8 @@ const faqs = [
 
 const Home = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const [activePhase, setActivePhase] = useState<number | null>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+  const [openPhase, setOpenPhase] = useState<number | null>(null);
   useScrollReveal();
 
   useEffect(() => {
@@ -220,6 +278,19 @@ const Home = () => {
     }, heroRef);
     return () => ctx.revert();
   }, []);
+
+  useEffect(() => {
+    if (openPhase === null) return;
+    const id = window.requestAnimationFrame(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [openPhase]);
+
+  const togglePhase = (idx: number) =>
+    setOpenPhase((prev) => (prev === idx ? null : idx));
+
+  const phaseDetail = openPhase !== null ? methodology[openPhase] : null;
 
   return (
     <div ref={heroRef}>
@@ -386,75 +457,155 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="reveal grid md:grid-cols-2 gap-6">
+          <div className="reveal space-y-6">
             {methodology.map((m, idx) => {
-              const isActive = activePhase === idx;
+              const isActive = openPhase === idx;
               return (
-                <button
-                  key={m.n}
-                  type="button"
-                  onClick={() => setActivePhase(isActive ? null : idx)}
-                  aria-expanded={isActive}
-                  className={`group relative text-left bg-[hsl(215_60%_11%)] border transition-all duration-500 overflow-hidden ${
-                    isActive
-                      ? "border-primary/60 shadow-[0_30px_80px_-30px_hsl(192_81%_43%/0.45)]"
-                      : "border-white/8 hover:border-primary/40"
-                  }`}
-                >
-                  {/* corner arrow figure */}
-                  <img
-                    src={flechaOrdantis}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute -top-6 -right-6 w-40 h-40 opacity-[0.08] group-hover:opacity-20 transition-opacity duration-500 rotate-[-25deg]"
-                  />
+                <Fragment key={m.n}>
+                  <button
+                    type="button"
+                    onClick={() => togglePhase(idx)}
+                    aria-expanded={isActive}
+                    aria-controls={`phase-detail-${idx}`}
+                    aria-label={`${isActive ? "Ocultar" : "Ver"} detalles de ${m.title}`}
+                    className={`group relative w-full text-left transition-all duration-500 overflow-hidden cursor-pointer border ${
+                      isActive
+                        ? "bg-primary/10 border-primary"
+                        : "bg-[hsl(215_60%_11%)] border-white/10 hover:border-primary/40"
+                    }`}
+                  >
+                    <img
+                      src={flechaOrdantis}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute -top-6 -right-6 w-40 h-40 opacity-[0.08] group-hover:opacity-20 transition-opacity duration-500 rotate-[-25deg] pointer-events-none"
+                    />
 
-                  <div className="relative p-8 md:p-10 min-h-[260px] flex flex-col">
-                    <p className="text-eyebrow text-primary-glow mb-12">{m.tag}</p>
+                    <div className="relative p-8 md:p-10 flex items-start gap-8 pointer-events-none">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-eyebrow text-primary-glow mb-4">{m.tag}</p>
+                        <h3 className="text-display text-3xl md:text-4xl text-white mb-4">
+                          {m.title}
+                        </h3>
+                        <p className="text-white/70 leading-relaxed max-w-3xl">
+                          {m.lead}
+                        </p>
+                      </div>
 
-                    <h3 className="text-display text-3xl md:text-4xl text-white mb-6 max-w-md">
-                      {m.title}
-                    </h3>
-
-                    <p className="text-white/70 leading-relaxed mb-8 max-w-md">
-                      {m.lead}
-                    </p>
-
-                    <div className="mt-auto flex items-center justify-between">
-                      <span className="text-sm uppercase tracking-[0.18em] text-white/80 group-hover:text-white transition-colors">
-                        {isActive ? "Cerrar" : "Más información"}
-                      </span>
                       <span
-                        className={`inline-flex items-center justify-center w-10 h-10 bg-primary text-primary-foreground transition-transform duration-500 ${
-                          isActive ? "rotate-45" : "group-hover:translate-x-1"
+                        className={`shrink-0 self-center inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground transition-all duration-500 ${
+                          isActive ? "rotate-90" : "group-hover:translate-x-1 group-hover:bg-primary/90"
                         }`}
                       >
-                        {isActive ? "×" : "→"}
+                        →
                       </span>
                     </div>
+                  </button>
 
-                    {/* expanded panel */}
+                  {isActive && phaseDetail && (
                     <div
-                      className={`grid transition-all duration-500 ease-out ${
-                        isActive ? "grid-rows-[1fr] opacity-100 mt-10" : "grid-rows-[0fr] opacity-0 mt-0"
-                      }`}
+                      ref={detailRef}
+                      id={`phase-detail-${idx}`}
+                      role="region"
+                      aria-labelledby="phase-detail-title"
+                      className="phase-detail border-2 border-primary/60 bg-[hsl(215_55%_13%)] relative overflow-hidden shadow-2xl shadow-primary/10"
                     >
-                      <div className="overflow-hidden">
-                        <div className="border-t border-white/10 pt-8 space-y-6">
-                          {m.points.map((p) => (
-                            <div key={p.title}>
-                              <h4 className="text-display text-lg text-white mb-2 flex gap-3">
-                                <span className="text-primary-glow">—</span>
-                                {p.title}
-                              </h4>
-                              <p className="text-white/70 leading-relaxed pl-6">{p.body}</p>
-                            </div>
+                      <style>{`
+                        @keyframes phase-detail-in {
+                          from { opacity: 0; transform: translateY(-8px); max-height: 0; }
+                          to   { opacity: 1; transform: translateY(0); max-height: 4000px; }
+                        }
+                        .phase-detail { animation: phase-detail-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+                      `}</style>
+
+                      <div className="relative p-8 md:p-12 lg:p-16">
+                        <div className="flex items-start justify-between gap-6 mb-12">
+                          <p className="text-eyebrow text-primary-glow">— {phaseDetail.tag}</p>
+                          <button
+                            type="button"
+                            onClick={() => setOpenPhase(null)}
+                            className="group inline-flex items-center gap-3 px-5 py-3 border border-white/15 text-xs uppercase tracking-[0.2em] hover:border-primary hover:text-primary transition-colors"
+                          >
+                            Cerrar
+                            <span className="inline-flex items-center justify-center w-7 h-7 bg-white/5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                              ×
+                            </span>
+                          </button>
+                        </div>
+
+                        <div className="grid lg:grid-cols-12 gap-10 mb-16">
+                          <div className="lg:col-span-5">
+                            <p className="text-display text-7xl text-primary/30 mb-4 tabular-nums">
+                              {`0${phaseDetail.n}`}
+                            </p>
+                            <h3 id="phase-detail-title" className="text-display text-4xl md:text-6xl">
+                              {phaseDetail.title}
+                            </h3>
+                          </div>
+                          <div className="lg:col-span-7 lg:pt-6">
+                            <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                              {phaseDetail.lead}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="max-w-3xl space-y-7 mb-16">
+                          {phaseDetail.intro.map((p, i) => (
+                            <p key={i} className="text-base md:text-lg text-white/75 leading-relaxed">
+                              {p}
+                            </p>
                           ))}
+                          <p className="text-base md:text-lg text-white/90 leading-relaxed font-medium">
+                            {phaseDetail.pointsHeader}
+                          </p>
+                          <div className="space-y-7 pl-6 border-l border-primary/40">
+                            {phaseDetail.points.map((p) => (
+                              <div key={p.title}>
+                                <h4 className="text-display text-xl md:text-2xl mb-3 text-white flex gap-3">
+                                  <span className="text-primary-glow">—</span>
+                                  {p.title}
+                                </h4>
+                                <p className="text-white/75 leading-relaxed">{p.body}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-base md:text-lg text-white/75 leading-relaxed">
+                            {phaseDetail.outro}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-eyebrow text-primary-glow mb-8">— Servicios asociados</p>
+                          <div
+                            className={`grid gap-px bg-white/5 border border-white/10 ${
+                              phaseDetail.services.length === 1
+                                ? "md:grid-cols-1"
+                                : phaseDetail.services.length <= 3
+                                ? "md:grid-cols-2 lg:grid-cols-3"
+                                : "md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                            }`}
+                          >
+                            {phaseDetail.services.map((s) => (
+                              <Link
+                                key={s.id}
+                                to={`/solutions#${s.id}`}
+                                className="group bg-[hsl(215_60%_11%)] hover:bg-[hsl(215_60%_14%)] p-8 transition-all duration-500 flex flex-col"
+                              >
+                                <p className="text-eyebrow text-primary tabular-nums mb-5">{s.num}</p>
+                                <h4 className="text-display text-lg md:text-xl text-white group-hover:text-primary transition-colors mb-8 flex-1">
+                                  {s.title}
+                                </h4>
+                                <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60 group-hover:text-primary group-hover:gap-4 transition-all">
+                                  Ver solución <span>→</span>
+                                </span>
+                              </Link>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </button>
+                  )}
+                </Fragment>
               );
             })}
           </div>
@@ -580,6 +731,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };

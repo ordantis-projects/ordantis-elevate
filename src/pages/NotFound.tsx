@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import logo from "@/assets/ordantis-logo.svg";
 
 const NotFound = () => {
   const location = useLocation();
@@ -42,12 +43,7 @@ const NotFound = () => {
             Volver al inicio
             <span>→</span>
           </Link>
-          <Link
-            to="/assessment"
-            className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Solicitar diagnóstico
-          </Link>
+          <img src={logo} alt="Ordantis" className="h-8 w-auto opacity-80" />
         </div>
 
         <p className="mt-16 text-xs text-muted-foreground/60 font-mono break-all">
