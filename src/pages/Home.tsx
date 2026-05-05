@@ -14,13 +14,22 @@ import cofrimanLogo from "@/assets/partners/cofriman.png"
 import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
-import talentoJovenLogo from "@/assets/backers/talento-joven.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
-import incibeLogo from "@/assets/backers/incibe.svg";
+// Adobe-exported SVGs with DOCTYPE/foreignObject quirks → inline as raw markup
+import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
+import incibeRaw from "@/assets/backers/incibe.svg?raw";
+
+// Strip the XML prolog and DOCTYPE so the markup is safe to inject via innerHTML
+const cleanSvgMarkup = (raw: string) => {
+  const start = raw.indexOf("<svg");
+  return start >= 0 ? raw.slice(start) : raw;
+};
+const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
+const incibeSvg = cleanSvgMarkup(incibeRaw);
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Partner = { name: string; logo?: string; invert?: boolean };
+type Partner = { name: string; logo?: string; invert?: boolean; rawSvg?: string };
 const partners: Partner[] = [
   { name: "Artecoin", logo: artecoinLogo },
   { name: "Indiva", logo: indivaLogo },
@@ -30,11 +39,11 @@ const partners: Partner[] = [
 const partnersLoop = [...partners, ...partners, ...partners];
 
 const backers: Partner[] = [
-  { name: "StartupV", logo: startupvLogo, invert: true },
-  { name: "Proyecto Sherpa", logo: sherpaLogo, invert: true },
-  { name: "Premios Talento Joven", logo: talentoJovenLogo, invert: true },
-  { name: "Cátedra HP", logo: catedraHpLogo, invert: true },
-  { name: "Incibe", logo: incibeLogo, invert: true },
+  { name: "StartupV", logo: startupvLogo },
+  { name: "Proyecto Sherpa", logo: sherpaLogo },
+  { name: "Premios Talento Joven", rawSvg: talentoJovenSvg },
+  { name: "Cátedra HP", logo: catedraHpLogo },
+  { name: "Incibe", rawSvg: incibeSvg },
 ];
 
 const impact = [
@@ -193,11 +202,18 @@ const Home = () => {
           <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
             {backers.map((b) => (
               <div key={b.name} className="flex items-center justify-center h-12 opacity-90 hover:opacity-100 transition-opacity duration-500">
-                {b.logo ? (
+                {b.rawSvg ? (
+                  <div
+                    role="img"
+                    aria-label={b.name}
+                    className="h-10 inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[200px]"
+                    dangerouslySetInnerHTML={{ __html: b.rawSvg }}
+                  />
+                ) : b.logo ? (
                   <img
                     src={b.logo}
                     alt={b.name}
-                    className="max-h-10 w-auto object-contain"
+                    className={`max-h-10 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
                   />
                 ) : (
                   <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
@@ -277,30 +293,6 @@ const Home = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TECH STACK */}
-      <section className="py-32 bg-surface-1/30">
-        <div className="container-luxe">
-          <div className="reveal max-w-3xl mb-16">
-            <p className="text-eyebrow mb-6">— Tecnologías que dominamos</p>
-            <h2 className="text-display text-4xl md:text-6xl">
-              Las mejores herramientas. Implementadas con criterio.
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {tech.map((t) => (
-              <div key={t.label} className="reveal glass-card p-8">
-                <p className="text-eyebrow text-primary mb-6">{t.label}</p>
-                <ul className="space-y-3">
-                  {t.items.map((i) => (
-                    <li key={i} className="text-display text-2xl">{i}</li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
