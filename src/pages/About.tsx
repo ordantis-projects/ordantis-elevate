@@ -1,15 +1,15 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import startupvLogo from "@/assets/backers/startupv.svg";
+import startinfLogo from "@/assets/backers/startinf.png";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
-import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
+import talentoJovenLogo from "@/assets/backers/talentojoven.png";
 import incibeRaw from "@/assets/backers/incibe.svg?raw";
 
 const cleanSvgMarkup = (raw: string) => {
   const start = raw.indexOf("<svg");
   return start >= 0 ? raw.slice(start) : raw;
 };
-const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
 const incibeSvg = cleanSvgMarkup(incibeRaw);
 
 const values = [
@@ -27,9 +27,10 @@ type Achievement = {
 };
 
 const achievements: Achievement[] = [
-  { title: "Programa StartupV", body: "Seleccionados para el programa de aceleración StartupV, reconocimiento a startups con alto potencial de crecimiento.", logo: startupvLogo },
+  { title: "Programa StartupV", body: "Integrados en StartUPV, el ecosistema emprendedor de la UPV, desde donde seguimos desarrollando Ordantis con acompañamiento, recursos y conexión institucional.", logo: startupvLogo },
+  { title: "Apoyo de start.inf - ETSINF (UPV)", body: "Start.inf, programa de emprendimiento de la ETSINF-UPV, nos proporciona asesoramiento, acompañamiento y espacio de trabajo para consolidar Ordantis como proyecto empresarial.", logo: startinfLogo },
   { title: "Finalistas Proyecto Sherpa", body: "Reconocidos como uno de los 8 proyectos más prometedores en el programa de emprendimiento Sherpa (2025).", logo: sherpaLogo },
-  { title: "Premios Talento C. Valenciana", body: "Uno de los 4 finalistas en los premios organizados por Caixa y Levante Periódico, categoría Empresa.", rawSvgs: [talentoJovenSvg] },
+  { title: "Premios Talento C. Valenciana", body: "Uno de los 4 finalistas en los Premios Talento Joven de la Comunitat Valenciana, en la categoría Empresa.", logo: talentoJovenLogo },
   { title: "Cátedra HP", body: "Respaldados por la Cátedra HP de la UPV, referente en innovación y emprendimiento tecnológico.", logo: catedraHpLogo },
   { title: "Cybersecurity Ventures II", body: "Acelerados por Incibe como startup tecnológica destacada en ciberseguridad.", rawSvgs: [incibeSvg] },
 ];

@@ -13,12 +13,11 @@ import odeonLogo from "@/assets/partners/odeon.png";
 import cofrimanLogo from "@/assets/partners/cofriman.png"
 import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
+import startinfLogo from "@/assets/backers/startinf.png";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
-import caixabankRaw from "@/assets/backers/caixabank.svg?raw";
-import levanteRaw from "@/assets/backers/levante.svg?raw";
 // Adobe-exported SVGs with DOCTYPE/foreignObject quirks → inline as raw markup
-import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
+import talentoJovenLogo from "@/assets/backers/talentojoven.png";
 import incibeRaw from "@/assets/backers/incibe.svg?raw";
 
 // Strip the XML prolog and DOCTYPE so the markup is safe to inject via innerHTML
@@ -26,10 +25,7 @@ const cleanSvgMarkup = (raw: string) => {
   const start = raw.indexOf("<svg");
   return start >= 0 ? raw.slice(start) : raw;
 };
-const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
 const incibeSvg = cleanSvgMarkup(incibeRaw);
-const caixabankSvg = cleanSvgMarkup(caixabankRaw);
-const levanteSvg = cleanSvgMarkup(levanteRaw);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,10 +40,9 @@ const partnersLoop = [...partners, ...partners, ...partners];
 
 const backers: Partner[] = [
   { name: "StartupV", logo: startupvLogo },
+  { name: "Start.inf - ETSINF (UPV)", logo: startinfLogo },
   { name: "Proyecto Sherpa", logo: sherpaLogo },
-  { name: "Premios Talento Joven", rawSvg: talentoJovenSvg },
-  { name: "CaixaBank", rawSvg: caixabankSvg },
-  { name: "Levante", rawSvg: levanteSvg },
+  { name: "Premios Talento Joven", logo: talentoJovenLogo },
   { name: "Cátedra HP", logo: catedraHpLogo },
   { name: "Incibe", rawSvg: incibeSvg },
 ];
@@ -626,7 +621,11 @@ const Home = () => {
                   <img
                     src={p.logo}
                     alt={p.name}
-                    className="max-h-16 w-auto object-contain"
+                    className={`w-auto object-contain ${
+                      p.name === "Artecoin" || p.name === "Indiva"
+                        ? "max-h-20"
+                        : "max-h-16"
+                    }`}
                   />
                 ) : (
                   <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
