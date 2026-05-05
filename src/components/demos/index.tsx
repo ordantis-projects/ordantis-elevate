@@ -139,41 +139,367 @@ export const OptimizationDemo = () => {
 };
 
 /* 03 — BI */
+const sparkPath = (seed: number, w: number, h: number, n = 14) => {
+  const pts: number[] = [];
+  for (let i = 0; i < n; i++) {
+    pts.push(50 + Math.sin((i + seed) * 0.7) * 14 + Math.cos(i * 1.3 + seed * 0.4) * 6 + i * 0.6);
+  }
+  const max = Math.max(...pts), min = Math.min(...pts);
+  return pts
+    .map((v, i) => {
+      const x = (i / (n - 1)) * w;
+      const y = h - ((v - min) / (max - min || 1)) * (h - 2) - 1;
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+};
+
+type BIKpi = { k: string; v: string; d: string; neg?: boolean };
+type BIBreak = { l: string; v: number };
+type BITop = { n: string; v: string; d: string };
+type BIData = { kpis: BIKpi[]; breakdown: BIBreak[]; top: BITop[] };
+
 export const BIDemo = () => {
   const filters = ["Ventas", "Marketing", "Operaciones", "Finanzas"];
-  const [active, setActive] = useState(0);
-  const data = [
-    [{ k: "Ingresos", v: "€2.4M", d: "+18%" }, { k: "Margen", v: "32%", d: "+4pp" }, { k: "CAC", v: "€124", d: "−12%" }],
-    [{ k: "Leads", v: "8.2K", d: "+22%" }, { k: "CTR", v: "4.8%", d: "+0.6" }, { k: "ROAS", v: "3.4x", d: "+0.4" }],
-    [{ k: "OEE", v: "87%", d: "+3pp" }, { k: "SLA", v: "99.1%", d: "+0.4" }, { k: "Stock", v: "92%", d: "−5%" }],
-    [{ k: "EBITDA", v: "€640K", d: "+15%" }, { k: "DSO", v: "38d", d: "−4d" }, { k: "Liquidez", v: "1.8x", d: "+0.2" }],
+  const periods = [
+    { id: "1M", n: 6 },
+    { id: "3M", n: 12 },
+    { id: "12M", n: 14 },
   ];
-  const bars = [40, 65, 30, 75, 55, 80, 60][active] != null ? [40, 65, 30, 75, 55, 80, 60].map((b) => b + active * 5) : [];
+  const [active, setActive] = useState(0);
+  const [period, setPeriod] = useState(2);
+
+  const datasets: BIData[] = [
+    {
+      kpis: [
+        { k: "Ingresos", v: "€2.4M", d: "+18%" },
+        { k: "Margen", v: "32%", d: "+4pp" },
+        { k: "CAC", v: "€124", d: "−12%" },
+        { k: "Pipeline", v: "€8.1M", d: "+24%" },
+      ],
+      breakdown: [
+        { l: "Suscripciones", v: 58 },
+        { l: "Servicios", v: 27 },
+        { l: "Hardware", v: 15 },
+      ],
+      top: [
+        { n: "Acme Corp", v: "€340K", d: "+22%" },
+        { n: "Globex Ltd", v: "€212K", d: "+8%" },
+        { n: "Initech S.A.", v: "€198K", d: "+34%" },
+        { n: "Umbrella Inc", v: "€176K", d: "−4%" },
+      ],
+    },
+    {
+      kpis: [
+        { k: "Leads", v: "8.2K", d: "+22%" },
+        { k: "CTR", v: "4.8%", d: "+0.6pp" },
+        { k: "ROAS", v: "3.4x", d: "+0.4" },
+        { k: "CPL", v: "€18", d: "−9%" },
+      ],
+      breakdown: [
+        { l: "Orgánico", v: 42 },
+        { l: "Paid Ads", v: 33 },
+        { l: "Social", v: 18 },
+        { l: "Referral", v: 7 },
+      ],
+      top: [
+        { n: "Google Ads", v: "3,240", d: "+18%" },
+        { n: "LinkedIn", v: "2,180", d: "+31%" },
+        { n: "SEO Blog", v: "1,460", d: "+12%" },
+        { n: "Newsletter", v: "1,320", d: "+5%" },
+      ],
+    },
+    {
+      kpis: [
+        { k: "OEE", v: "87%", d: "+3pp" },
+        { k: "SLA", v: "99.1%", d: "+0.4" },
+        { k: "Stock", v: "92%", d: "−5%", neg: true },
+        { k: "Incidencias", v: "4", d: "−60%" },
+      ],
+      breakdown: [
+        { l: "Producción", v: 48 },
+        { l: "Logística", v: 28 },
+        { l: "Calidad", v: 16 },
+        { l: "Mantenimiento", v: 8 },
+      ],
+      top: [
+        { n: "Planta Madrid", v: "94%", d: "+2pp" },
+        { n: "Planta BCN", v: "89%", d: "+4pp" },
+        { n: "Planta Sevilla", v: "82%", d: "+1pp" },
+        { n: "Planta Valencia", v: "78%", d: "−2pp" },
+      ],
+    },
+    {
+      kpis: [
+        { k: "EBITDA", v: "€640K", d: "+15%" },
+        { k: "DSO", v: "38d", d: "−4d" },
+        { k: "Liquidez", v: "1.8x", d: "+0.2" },
+        { k: "Cash flow", v: "€420K", d: "+22%" },
+      ],
+      breakdown: [
+        { l: "Operativo", v: 64 },
+        { l: "Inversión", v: 22 },
+        { l: "Financiación", v: 14 },
+      ],
+      top: [
+        { n: "Q4 2025", v: "€1.8M", d: "+18%" },
+        { n: "Q3 2025", v: "€1.5M", d: "+9%" },
+        { n: "Q2 2025", v: "€1.4M", d: "+6%" },
+        { n: "Q1 2025", v: "€1.3M", d: "+3%" },
+      ],
+    },
+  ];
+
+  const ds = datasets[active];
+
+  const trend = useMemo(() => {
+    const n = periods[period].n;
+    const seed = active * 11 + period * 3;
+    const arr: number[] = [];
+    for (let i = 0; i < n; i++) {
+      arr.push(
+        50 +
+          Math.sin((i + seed) * 0.55) * 12 +
+          i * (1.4 + active * 0.25) +
+          Math.cos(i * 1.2 + seed) * 6
+      );
+    }
+    return arr;
+  }, [active, period]);
+
+  const w = 360, h = 90;
+  const tMax = Math.max(...trend), tMin = Math.min(...trend);
+  const linePath = trend
+    .map((v, i) => {
+      const x = (i / (trend.length - 1)) * w;
+      const y = h - ((v - tMin) / (tMax - tMin || 1)) * (h - 8) - 4;
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  const areaPath = `${linePath} L${w},${h} L0,${h} Z`;
+
+  const breakTotal = ds.breakdown.reduce((a, b) => a + b.v, 0);
+  const donutR = 28;
+  const donutC = 2 * Math.PI * donutR;
+  let donutOffset = 0;
+
+  const topMax = Math.max(
+    ...ds.top.map((r) => parseFloat(r.v.replace(/[^\d.-]/g, "")) || 0)
+  );
 
   return (
-    <DemoFrame label="Visión 360º">
-      <div className="flex gap-1 mb-5 border-b border-hairline">
-        {filters.map((f, i) => (
-          <button key={f} onClick={() => setActive(i)}
-            className={`px-3 py-2 text-xs uppercase tracking-wider transition-colors ${active === i ? "text-primary border-b border-primary -mb-px" : "text-muted-foreground hover:text-foreground"}`}>
-            {f}
-          </button>
-        ))}
+    <DemoFrame label="Visión 360º · panel ejecutivo">
+      {/* Header: tabs + period */}
+      <div className="flex items-end justify-between mb-4 gap-3 border-b border-hairline">
+        <div className="flex flex-wrap gap-1">
+          {filters.map((f, i) => (
+            <button
+              key={f}
+              onClick={() => setActive(i)}
+              className={`px-3 py-2 text-[10px] uppercase tracking-[0.18em] transition-colors ${
+                active === i
+                  ? "text-primary border-b border-primary -mb-px"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-1 pb-1.5">
+          {periods.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setPeriod(i)}
+              className={`px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider border transition-colors ${
+                period === i
+                  ? "border-primary text-primary bg-primary/5"
+                  : "border-hairline text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {p.id}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-3 mb-5">
-        {data[active].map((d) => (
-          <div key={d.k} className="bg-surface-3/60 p-4 border border-hairline">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{d.k}</p>
-            <p className="text-display text-2xl mt-1">{d.v}</p>
-            <p className="text-[10px] text-primary">{d.d}</p>
+
+      {/* KPI cards with sparklines */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
+        {ds.kpis.map((k, i) => (
+          <div key={k.k} className="bg-surface-3/60 p-3 border border-hairline">
+            <p className="text-[9px] uppercase tracking-wider text-muted-foreground">{k.k}</p>
+            <div className="flex items-baseline justify-between gap-2 mt-1">
+              <p className="text-display text-xl leading-none">{k.v}</p>
+              <span
+                className={`text-[10px] font-mono tabular-nums shrink-0 ${
+                  k.neg ? "text-destructive" : "text-primary"
+                }`}
+              >
+                {k.d}
+              </span>
+            </div>
+            <svg viewBox="0 0 60 16" className="w-full h-4 mt-2" preserveAspectRatio="none">
+              <path
+                d={sparkPath(active * 5 + i * 3, 60, 16)}
+                fill="none"
+                stroke="hsl(var(--primary))"
+                strokeOpacity="0.7"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
           </div>
         ))}
       </div>
-      <div className="flex items-end gap-2 h-24">
-        {bars.map((b, i) => (
-          <div key={i} className="flex-1 bg-gradient-to-t from-primary/80 to-primary/20 transition-all duration-700"
-            style={{ height: `${b}%` }} />
-        ))}
+
+      {/* Trend + composition */}
+      <div className="grid md:grid-cols-3 gap-2 mb-2">
+        <div className="md:col-span-2 bg-surface-3/60 p-4 border border-hairline">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              Tendencia · {filters[active]}
+            </p>
+            <p className="text-[9px] font-mono text-primary">
+              {periods[period].id} · n={trend.length}
+            </p>
+          </div>
+          <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-24" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="bi-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {[0.25, 0.5, 0.75].map((t) => (
+              <line
+                key={t}
+                x1="0"
+                y1={h * t}
+                x2={w}
+                y2={h * t}
+                stroke="hsl(var(--hairline))"
+                strokeWidth="0.5"
+                strokeDasharray="2 3"
+              />
+            ))}
+            <path d={areaPath} fill="url(#bi-grad)" />
+            <path
+              d={linePath}
+              fill="none"
+              stroke="hsl(var(--primary))"
+              strokeWidth="1.4"
+              vectorEffect="non-scaling-stroke"
+            />
+            {trend.map((v, i) => {
+              const x = (i / (trend.length - 1)) * w;
+              const y = h - ((v - tMin) / (tMax - tMin || 1)) * (h - 8) - 4;
+              return <circle key={i} cx={x} cy={y} r="1.6" fill="hsl(var(--primary))" />;
+            })}
+          </svg>
+        </div>
+
+        <div className="bg-surface-3/60 p-4 border border-hairline">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
+            Composición
+          </p>
+          <div className="flex items-center gap-3">
+            <svg viewBox="0 0 80 80" className="w-20 h-20 shrink-0 -rotate-90">
+              <circle
+                cx="40"
+                cy="40"
+                r={donutR}
+                fill="none"
+                stroke="hsl(var(--hairline))"
+                strokeWidth="8"
+              />
+              {ds.breakdown.map((b, i) => {
+                const len = (b.v / breakTotal) * donutC;
+                const offset = -donutOffset;
+                donutOffset += len;
+                return (
+                  <circle
+                    key={b.l}
+                    cx="40"
+                    cy="40"
+                    r={donutR}
+                    fill="none"
+                    stroke="hsl(var(--primary))"
+                    strokeOpacity={1 - i * 0.2}
+                    strokeWidth="8"
+                    strokeDasharray={`${len} ${donutC}`}
+                    strokeDashoffset={offset}
+                    style={{ transition: "stroke-dasharray 0.5s ease" }}
+                  />
+                );
+              })}
+            </svg>
+            <div className="flex-1 space-y-1 text-[10px] min-w-0">
+              {ds.breakdown.map((b, i) => (
+                <div key={b.l} className="flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5 min-w-0">
+                    <span
+                      className="w-1.5 h-1.5 shrink-0"
+                      style={{
+                        background: "hsl(var(--primary))",
+                        opacity: 1 - i * 0.2,
+                      }}
+                    />
+                    <span className="truncate text-foreground/80">{b.l}</span>
+                  </span>
+                  <span className="font-mono tabular-nums text-muted-foreground">
+                    {Math.round((b.v / breakTotal) * 100)}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Ranked table */}
+      <div className="bg-surface-3/60 border border-hairline">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-hairline">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Top movers
+          </p>
+          <p className="text-[9px] font-mono text-muted-foreground">
+            {ds.top.length} registros
+          </p>
+        </div>
+        <table className="w-full text-xs">
+          <tbody>
+            {ds.top.map((row, i) => {
+              const cur = parseFloat(row.v.replace(/[^\d.-]/g, "")) || 0;
+              const pct = topMax ? (cur / topMax) * 100 : 0;
+              const neg = row.d.startsWith("−") || row.d.startsWith("-");
+              return (
+                <tr
+                  key={row.n}
+                  className={i < ds.top.length - 1 ? "border-b border-hairline/40" : ""}
+                >
+                  <td className="pl-4 py-2 w-8 text-[10px] font-mono text-muted-foreground">
+                    {String(i + 1).padStart(2, "0")}
+                  </td>
+                  <td className="py-2 text-foreground/90">{row.n}</td>
+                  <td className="py-2 w-1/3 px-3">
+                    <div className="h-1 bg-hairline">
+                      <div
+                        className="h-full bg-primary/70 transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </td>
+                  <td className="py-2 text-right font-mono tabular-nums text-foreground/80">
+                    {row.v}
+                  </td>
+                  <td className="px-4 py-2 text-right text-[10px] font-mono w-16 tabular-nums">
+                    <span className={neg ? "text-destructive" : "text-primary"}>{row.d}</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </DemoFrame>
   );
