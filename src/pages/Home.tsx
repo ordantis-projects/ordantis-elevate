@@ -326,7 +326,7 @@ const Home = () => {
           <div className="reveal max-w-3xl mb-20">
             <p className="text-eyebrow mb-6">— Súmate a la revolución tecnológica</p>
             <h2 className="text-display text-5xl md:text-7xl mb-8">
-              La ventaja competitiva de ser <em className="not-italic text-primary">data-driven</em>.
+              La ventaja competitiva de ser <em className="italic text-primary">data-driven</em>.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Basar las decisiones corporativas en la intuición ha dejado de ser viable. Las empresas que adoptan una cultura data-driven logran productividad, rentabilidad y resiliencia significativamente superiores. Democratizar la IA y construir una infraestructura digital sólida ya no es un lujo: es el factor que determina el crecimiento y la supervivencia.
@@ -379,7 +379,7 @@ const Home = () => {
           <div className="reveal max-w-3xl mb-16">
             <p className="text-eyebrow text-primary-glow mb-6">— Metodología</p>
             <h2 className="text-display text-5xl md:text-7xl mb-8">
-              Cuatro fases. Una transformación garantizada.
+              Cuatro fases. Una <em className="italic text-primary">transformación garantizada</em>.
             </h2>
             <p className="text-lg text-white/70 leading-relaxed">
               Hemos estructurado nuestra metodología en <span className="text-white font-medium">4 grandes bloques</span> para garantizar el éxito de tu transformación. Evaluamos tu caso para empezar por la fase que te corresponda.
@@ -468,7 +468,7 @@ const Home = () => {
             <div className="lg:col-span-5">
               <p className="text-eyebrow mb-6">— Soluciones</p>
               <h2 className="text-display text-5xl md:text-7xl mb-8">
-                Un departamento de IA y datos, <em className="not-italic text-primary">a medida</em>.
+                Un departamento de IA y datos, <em className="italic text-primary">a medida</em>.
               </h2>
             </div>
             <div className="lg:col-span-7 lg:pt-6">

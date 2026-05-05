@@ -53,10 +53,27 @@ const steps: Step[] = [
   },
 ];
 
+const FIELD_LABELS: Record<string, string> = {
+  sector: "Sector",
+  size: "Plantilla",
+  revenue: "Facturación anual",
+  maturity: "Madurez digital",
+  infra: "Infraestructura",
+  goals: "Objetivos estratégicos",
+  areas: "Áreas críticas",
+  context: "Contexto adicional",
+  fullName: "Nombre",
+  role: "Cargo",
+  email: "Email",
+  company: "Compañía",
+  website: "Sitio web",
+};
+
 const Assessment = () => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<Record<string, any>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const stepRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,16 +89,55 @@ const Assessment = () => {
     set(k, arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
   };
 
-  const next = () => {
-    if (step < steps.length - 1) setStep(step + 1);
-    else {
-      const required = ["fullName", "role", "email", "company"];
-      if (required.some((r) => !data[r])) {
-        toast.error("Por favor, completa los campos obligatorios.");
-        return;
+  const submit = async () => {
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey || accessKey === "YOUR_ACCESS_KEY_HERE") {
+      toast.error("El servicio de envío no está configurado. Contacta con el administrador.");
+      return;
+    }
+
+    const payload: Record<string, string> = {
+      access_key: accessKey,
+      subject: `Nuevo diagnóstico — ${data.company || data.fullName || "sin compañía"}`,
+      from_name: data.fullName || "Diagnóstico Ordantis",
+      replyto: data.email || "",
+    };
+    for (const [k, label] of Object.entries(FIELD_LABELS)) {
+      const v = data[k];
+      if (v == null || v === "") continue;
+      payload[label] = Array.isArray(v) ? v.join(", ") : String(v);
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json().catch(() => ({} as any));
+      if (!res.ok || !result.success) {
+        throw new Error(result?.message || "Error al enviar el diagnóstico");
       }
       setSubmitted(true);
+    } catch (err: any) {
+      toast.error(err?.message || "No se pudo enviar el diagnóstico. Inténtalo de nuevo.");
+    } finally {
+      setSubmitting(false);
     }
+  };
+
+  const next = () => {
+    if (step < steps.length - 1) {
+      setStep(step + 1);
+      return;
+    }
+    const required = ["fullName", "role", "email", "company"];
+    if (required.some((r) => !data[r])) {
+      toast.error("Por favor, completa los campos obligatorios.");
+      return;
+    }
+    submit();
   };
   const prev = () => step > 0 && setStep(step - 1);
 
@@ -194,14 +250,18 @@ const Assessment = () => {
           </div>
 
           <div className="flex items-center justify-between mt-16 pt-8 border-t border-hairline">
-            <button onClick={prev} disabled={step === 0}
+            <button onClick={prev} disabled={step === 0 || submitting}
               className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed">
               ← Anterior
             </button>
-            <button onClick={next}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground text-xs uppercase tracking-[0.2em] hover:shadow-glow transition-all duration-500">
-              {step === steps.length - 1 ? "Enviar diagnóstico" : "Continuar"}
-              <span>→</span>
+            <button onClick={next} disabled={submitting}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground text-xs uppercase tracking-[0.2em] hover:shadow-glow transition-all duration-500 disabled:opacity-60 disabled:cursor-not-allowed">
+              {submitting
+                ? "Enviando..."
+                : step === steps.length - 1
+                  ? "Enviar diagnóstico"
+                  : "Continuar"}
+              <span>{submitting ? "…" : "→"}</span>
             </button>
           </div>
         </div>
