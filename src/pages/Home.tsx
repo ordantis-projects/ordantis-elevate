@@ -15,8 +15,8 @@ import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
-import caixabankLogo from "@/assets/backers/caixabank.svg";
-import levanteLogo from "@/assets/backers/levante.svg";
+import caixabankRaw from "@/assets/backers/caixabank.svg?raw";
+import levanteRaw from "@/assets/backers/levante.svg?raw";
 // Adobe-exported SVGs with DOCTYPE/foreignObject quirks → inline as raw markup
 import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
 import incibeRaw from "@/assets/backers/incibe.svg?raw";
@@ -28,6 +28,8 @@ const cleanSvgMarkup = (raw: string) => {
 };
 const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
 const incibeSvg = cleanSvgMarkup(incibeRaw);
+const caixabankSvg = cleanSvgMarkup(caixabankRaw);
+const levanteSvg = cleanSvgMarkup(levanteRaw);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,8 +46,8 @@ const backers: Partner[] = [
   { name: "StartupV", logo: startupvLogo },
   { name: "Proyecto Sherpa", logo: sherpaLogo },
   { name: "Premios Talento Joven", rawSvg: talentoJovenSvg },
-  { name: "CaixaBank", logo: caixabankLogo },
-  { name: "Levante", logo: levanteLogo },
+  { name: "CaixaBank", rawSvg: caixabankSvg },
+  { name: "Levante", rawSvg: levanteSvg },
   { name: "Cátedra HP", logo: catedraHpLogo },
   { name: "Incibe", rawSvg: incibeSvg },
 ];
