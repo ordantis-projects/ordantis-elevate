@@ -199,21 +199,21 @@ const Home = () => {
       <section className="py-24 border-y border-hairline">
         <div className="container-luxe">
           <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
-          <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
+          <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-8">
             {backers.map((b) => (
-              <div key={b.name} className="flex items-center justify-center h-12 opacity-90 hover:opacity-100 transition-opacity duration-500">
+              <div key={b.name} className="flex items-center justify-center h-20 opacity-90 hover:opacity-100 transition-opacity duration-500">
                 {b.rawSvg ? (
                   <div
                     role="img"
                     aria-label={b.name}
-                    className="h-10 inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[200px]"
+                    className="h-16 inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[280px]"
                     dangerouslySetInnerHTML={{ __html: b.rawSvg }}
                   />
                 ) : b.logo ? (
                   <img
                     src={b.logo}
                     alt={b.name}
-                    className={`max-h-10 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
+                    className={`max-h-16 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
                   />
                 ) : (
                   <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
@@ -305,14 +305,14 @@ const Home = () => {
           <p className="text-eyebrow text-center">Empresas que confían en nosotros</p>
         </div>
         <div className="relative overflow-hidden">
-          <div className="flex gap-20 marquee-track w-max">
+          <div className="flex gap-24 marquee-track w-max">
             {partnersLoop.map((p, i) => (
-              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-90 hover:opacity-100 transition-opacity duration-500">
+              <div key={i} className="flex items-center justify-center h-20 min-w-[220px] opacity-90 hover:opacity-100 transition-opacity duration-500">
                 {p.logo ? (
                   <img
                     src={p.logo}
                     alt={p.name}
-                    className="max-h-12 w-auto object-contain"
+                    className="max-h-16 w-auto object-contain"
                   />
                 ) : (
                   <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
