@@ -162,7 +162,7 @@ const Solutions = () => {
         <div className="container-luxe">
           <p className="text-eyebrow mb-8 reveal">— Soluciones</p>
           <h1 className="text-display text-[clamp(3rem,7vw,7rem)] max-w-5xl reveal">
-            Nueve servicios. <span className="text-primary">Un objetivo:</span> resultados medibles.
+            Un objetivo: <span className="text-primary">resultados medibles</span>.
           </h1>
           <p className="mt-10 max-w-2xl text-lg text-muted-foreground reveal">
             Cada solución se diseña a medida para resolver problemas concretos de tu negocio. Explora la demo interactiva de cada servicio.

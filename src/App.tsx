@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Solutions from "./pages/Solutions";
 import About from "./pages/About";
 import Assessment from "./pages/Assessment";
+import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/about" element={<About />} />
             <Route path="/assessment" element={<Assessment />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/cookies" element={<Cookies />} />
           </Route>

@@ -7,6 +7,7 @@ const links = [
   { to: "/", label: "Inicio" },
   { to: "/solutions", label: "Soluciones" },
   { to: "/about", label: "Nosotros" },
+  { to: "/faq", label: "FAQ" },
   { to: "/assessment", label: "Diagnóstico" },
 ];
 
@@ -43,9 +44,9 @@ export const Navbar = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container-luxe flex items-center justify-between h-20">
+      <div className="container-luxe flex items-center justify-between h-24">
         <Link to="/" aria-label="Ordantis — Inicio" className="flex items-center gap-2">
-          <img src={logo} alt="Ordantis" className="h-7 w-auto" />
+          <img src={logo} alt="Ordantis" className="h-9 w-auto" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
@@ -55,7 +56,7 @@ export const Navbar = () => {
               to={l.to}
               end={l.to === "/"}
               className={({ isActive }) =>
-                `px-5 py-2 text-sm font-medium transition-colors duration-300 relative ${
+                `px-5 py-2 text-base font-medium transition-colors duration-300 relative ${
                   isActive ? "text-primary" : "text-foreground/70 hover:text-foreground"
                 }`
               }
@@ -74,7 +75,7 @@ export const Navbar = () => {
 
         <Link
           to="/assessment"
-          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium text-primary-foreground bg-primary hover:shadow-glow transition-all duration-500"
+          className="hidden md:inline-flex items-center gap-2 px-6 py-3 text-sm uppercase tracking-[0.2em] font-medium text-primary-foreground bg-primary hover:shadow-glow transition-all duration-500"
         >
           Empezar
           <span aria-hidden>→</span>
