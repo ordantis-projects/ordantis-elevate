@@ -1,6 +1,6 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import startupvLogo from "@/assets/backers/startupv.svg";
-import startinfLogo from "@/assets/backers/logo_startinf.jpg";
+import startinfLogo from "@/assets/backers/logo_startinf.png";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
 import talentoJovenLogo from "@/assets/backers/talentojoven.png";
@@ -131,7 +131,7 @@ const About = () => {
                 <div key={a.title} className="reveal glass-card p-8 flex flex-col">
                   <div className="h-14 mb-6 flex items-center gap-4">
                     {url ? (
-                      <a href={url} target="_blank" rel="noreferrer" aria-label={a.title} className="inline-flex items-center gap-4">
+                      <a href={url} target="_blank" rel="noreferrer" aria-label={a.title} className="inline-flex h-full items-center gap-4">
                         {a.rawSvgs?.map((svg, idx) => (
                           <div
                             key={idx}

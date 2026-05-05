@@ -13,7 +13,7 @@ import odeonLogo from "@/assets/partners/odeon.png";
 import cofrimanLogo from "@/assets/partners/cofriman.png"
 import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
-import startinfLogo from "@/assets/backers/logo_startinf.jpg";
+import startinfLogo from "@/assets/backers/logo_startinf.png";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
 // Adobe-exported SVGs with DOCTYPE/foreignObject quirks → inline as raw markup
