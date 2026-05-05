@@ -45,7 +45,7 @@ export const Navbar = () => {
     >
       <div className="container-luxe flex items-center justify-between h-20">
         <Link to="/" aria-label="Ordantis — Inicio" className="flex items-center gap-2">
-          <img src={logo} alt="Ordantis" className="h-7 w-auto brightness-0 invert" />
+          <img src={logo} alt="Ordantis" className="h-7 w-auto" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">

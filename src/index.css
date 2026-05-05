@@ -6,53 +6,53 @@
 
 @layer base {
   :root {
-    /* Brand: deep navy + cyan from logo */
-    --background: 215 70% 4%;
-    --foreground: 200 20% 96%;
+    /* Brand: white surface + deep navy text + cyan accent from logo */
+    --background: 0 0% 100%;
+    --foreground: 215 70% 12%;
 
-    --card: 215 55% 7%;
-    --card-foreground: 200 20% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 70% 12%;
 
-    --popover: 215 60% 6%;
-    --popover-foreground: 200 20% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 70% 12%;
 
     /* Primary = cyan accent (logo arrow #15A3C7) */
     --primary: 192 81% 43%;
-    --primary-foreground: 215 70% 4%;
+    --primary-foreground: 0 0% 100%;
     --primary-glow: 188 90% 60%;
 
     /* Secondary = deep brand blue (#0E3963) */
     --secondary: 211 75% 22%;
-    --secondary-foreground: 200 20% 96%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 215 40% 11%;
-    --muted-foreground: 210 15% 60%;
+    --muted: 210 30% 96%;
+    --muted-foreground: 215 15% 40%;
 
     --accent: 192 81% 43%;
-    --accent-foreground: 215 70% 4%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 210 30% 14%;
-    --input: 210 30% 14%;
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
     --ring: 192 81% 43%;
 
     --radius: 0.25rem;
 
     /* Custom tokens */
-    --surface-1: 215 55% 7%;
-    --surface-2: 214 45% 10%;
-    --surface-3: 213 40% 13%;
-    --hairline: 210 30% 18%;
+    --surface-1: 210 30% 98%;
+    --surface-2: 210 30% 96%;
+    --surface-3: 210 25% 93%;
+    --hairline: 210 20% 88%;
 
-    --gradient-hero: radial-gradient(ellipse at 20% 10%, hsl(211 75% 22% / 0.6), transparent 60%),
-                     radial-gradient(ellipse at 80% 90%, hsl(192 81% 43% / 0.18), transparent 55%),
-                     linear-gradient(180deg, hsl(215 70% 4%), hsl(215 70% 3%));
+    --gradient-hero: radial-gradient(ellipse at 20% 10%, hsl(211 75% 22% / 0.08), transparent 60%),
+                     radial-gradient(ellipse at 80% 90%, hsl(192 81% 43% / 0.10), transparent 55%),
+                     linear-gradient(180deg, hsl(0 0% 100%), hsl(210 30% 98%));
     --gradient-accent: linear-gradient(135deg, hsl(192 81% 43%), hsl(188 90% 60%));
-    --gradient-text: linear-gradient(180deg, hsl(200 20% 98%), hsl(200 15% 70%));
-    --shadow-glow: 0 20px 80px -20px hsl(192 81% 43% / 0.4);
-    --shadow-card: 0 20px 60px -30px hsl(215 90% 2% / 0.8);
+    --gradient-text: linear-gradient(180deg, hsl(215 70% 12%), hsl(211 50% 30%));
+    --shadow-glow: 0 20px 80px -20px hsl(192 81% 43% / 0.35);
+    --shadow-card: 0 20px 60px -30px hsl(215 70% 20% / 0.20);
     --transition-luxe: cubic-bezier(0.23, 1, 0.32, 1);
   }
 }
