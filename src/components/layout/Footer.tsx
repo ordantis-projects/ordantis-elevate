@@ -29,9 +29,21 @@ export const Footer = () => (
       </div>
     </div>
     <div className="hairline">
-      <div className="container-luxe py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
+      <div className="container-luxe py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 text-xs text-muted-foreground">
         <p>© {new Date().getFullYear()} Ordantis. Todos los derechos reservados.</p>
-        <p>Datos & IA</p>
+        <ul className="flex flex-wrap gap-x-6 gap-y-2">
+          <li>
+            <Link to="/privacy" className="hover:text-primary transition-colors">
+              Política de Privacidad
+            </Link>
+          </li>
+          <li>
+            <Link to="/cookies" className="hover:text-primary transition-colors">
+              Política de Cookies
+            </Link>
+          </li>
+          <li className="text-muted-foreground/70">Datos &amp; IA</li>
+        </ul>
       </div>
     </div>
   </footer>

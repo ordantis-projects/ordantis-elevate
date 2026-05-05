@@ -1,4 +1,16 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import startupvLogo from "@/assets/backers/startupv.svg";
+import sherpaLogo from "@/assets/backers/sherpa.svg";
+import catedraHpLogo from "@/assets/backers/catedra-hp.png";
+import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
+import incibeRaw from "@/assets/backers/incibe.svg?raw";
+
+const cleanSvgMarkup = (raw: string) => {
+  const start = raw.indexOf("<svg");
+  return start >= 0 ? raw.slice(start) : raw;
+};
+const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
+const incibeSvg = cleanSvgMarkup(incibeRaw);
 
 const values = [
   { title: "Experiencia", body: "Conocimiento profundo sobre soluciones superficiales. No vendemos tendencias, resolvemos problemas." },
@@ -7,13 +19,19 @@ const values = [
   { title: "Colaboración", body: "Crecemos con nuestros clientes, entendiendo su negocio como si fuera el nuestro." },
 ];
 
-const achievements = [
-  { title: "Programa StartupV", body: "Seleccionados para el programa de aceleración StartupV, reconocimiento a startups con alto potencial de crecimiento." },
-  { title: "Finalistas Proyecto Sherpa", body: "Reconocidos como uno de los 8 proyectos más prometedores en el programa de emprendimiento Sherpa (2025)." },
-  { title: "Premios Talento C. Valenciana", body: "Uno de los 4 finalistas en los premios organizados por Caixa y Levante Periódico, categoría Empresa." },
-  { title: "Cátedra HP", body: "Respaldados por la Cátedra HP de la UPV, referente en innovación y emprendimiento tecnológico." },
-  { title: "Cybersecurity Ventures II", body: "Acelerados por Incibe como startup tecnológica destacada en ciberseguridad." },
-  { title: "Sigma Data Club", body: "Líderes de una de las comunidades universitarias de datos más activas de España." },
+type Achievement = {
+  title: string;
+  body: string;
+  logo?: string;
+  rawSvgs?: string[];
+};
+
+const achievements: Achievement[] = [
+  { title: "Programa StartupV", body: "Seleccionados para el programa de aceleración StartupV, reconocimiento a startups con alto potencial de crecimiento.", logo: startupvLogo },
+  { title: "Finalistas Proyecto Sherpa", body: "Reconocidos como uno de los 8 proyectos más prometedores en el programa de emprendimiento Sherpa (2025).", logo: sherpaLogo },
+  { title: "Premios Talento C. Valenciana", body: "Uno de los 4 finalistas en los premios organizados por Caixa y Levante Periódico, categoría Empresa.", rawSvgs: [talentoJovenSvg] },
+  { title: "Cátedra HP", body: "Respaldados por la Cátedra HP de la UPV, referente en innovación y emprendimiento tecnológico.", logo: catedraHpLogo },
+  { title: "Cybersecurity Ventures II", body: "Acelerados por Incibe como startup tecnológica destacada en ciberseguridad.", rawSvgs: [incibeSvg] },
 ];
 
 /* TEAM SECTION — intentionally hidden, see uploaded brief.
@@ -91,9 +109,26 @@ const About = () => {
             Avalados por el ecosistema de innovación español.
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {achievements.map((a, i) => (
-              <div key={a.title} className="reveal glass-card p-8">
-                <p className="text-eyebrow text-primary mb-4">— {String(i + 1).padStart(2, "0")}</p>
+            {achievements.map((a) => (
+              <div key={a.title} className="reveal glass-card p-8 flex flex-col">
+                <div className="h-14 mb-6 flex items-center gap-4">
+                  {a.rawSvgs?.map((svg, idx) => (
+                    <div
+                      key={idx}
+                      role="img"
+                      aria-label={a.title}
+                      className="h-full inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[140px]"
+                      dangerouslySetInnerHTML={{ __html: svg }}
+                    />
+                  ))}
+                  {a.logo && (
+                    <img
+                      src={a.logo}
+                      alt={a.title}
+                      className="h-full w-auto max-w-[180px] object-contain"
+                    />
+                  )}
+                </div>
                 <h3 className="text-display text-xl mb-3">{a.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{a.body}</p>
               </div>

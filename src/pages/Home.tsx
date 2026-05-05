@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -64,11 +64,100 @@ const advantages = [
   { title: "Innovación estratégica", body: "Aprovechar la ciencia de datos fomenta la introducción de mejores innovaciones en procesos y productos, asegurando supervivencia y liderazgo." },
 ];
 
-const methodology = [
-  { n: "01", title: "Estrategia", lead: "La IA no es una moda, es una herramienta de negocio.", points: ["Análisis de la situación e infraestructura actual", "Foco absoluto en rentabilidad y ROI", "Plan de ejecución por fases con KPIs claros"] },
-  { n: "02", title: "Preparación", lead: "Datos de calidad para que la IA funcione.", points: ["Ingeniería de datos: arquitectura sólida y unificada", "Optimización y fiabilidad de información en tiempo real"] },
-  { n: "03", title: "Implementación", lead: "Sistemas a medida, no plantillas genéricas.", points: ["Desarrollo e integración personalizada", "Implementación gradual desde piloto seguro", "IA segura y cumplimiento normativo"] },
-  { n: "04", title: "Capacitación", lead: "Tu equipo, autónomo con la nueva tecnología.", points: ["Talleres prácticos sobre vuestra propia información", "Soporte y acompañamiento continuo"] },
+type MethodPoint = { title: string; body: string };
+type MethodPhase = {
+  n: string;
+  tag: string;
+  title: string;
+  lead: string;
+  points: MethodPoint[];
+};
+
+const methodology: MethodPhase[] = [
+  {
+    n: "01",
+    tag: "Fase 01",
+    title: "Estrategia",
+    lead: "La IA no es una moda, es una herramienta de negocio. Nos aseguramos de que la tecnología se adapte a tu negocio, y no al revés.",
+    points: [
+      {
+        title: "Análisis de la Situación",
+        body: "Evaluamos tu infraestructura actual (tu nube, tus datos, tu software) para detectar qué tienes y qué te falta. Sin tecnicismos: te decimos claramente dónde están los huecos que frenan tu crecimiento.",
+      },
+      {
+        title: "Foco en Rentabilidad (ROI)",
+        body: "Olvídate de \"hacer algo con IA\" solo por presión del mercado. Identificamos las oportunidades de alto impacto: aquellas que reducen costes o aumentan tus ventas. Si no es rentable para tu negocio, no lo proponemos.",
+      },
+      {
+        title: "Plan de Ejecución Paso a Paso",
+        body: "Nada de informes teóricos. Te entregamos un plan de acción claro y por fases: qué tecnología usar, qué inversión necesitas y qué resultados (KPIs) vamos a medir. Una hoja de ruta diseñada para crecer con seguridad.",
+      },
+    ],
+  },
+  {
+    n: "02",
+    tag: "Fase 02",
+    title: "Preparación",
+    lead: "La IA es un motor potente, pero necesita gasolina de calidad para funcionar. Si tus datos son un caos, los resultados serán un caos. Preparamos y modernizamos tu entorno para que puedas escalar.",
+    points: [
+      {
+        title: "Ingeniería de Datos",
+        body: "Transformamos la información dispersa en un ecosistema digital integrado. Diseñamos una arquitectura sólida que conecta todas tus herramientas actuales (CRM, ERP, Nube) para crear una base de datos centralizada, fiable y siempre accesible para todo tu equipo.",
+      },
+      {
+        title: "Optimización y Fiabilidad de los Datos",
+        body: "La agilidad de tu negocio depende de la precisión de tu información. Depuramos y estandarizamos tu entorno para asegurar la integridad de cada registro, garantizando que tu equipo y tus sistemas operen con información veraz en tiempo real, acelerando la toma de decisiones y mejorando la respuesta al cliente.",
+      },
+    ],
+  },
+  {
+    n: "03",
+    tag: "Fase 03",
+    title: "Implementación",
+    lead: "El 75% de los proyectos de IA fracasan porque se quedan en la teoría o usan plantillas genéricas. Nosotros construimos sistemas que se adaptan a tus operaciones, enfocados en dar resultados desde el primer día y generar confianza total.",
+    points: [
+      {
+        title: "Desarrollo e Integración a Medida",
+        body: "Tu empresa es única, y tu IA también debe serlo. Construimos sistemas de inteligencia artificial, como la automatización de procesos repetitivos o la asistencia inteligente en la toma de decisiones, diseñados para resolver tus problemas del día a día y obtener una gran ventaja competitiva.",
+      },
+      {
+        title: "Implementación Gradual",
+        body: "Las grandes mejoras tecnológicas no tienen por qué ser caóticas. Empezamos con proyectos piloto en áreas muy concretas para demostrar su rentabilidad en un entorno seguro. Solo cuando comprobamos que la herramienta funciona perfectamente y aporta valor, la expandimos al resto de la empresa sin frenar tu operativa diaria.",
+      },
+      {
+        title: "IA Segura y Responsable",
+        body: "Para que la IA sea rentable, debe ser confiable. Blindamos tus operaciones implementando sistemas éticos que protegen la privacidad de tus datos y cumplen estrictamente con la normativa. Una tecnología segura que reduce riesgos legales, retiene a tu talento y genera confianza en tus clientes.",
+      },
+    ],
+  },
+  {
+    n: "04",
+    tag: "Fase 04",
+    title: "Capacitación",
+    lead: "La mejor tecnología del mundo es un gasto inútil si tu equipo sigue trabajando como hace diez años. El 94% de los empleados quiere usar IA para ser más eficientes, pero casi nadie les enseña cómo. Nosotros cerramos esa brecha para que la transición sea un éxito.",
+    points: [
+      {
+        title: "Talleres Prácticos",
+        body: "Nada de clases teóricas aburridas ni ejemplos de empresas que no tienen nada que ver con la tuya. Diseñamos sesiones prácticas e interactivas donde tu equipo aprende a usar la IA aplicándola directamente sobre sus tareas diarias y vuestra propia información.",
+      },
+      {
+        title: "Soporte y Acompañamiento Continuo",
+        body: "Un cambio de mentalidad requiere un proceso. Nos comprometemos con el éxito de tu equipo a largo plazo ofreciendo seguimiento, guías prácticas y línea directa para consultas. Les acompañamos paso a paso para asegurar que integren las nuevas soluciones en su rutina con total soltura y sin bloqueos técnicos.",
+      },
+    ],
+  },
+];
+
+const solutionsOverview = [
+  { num: "01", title: "Análisis Predictivo y Modelado de Escenarios" },
+  { num: "02", title: "Optimización de Recursos y Procesos" },
+  { num: "03", title: "Inteligencia de Negocio (BI)" },
+  { num: "04", title: "Automatización con Agentes de IA" },
+  { num: "05", title: "Automatización Inteligente de Documentos" },
+  { num: "06", title: "Búsqueda Semántica y RAG" },
+  { num: "07", title: "Gobernanza de Datos" },
+  { num: "08", title: "Infraestructura de Datos" },
+  { num: "09", title: "Visión por Computador" },
 ];
 
 const tech = [
@@ -117,6 +206,7 @@ const faqs = [
 
 const Home = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [activePhase, setActivePhase] = useState<number | null>(null);
   useScrollReveal();
 
   useEffect(() => {
@@ -185,7 +275,7 @@ const Home = () => {
           </h1>
 
           <p className="hero-sub max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed mb-12">
-            Conviértete en una empresa <em className="text-foreground italic">data-driven</em> y empieza a mejorar la eficiencia y disminuir costes — sin contratar un departamento técnico interno.
+            Conviértete en una empresa <em className="text-foreground italic">data-driven</em> y empieza a mejorar la eficiencia y disminuir costes, sin contratar un departamento técnico interno.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 mb-24">
@@ -272,34 +362,140 @@ const Home = () => {
       </section>
 
       {/* METHODOLOGY */}
-      <section className="py-32">
-        <div className="container-luxe">
-          <div className="reveal max-w-3xl mb-20">
-            <p className="text-eyebrow mb-6">— Metodología</p>
-            <h2 className="text-display text-5xl md:text-7xl">
+      <section className="py-32 bg-[hsl(215_70%_8%)] text-white relative overflow-hidden">
+        {/* decorative figures */}
+        <div className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-40 -left-40 w-[480px] h-[480px] rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div
+          className="absolute inset-0 opacity-[0.05] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
+
+        <div className="container-luxe relative z-10">
+          <div className="reveal max-w-3xl mb-16">
+            <p className="text-eyebrow text-primary-glow mb-6">— Metodología</p>
+            <h2 className="text-display text-5xl md:text-7xl mb-8">
               Cuatro fases. Una transformación garantizada.
             </h2>
+            <p className="text-lg text-white/70 leading-relaxed">
+              Hemos estructurado nuestra metodología en <span className="text-white font-medium">4 grandes bloques</span> para garantizar el éxito de tu transformación. Evaluamos tu caso para empezar por la fase que te corresponda.
+            </p>
           </div>
 
-          <div className="space-y-px bg-hairline border-y border-hairline">
-            {methodology.map((m) => (
-              <div key={m.n} className="reveal bg-background py-12 group hover:bg-surface-1 transition-colors duration-500">
-                <div className="container-luxe grid md:grid-cols-12 gap-8 items-start">
-                  <p className="md:col-span-2 text-display text-5xl text-primary/70 group-hover:text-primary transition-colors">{m.n}</p>
-                  <div className="md:col-span-4">
-                    <h3 className="text-display text-3xl mb-3">{m.title}</h3>
-                    <p className="text-muted-foreground italic">{m.lead}</p>
+          <div className="reveal grid md:grid-cols-2 gap-6">
+            {methodology.map((m, idx) => {
+              const isActive = activePhase === idx;
+              return (
+                <button
+                  key={m.n}
+                  type="button"
+                  onClick={() => setActivePhase(isActive ? null : idx)}
+                  aria-expanded={isActive}
+                  className={`group relative text-left bg-[hsl(215_60%_11%)] border transition-all duration-500 overflow-hidden ${
+                    isActive
+                      ? "border-primary/60 shadow-[0_30px_80px_-30px_hsl(192_81%_43%/0.45)]"
+                      : "border-white/8 hover:border-primary/40"
+                  }`}
+                >
+                  {/* corner arrow figure */}
+                  <img
+                    src={flechaOrdantis}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute -top-6 -right-6 w-40 h-40 opacity-[0.08] group-hover:opacity-20 transition-opacity duration-500 rotate-[-25deg]"
+                  />
+
+                  <div className="relative p-8 md:p-10 min-h-[260px] flex flex-col">
+                    <p className="text-eyebrow text-primary-glow mb-12">{m.tag}</p>
+
+                    <h3 className="text-display text-3xl md:text-4xl text-white mb-6 max-w-md">
+                      {m.title}
+                    </h3>
+
+                    <p className="text-white/70 leading-relaxed mb-8 max-w-md">
+                      {m.lead}
+                    </p>
+
+                    <div className="mt-auto flex items-center justify-between">
+                      <span className="text-sm uppercase tracking-[0.18em] text-white/80 group-hover:text-white transition-colors">
+                        {isActive ? "Cerrar" : "Más información"}
+                      </span>
+                      <span
+                        className={`inline-flex items-center justify-center w-10 h-10 bg-primary text-primary-foreground transition-transform duration-500 ${
+                          isActive ? "rotate-45" : "group-hover:translate-x-1"
+                        }`}
+                      >
+                        {isActive ? "×" : "→"}
+                      </span>
+                    </div>
+
+                    {/* expanded panel */}
+                    <div
+                      className={`grid transition-all duration-500 ease-out ${
+                        isActive ? "grid-rows-[1fr] opacity-100 mt-10" : "grid-rows-[0fr] opacity-0 mt-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="border-t border-white/10 pt-8 space-y-6">
+                          {m.points.map((p) => (
+                            <div key={p.title}>
+                              <h4 className="text-display text-lg text-white mb-2 flex gap-3">
+                                <span className="text-primary-glow">—</span>
+                                {p.title}
+                              </h4>
+                              <p className="text-white/70 leading-relaxed pl-6">{p.body}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <ul className="md:col-span-6 space-y-3">
-                    {m.points.map((p) => (
-                      <li key={p} className="flex gap-3 text-foreground/80">
-                        <span className="text-primary mt-2">—</span>
-                        <span>{p}</span>
-                      </li>
-                    ))}
-                  </ul>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* SOLUTIONS OVERVIEW */}
+      <section className="py-32">
+        <div className="container-luxe">
+          <div className="reveal grid lg:grid-cols-12 gap-16 mb-16">
+            <div className="lg:col-span-5">
+              <p className="text-eyebrow mb-6">— Soluciones</p>
+              <h2 className="text-display text-5xl md:text-7xl mb-8">
+                Un departamento de IA y datos, <em className="not-italic text-primary">a medida</em>.
+              </h2>
+            </div>
+            <div className="lg:col-span-7 lg:pt-6">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Cubrimos toda la cadena de valor del dato: desde la infraestructura y la gobernanza, hasta la analítica avanzada, la automatización con agentes de IA y la visión por computador. Cada solución se diseña para integrarse con tu operativa y generar retorno medible desde el primer piloto.
+              </p>
+              <Link to="/solutions" className="inline-flex items-center gap-3 text-sm font-medium uppercase tracking-[0.18em] text-primary hover:gap-5 transition-all">
+                Ver más información <span>→</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="reveal grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
+            {solutionsOverview.map((s) => (
+              <Link
+                key={s.num}
+                to="/solutions"
+                className="bg-background p-8 group hover:bg-surface-1 transition-colors duration-500 flex items-start gap-5"
+              >
+                <span className="text-eyebrow text-primary tabular-nums">{s.num}</span>
+                <div className="flex-1">
+                  <h3 className="text-display text-lg leading-snug group-hover:text-primary transition-colors">
+                    {s.title}
+                  </h3>
                 </div>
-              </div>
+                <span className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">→</span>
+              </Link>
             ))}
           </div>
         </div>
@@ -337,7 +533,7 @@ const Home = () => {
           <div className="reveal lg:col-span-4">
             <p className="text-eyebrow mb-6">— Preguntas frecuentes</p>
             <h2 className="text-display text-4xl md:text-6xl mb-6">
-              Lo que los directivos nos preguntan.
+              Lo que nos preguntan las empresas.
             </h2>
             <p className="text-muted-foreground">
               ¿Tienes una pregunta que no aparece aquí? Pídenos un diagnóstico personalizado.

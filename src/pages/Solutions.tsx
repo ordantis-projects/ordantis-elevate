@@ -123,7 +123,7 @@ const solutions: Solution[] = [
   {
     id: "vision",
     num: "09",
-    title: "Visión Computacional",
+    title: "Visión por Computador",
     description: "Automatiza la inspección visual con precisión sobrehumana. Entrenamos modelos de Machine Learning para analizar imágenes y vídeos en tiempo real, detectando defectos milimétricos y monitorizando entornos.",
     cases: [
       { sector: "Industrial", text: "Análisis de superficies en tiempo real para identificar arañazos, abolladuras o soldaduras defectuosas a alta velocidad." },
