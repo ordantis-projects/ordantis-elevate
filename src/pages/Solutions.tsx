@@ -227,12 +227,32 @@ const Solutions = () => {
 
                 <div className="reveal">
                   <p className="text-eyebrow mb-8">— Casos de uso</p>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
-                    {s.cases.map((c) => (
-                      <div key={c.sector} className="bg-background p-6 hover:bg-surface-1 transition-colors">
-                        <p className="text-eyebrow text-primary mb-3">{c.sector}</p>
-                        <p className="text-foreground/80 text-sm leading-relaxed">{c.text}</p>
+                  {(() => {
+                    const n = s.cases.length;
+                    const gridCls =
+                      n === 4
+                        ? "grid md:grid-cols-2 gap-px bg-hairline border border-hairline"
+                        : n === 5
+                        ? "grid md:grid-cols-2 lg:grid-cols-6 gap-px bg-hairline border border-hairline"
+                        : "grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline";
+                    const spanFor = (idx: number) => {
+                      if (n !== 5) return "";
+                      return idx < 2 ? "lg:col-span-3" : "lg:col-span-2";
+                    };
+                    return (
+                      <div className={gridCls}>
+                        {s.cases.map((c, idx) => (
+                          <div
+                            key={c.sector}
+                            className={`bg-background p-6 hover:bg-surface-1 transition-colors ${spanFor(idx)}`}
+                          >
+                            <p className="text-eyebrow text-primary mb-3">{c.sector}</p>
+                            <p className="text-foreground/80 text-sm leading-relaxed">{c.text}</p>
+                          </div>
+                        ))}
                       </div>
+                    );
+                  })()}
                     ))}
                   </div>
                 </div>
