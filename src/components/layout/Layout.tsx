@@ -3,6 +3,8 @@ import { useLocation, Outlet } from "react-router-dom";
 import { gsap } from "gsap";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { CookieConsent } from "@/components/CookieConsent";
+import { CookieConsentProvider } from "@/lib/cookie-consent";
 
 export const Layout = () => {
   const location = useLocation();
@@ -20,13 +22,16 @@ export const Layout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div className="grain-overlay" />
-      <Navbar />
-      <main ref={ref} key={location.pathname} className="relative z-10">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <CookieConsentProvider>
+      <div className="relative min-h-screen bg-background">
+        <div className="grain-overlay" />
+        <Navbar />
+        <main ref={ref} key={location.pathname} className="relative z-10">
+          <Outlet />
+        </main>
+        <Footer />
+        <CookieConsent />
+      </div>
+    </CookieConsentProvider>
   );
 };
