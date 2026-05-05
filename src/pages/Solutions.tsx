@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
@@ -138,6 +138,23 @@ const Solutions = () => {
   const [active, setActive] = useState(solutions[0].id);
   useScrollReveal();
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive(visible.target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
+    solutions.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div>
       {/* HERO */}
@@ -153,25 +170,39 @@ const Solutions = () => {
         </div>
       </section>
 
-      {/* INDEX BAR */}
-      <section className="sticky top-20 z-30 border-y border-hairline bg-background/85 backdrop-blur-xl">
-        <div className="container-luxe overflow-x-auto">
-          <div className="flex gap-1 py-3 min-w-max">
-            {solutions.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                onClick={() => setActive(s.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-[0.18em] transition-colors whitespace-nowrap ${
-                  active === s.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
+      {/* FLOATING SIDE RAIL */}
+      <nav
+        aria-label="Soluciones"
+        className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col gap-3"
+      >
+        {solutions.map((s) => {
+          const isActive = active === s.id;
+          return (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              onClick={() => setActive(s.id)}
+              className="group relative flex items-center justify-end"
+              aria-label={`${s.num} ${s.title}`}
+            >
+              <span
+                className={`pointer-events-none absolute right-7 whitespace-nowrap px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] bg-foreground text-background opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 ${
+                  isActive ? "opacity-100 translate-x-0" : ""
                 }`}
               >
                 {s.num} · {s.title.split(":")[0]}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+              </span>
+              <span
+                className={`block h-px transition-all duration-500 ${
+                  isActive
+                    ? "w-8 bg-primary"
+                    : "w-4 bg-muted-foreground/40 group-hover:w-6 group-hover:bg-foreground"
+                }`}
+              />
+            </a>
+          );
+        })}
+      </nav>
 
       {/* SOLUTIONS */}
       <div className="divide-y divide-hairline">
