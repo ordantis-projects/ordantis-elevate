@@ -75,8 +75,8 @@ type MethodPhase = {
 
 const methodology: MethodPhase[] = [
   {
-    n: "01",
-    tag: "Fase 01",
+    n: "1",
+    tag: "Fase 1",
     title: "Estrategia",
     lead: "La IA no es una moda, es una herramienta de negocio. Nos aseguramos de que la tecnología se adapte a tu negocio, y no al revés.",
     points: [
@@ -95,8 +95,8 @@ const methodology: MethodPhase[] = [
     ],
   },
   {
-    n: "02",
-    tag: "Fase 02",
+    n: "2",
+    tag: "Fase 2",
     title: "Preparación",
     lead: "La IA es un motor potente, pero necesita gasolina de calidad para funcionar. Si tus datos son un caos, los resultados serán un caos. Preparamos y modernizamos tu entorno para que puedas escalar.",
     points: [
@@ -111,8 +111,8 @@ const methodology: MethodPhase[] = [
     ],
   },
   {
-    n: "03",
-    tag: "Fase 03",
+    n: "3",
+    tag: "Fase 3",
     title: "Implementación",
     lead: "El 75% de los proyectos de IA fracasan porque se quedan en la teoría o usan plantillas genéricas. Nosotros construimos sistemas que se adaptan a tus operaciones, enfocados en dar resultados desde el primer día y generar confianza total.",
     points: [
@@ -131,8 +131,8 @@ const methodology: MethodPhase[] = [
     ],
   },
   {
-    n: "04",
-    tag: "Fase 04",
+    n: "4",
+    tag: "Fase 4",
     title: "Capacitación",
     lead: "La mejor tecnología del mundo es un gasto inútil si tu equipo sigue trabajando como hace diez años. El 94% de los empleados quiere usar IA para ser más eficientes, pero casi nadie les enseña cómo. Nosotros cerramos esa brecha para que la transición sea un éxito.",
     points: [
@@ -149,15 +149,15 @@ const methodology: MethodPhase[] = [
 ];
 
 const solutionsOverview = [
-  { num: "01", title: "Análisis Predictivo y Modelado de Escenarios" },
-  { num: "02", title: "Optimización de Recursos y Procesos" },
-  { num: "03", title: "Inteligencia de Negocio (BI)" },
-  { num: "04", title: "Automatización con Agentes de IA" },
-  { num: "05", title: "Automatización Inteligente de Documentos" },
-  { num: "06", title: "Búsqueda Semántica y RAG" },
-  { num: "07", title: "Gobernanza de Datos" },
-  { num: "08", title: "Infraestructura de Datos" },
-  { num: "09", title: "Visión por Computador" },
+  { num: "1", title: "Análisis Predictivo y Modelado de Escenarios" },
+  { num: "2", title: "Optimización de Recursos y Procesos" },
+  { num: "3", title: "Inteligencia de Negocio (BI)" },
+  { num: "4", title: "Automatización con Agentes de IA" },
+  { num: "5", title: "Automatización Inteligente de Documentos" },
+  { num: "6", title: "Búsqueda Semántica y RAG" },
+  { num: "7", title: "Gobernanza de Datos" },
+  { num: "8", title: "Infraestructura de Datos" },
+  { num: "9", title: "Visión por Computador" },
 ];
 
 const tech = [

@@ -11,7 +11,7 @@ type Step = { eyebrow: string; title: string; subtitle: string; fields: Field[] 
 
 const steps: Step[] = [
   {
-    eyebrow: "01 · Perfil corporativo",
+    eyebrow: "1 · Perfil corporativo",
     title: "Establecemos el contexto.",
     subtitle: "Tu industria y escala operativa.",
     fields: [
@@ -21,7 +21,7 @@ const steps: Step[] = [
     ],
   },
   {
-    eyebrow: "02 · Ecosistema digital",
+    eyebrow: "2 · Ecosistema digital",
     title: "Tu punto de partida.",
     subtitle: "Para garantizar una integración sin fricciones.",
     fields: [
@@ -30,16 +30,7 @@ const steps: Step[] = [
     ],
   },
   {
-    eyebrow: "03 · Visión estratégica",
-    title: "Dónde la IA genera ROI.",
-    subtitle: "Identificamos las oportunidades de mayor impacto.",
-    fields: [
-      { name: "goals", label: "Objetivos estratégicos prioritarios", type: "multi", options: ["Reducción de costes operativos", "Aumento de capacidad de producción", "Mejora de la experiencia del cliente", "Anticipación a la demanda", "Optimización de recursos"] },
-      { name: "areas", label: "Áreas críticas de mejora", type: "multi", options: ["Mantenimiento predictivo", "Control de calidad (visión)", "Gestión de inventarios y logística", "Automatización administrativa", "Análisis de datos para decisiones", "Otro"] },
-    ],
-  },
-  {
-    eyebrow: "04 · Contexto y contacto",
+    eyebrow: "3 · Contexto y contacto",
     title: "Personalizamos tu informe.",
     subtitle: "Recibirás un diagnóstico adaptado a tu situación.",
     fields: [
@@ -59,8 +50,6 @@ const FIELD_LABELS: Record<string, string> = {
   revenue: "Facturación anual",
   maturity: "Madurez digital",
   infra: "Infraestructura",
-  goals: "Objetivos estratégicos",
-  areas: "Áreas críticas",
   context: "Contexto adicional",
   fullName: "Nombre",
   role: "Cargo",
