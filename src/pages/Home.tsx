@@ -6,6 +6,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import flechaOrdantis from "@/assets/flecha_ordantis.svg";
+import flechaOscura from "@/assets/flecha_oscura.svg";
 import artecoinLogo from "@/assets/partners/artecoin.png";
 import odeonLogo from "@/assets/partners/odeon.png";
 import cofrimanLogo from "@/assets/partners/cofriman.png"
@@ -62,6 +64,31 @@ const tech = [
 
 
 
+type HeroArrow = {
+  dark: boolean;
+  x: number;        // 0–100 (% horizontal)
+  size: number;     // px
+  opacity: number;  // 0–1
+  dur: number;      // seconds for full upward sweep
+  delay: number;    // negative seconds → start mid-cycle
+};
+
+// deterministic pseudo-random so SSR/CSR match
+const heroArrows: HeroArrow[] = Array.from({ length: 44 }, (_, i) => {
+  const r = (n: number) => {
+    const s = Math.sin((i + 1) * 12.9898 + n * 78.233) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  return {
+    dark: r(1) < 0.42,
+    x: r(2) * 100,
+    size: 10 + r(3) * 26,        // 10–36 px
+    opacity: 0.55 + r(4) * 0.4,  // 0.55–0.95
+    dur: 18 + r(5) * 22,         // 18–40 s
+    delay: -r(6) * 35,           // up to 35s into the loop
+  };
+});
+
 const faqs = [
   { q: "¿Cuál es el ROI de implementar IA y cuándo veré resultados?", a: "Nuestra metodología exige que toda implementación tenga impacto directo en rentabilidad. Priorizamos casos de uso que reducen costes o aumentan ventas de manera medible. Para acelerar resultados, comenzamos con proyectos piloto en áreas concretas que demuestran valor rápidamente antes de escalar." },
   { q: "Nuestros datos están desorganizados o en silos. ¿Podemos empezar?", a: "Absolutamente. El primer paso de nuestra metodología es la Preparación. Transformamos tu información dispersa en un ecosistema digital integrado: depuramos, estandarizamos y conectamos tus herramientas actuales para crear una base de datos centralizada y fiable." },
@@ -93,11 +120,46 @@ const Home = () => {
     <div ref={heroRef}>
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-20 bg-gradient-hero overflow-hidden">
+        {/* subtle grid */}
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl" />
 
-        <div className="container-luxe relative">
+        {/* primary glow */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-primary/[0.06] blur-3xl pointer-events-none" />
+
+        {/* animated arrow field — drifts straight up */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {heroArrows.map((a, i) => (
+            <img
+              key={i}
+              src={a.dark ? flechaOscura : flechaOrdantis}
+              alt=""
+              aria-hidden="true"
+              className="absolute will-change-transform"
+              style={{
+                left: `${a.x}%`,
+                bottom: 0,
+                width: `${a.size}px`,
+                height: "auto",
+                opacity: a.opacity,
+                animation: `hero-rise ${a.dur}s linear ${a.delay}s infinite`,
+              }}
+            />
+          ))}
+        </div>
+
+        <style>{`
+          @keyframes hero-rise {
+            0%   { transform: translate(-50%, 25vh) rotate(-90deg); }
+            100% { transform: translate(-50%, -130vh) rotate(-90deg); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            [style*="hero-rise"] { animation: none !important; }
+          }
+        `}</style>
+
+        <div className="container-luxe relative z-10">
           <p className="hero-eyebrow text-eyebrow mb-8">— Ciencia de Datos & Inteligencia Artificial</p>
 
           <h1 className="text-display text-[clamp(3rem,9vw,9rem)] mb-10">
@@ -124,25 +186,21 @@ const Home = () => {
         </div>
       </section>
 
-      {/* PARTNERS MARQUEE */}
-      <section className="border-y border-hairline py-10 overflow-hidden">
-        <div className="container-luxe mb-6">
-          <p className="text-eyebrow text-center">Empresas que confían en nosotros</p>
-        </div>
-        <div className="relative overflow-hidden">
-          <div className="flex gap-20 marquee-track w-max">
-            {partnersLoop.map((p, i) => (
-              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-90 hover:opacity-100 transition-opacity duration-500">
-                {p.logo ? (
+      {/* BACKED BY */}
+      <section className="py-24 border-y border-hairline">
+        <div className="container-luxe">
+          <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
+          <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
+            {backers.map((b) => (
+              <div key={b.name} className="flex items-center justify-center h-12 opacity-90 hover:opacity-100 transition-opacity duration-500">
+                {b.logo ? (
                   <img
-                    src={p.logo}
-                    alt={p.name}
-                    className="max-h-12 w-auto object-contain"
+                    src={b.logo}
+                    alt={b.name}
+                    className="max-h-10 w-auto object-contain"
                   />
                 ) : (
-                  <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
-                    {p.name}
-                  </span>
+                  <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
                 )}
               </div>
             ))}
@@ -249,21 +307,25 @@ const Home = () => {
         </div>
       </section>
 
-      {/* BACKED BY */}
-      <section className="py-24 border-y border-hairline">
-        <div className="container-luxe">
-          <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
-          <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
-            {backers.map((b) => (
-              <div key={b.name} className="flex items-center justify-center h-12 opacity-90 hover:opacity-100 transition-opacity duration-500">
-                {b.logo ? (
+      {/* PARTNERS MARQUEE */}
+      <section className="border-y border-hairline py-10 overflow-hidden">
+        <div className="container-luxe mb-6">
+          <p className="text-eyebrow text-center">Empresas que confían en nosotros</p>
+        </div>
+        <div className="relative overflow-hidden">
+          <div className="flex gap-20 marquee-track w-max">
+            {partnersLoop.map((p, i) => (
+              <div key={i} className="flex items-center justify-center h-14 min-w-[180px] opacity-90 hover:opacity-100 transition-opacity duration-500">
+                {p.logo ? (
                   <img
-                    src={b.logo}
-                    alt={b.name}
-                    className="max-h-10 w-auto object-contain"
+                    src={p.logo}
+                    alt={p.name}
+                    className="max-h-12 w-auto object-contain"
                   />
                 ) : (
-                  <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
+                  <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
+                    {p.name}
+                  </span>
                 )}
               </div>
             ))}
