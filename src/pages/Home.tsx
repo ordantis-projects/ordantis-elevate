@@ -49,9 +49,9 @@ const backers: Partner[] = [
 ];
 
 const impact = [
-  { label: "Mercado actual", stat: "85%", text: "de las empresas españolas ya consideran la IA una prioridad estratégica para su supervivencia, pero carecen de hoja de ruta clara." },
-  { label: "Decisores", stat: "7/10", text: "empresarios se sienten abrumados por la oferta tecnológica. La jerga técnica paraliza la toma de decisiones." },
-  { label: "Coste fijo", stat: "0€", text: "en costes fijos de personal técnico interno. Accede a un departamento de IA y Datos completo bajo demanda." },
+  { stat: "85%", text: "de las empresas españolas ya consideran la IA una prioridad estratégica para su supervivencia, pero carecen de hoja de ruta clara." },
+  { stat: "7/10", text: "empresarios se sienten abrumados por la oferta tecnológica. La jerga técnica paraliza la toma de decisiones." },
+  { stat: "0€", text: "en costes fijos de personal técnico interno. Accede a un departamento de IA y Datos completo bajo demanda." },
 ];
 
 const advantages = [
@@ -350,26 +350,15 @@ const Home = () => {
             Conviértete en una empresa <em className="text-foreground italic">data-driven</em> y empieza a mejorar la eficiencia y disminuir costes, sin contratar un departamento técnico interno.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-4 mb-24">
             <Link to="/assessment" className="hero-cta group inline-flex items-center gap-3 px-7 py-4 bg-primary text-primary-foreground text-sm font-medium uppercase tracking-[0.18em] hover:shadow-glow transition-all duration-500">
               Diagnóstico gratuito
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
-            <Link to="/services" className="hero-cta group inline-flex items-center gap-3 px-7 py-4 border border-hairline text-sm font-medium uppercase tracking-[0.18em] hover:border-primary hover:text-primary transition-all duration-500">
+            <Link to="/services" className="hero-cta inline-flex items-center gap-3 px-7 py-4 border border-hairline text-sm font-medium uppercase tracking-[0.18em] hover:border-primary hover:text-primary transition-all duration-500">
               Ver servicios
-              <span className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">→</span>
             </Link>
           </div>
-
-          <p className="hero-cta flex flex-wrap items-center gap-x-3 gap-y-1 text-xs uppercase tracking-[0.2em] text-muted-foreground mb-24">
-            <span className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Sin compromiso
-            </span>
-            <span className="text-hairline">·</span>
-            <span>30 min · 100% confidencial</span>
-            <span className="text-hairline">·</span>
-            <span>Hoja de ruta personalizada</span>
-          </p>
 
         </div>
       </section>
@@ -441,16 +430,10 @@ const Home = () => {
       {/* IMPACT */}
       <section className="py-32 bg-surface-1/30">
         <div className="container-luxe">
-          <div className="reveal grid md:grid-cols-3">
-            {impact.map((it, i) => (
-              <div
-                key={it.stat}
-                className={`reveal px-0 md:px-10 py-6 md:py-2 ${
-                  i > 0 ? "md:border-l border-hairline" : ""
-                }`}
-              >
-                <p className="text-eyebrow mb-4">— {it.label}</p>
-                <p className="text-display text-7xl md:text-8xl bg-gradient-accent bg-clip-text text-transparent mb-6 leading-none">
+          <div className="reveal grid md:grid-cols-3 gap-16">
+            {impact.map((it) => (
+              <div key={it.stat} className="reveal">
+                <p className="text-display text-7xl md:text-8xl bg-gradient-accent bg-clip-text text-transparent mb-6">
                   {it.stat}
                 </p>
                 <p className="text-muted-foreground leading-relaxed">{it.text}</p>
@@ -501,18 +484,12 @@ const Home = () => {
                     aria-expanded={isActive}
                     aria-controls={`phase-detail-${idx}`}
                     aria-label={`${isActive ? "Ocultar" : "Ver"} detalles de ${m.title}`}
-                    className={`group relative w-full text-left transition-all duration-500 overflow-hidden cursor-pointer border hover:-translate-y-0.5 ${
+                    className={`group relative w-full text-left transition-all duration-500 overflow-hidden cursor-pointer border ${
                       isActive
-                        ? "bg-primary/10 border-primary shadow-[0_20px_60px_-30px_hsl(192_81%_43%/0.6)]"
-                        : "bg-[hsl(215_60%_11%)] border-white/10 hover:border-primary/40 hover:shadow-[0_20px_60px_-30px_hsl(192_81%_43%/0.4)]"
+                        ? "bg-primary/10 border-primary"
+                        : "bg-[hsl(215_60%_11%)] border-white/10 hover:border-primary/40"
                     }`}
                   >
-                    <span
-                      className={`absolute left-0 top-0 bottom-0 w-[3px] bg-primary transition-all duration-500 ${
-                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-60"
-                      }`}
-                      aria-hidden="true"
-                    />
                     <img
                       src={flechaOrdantis}
                       alt=""
@@ -531,18 +508,13 @@ const Home = () => {
                         </p>
                       </div>
 
-                      <div className="shrink-0 self-center flex flex-col items-end gap-3">
-                        <span className="hidden md:inline-block text-[11px] uppercase tracking-[0.2em] text-white/40 group-hover:text-primary-glow transition-colors duration-500">
-                          {isActive ? "Ocultar" : "Ver detalles"}
-                        </span>
-                        <span
-                          className={`inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground transition-all duration-500 ${
-                            isActive ? "rotate-90" : "group-hover:translate-x-1 group-hover:bg-primary/90"
-                          }`}
-                        >
-                          →
-                        </span>
-                      </div>
+                      <span
+                        className={`shrink-0 self-center inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground transition-all duration-500 ${
+                          isActive ? "rotate-90" : "group-hover:translate-x-1 group-hover:bg-primary/90"
+                        }`}
+                      >
+                        →
+                      </span>
                     </div>
                   </button>
                   </div>
@@ -663,18 +635,10 @@ const Home = () => {
         <div className="container-luxe mb-6">
           <p className="text-eyebrow text-center">Empresas que confían en nosotros</p>
         </div>
-        <div
-          className="relative overflow-hidden"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%)",
-            maskImage:
-              "linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%)",
-          }}
-        >
+        <div className="relative overflow-hidden">
           <div className="flex gap-24 marquee-track w-max">
             {partnersLoop.map((p, i) => (
-              <div key={i} className="flex items-center justify-center h-20 min-w-[220px] opacity-80 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500">
+              <div key={i} className="flex items-center justify-center h-20 min-w-[220px] opacity-90 hover:opacity-100 transition-opacity duration-500">
                 {p.logo ? (
                   <img
                     src={p.logo}
@@ -714,16 +678,14 @@ const Home = () => {
           <div className="reveal lg:col-span-8">
             <Accordion type="single" collapsible className="border-t border-hairline">
               {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`f-${i}`} className="border-b border-hairline group/item">
-                  <AccordionTrigger className="py-6 text-left text-lg md:text-xl font-display hover:text-primary [&[data-state=open]]:text-primary [&[data-state=open]>svg]:text-primary">
+                <AccordionItem key={i} value={`f-${i}`} className="border-b border-hairline">
+                  <AccordionTrigger className="py-6 text-left text-lg md:text-xl font-display hover:text-primary [&[data-state=open]]:text-primary">
                     <span className="flex gap-6 items-baseline">
-                      <span className="text-display text-base text-muted-foreground/70 tabular-nums group-hover/item:text-primary [&[data-state=open]]:text-primary transition-colors">
-                        0{i + 1}
-                      </span>
+                      <span className="text-xs text-muted-foreground tabular-nums">0{i + 1}</span>
                       {f.q}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-6 pl-12 pr-6 text-muted-foreground leading-relaxed border-l-2 border-primary/20 ml-4">
+                  <AccordionContent className="pb-6 pl-12 pr-6 text-muted-foreground leading-relaxed">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>
