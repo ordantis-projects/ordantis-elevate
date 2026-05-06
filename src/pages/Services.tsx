@@ -546,13 +546,13 @@ const Services = () => {
 
                       {/* Expandable detail */}
                       {open && (
-                        <div className="border-t border-hairline animate-fade-in">
+                        <div className="border-t border-primary/40 animate-fade-in bg-[hsl(215_55%_13%)] text-white">
                           <div className="px-6 md:px-8 py-10 md:py-14 space-y-14">
                             {/* Description + Demo */}
                             <div className="grid lg:grid-cols-12 gap-10">
                               <div className={Demo ? "lg:col-span-5" : "lg:col-span-12 max-w-4xl"}>
-                                <p className="text-eyebrow mb-4">— Descripción</p>
-                                <p className="text-base md:text-lg text-foreground/85 leading-relaxed">
+                                <p className="text-eyebrow text-primary-glow mb-4">— Descripción</p>
+                                <p className="text-base md:text-lg text-white/80 leading-relaxed">
                                   {svc.description}
                                 </p>
                               </div>
@@ -566,23 +566,23 @@ const Services = () => {
                             </div>
 
                             {/* Components + Deliverables */}
-                            <div className="grid md:grid-cols-2 gap-px bg-hairline border border-hairline">
-                              <div className="bg-background p-8">
+                            <div className="grid md:grid-cols-2 gap-px bg-white/5 border border-white/10">
+                              <div className="bg-[hsl(215_60%_11%)] p-8">
                                 <p className="text-eyebrow text-primary mb-5">— Componentes clave</p>
                                 <ul className="space-y-3">
                                   {svc.components.map((c) => (
-                                    <li key={c} className="flex gap-3 text-sm text-foreground/85 leading-relaxed">
+                                    <li key={c} className="flex gap-3 text-sm text-white/80 leading-relaxed">
                                       <span className="text-primary mt-1.5 text-[8px]">●</span>
                                       <span>{c}</span>
                                     </li>
                                   ))}
                                 </ul>
                               </div>
-                              <div className="bg-background p-8">
+                              <div className="bg-[hsl(215_60%_11%)] p-8">
                                 <p className="text-eyebrow text-primary mb-5">— Entregables</p>
                                 <ul className="space-y-3">
                                   {svc.deliverables.map((d) => (
-                                    <li key={d} className="flex gap-3 text-sm text-foreground/85 leading-relaxed">
+                                    <li key={d} className="flex gap-3 text-sm text-white/80 leading-relaxed">
                                       <span className="text-primary mt-1.5 text-[8px]">●</span>
                                       <span>{d}</span>
                                     </li>
@@ -593,9 +593,9 @@ const Services = () => {
 
                             {/* Use cases */}
                             <div>
-                              <p className="text-eyebrow mb-6">— Casos de uso</p>
+                              <p className="text-eyebrow text-primary-glow mb-6">— Casos de uso</p>
                               <div
-                                className={`grid gap-px bg-hairline border border-hairline ${
+                                className={`grid gap-px bg-white/5 border border-white/10 ${
                                   svc.cases.length >= 4
                                     ? "md:grid-cols-2 lg:grid-cols-3"
                                     : "md:grid-cols-3"
@@ -604,10 +604,10 @@ const Services = () => {
                                 {svc.cases.map((c) => (
                                   <div
                                     key={c.sector}
-                                    className="bg-background p-6 hover:bg-surface-1 transition-colors"
+                                    className="bg-[hsl(215_60%_11%)] p-6 hover:bg-[hsl(215_60%_14%)] transition-colors"
                                   >
                                     <p className="text-eyebrow text-primary mb-3">{c.sector}</p>
-                                    <p className="text-foreground/80 text-sm leading-relaxed">{c.text}</p>
+                                    <p className="text-white/80 text-sm leading-relaxed">{c.text}</p>
                                   </div>
                                 ))}
                               </div>
@@ -618,10 +618,10 @@ const Services = () => {
                               <button
                                 type="button"
                                 onClick={() => toggle(svc.id)}
-                                className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors"
+                                className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-white/60 hover:text-primary transition-colors"
                               >
                                 Cerrar detalle
-                                <span className="inline-flex items-center justify-center w-7 h-7 border border-hairline">×</span>
+                                <span className="inline-flex items-center justify-center w-7 h-7 border border-white/15">×</span>
                               </button>
                             </div>
                           </div>
