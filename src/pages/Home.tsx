@@ -205,7 +205,7 @@ const methodology: MethodPhase[] = [
   },
 ];
 
-const solutionsOverview = [
+const servicesOverview = [
   { num: "1", title: "Análisis Predictivo y Modelado de Escenarios" },
   { num: "2", title: "Optimización de Recursos y Procesos" },
   { num: "3", title: "Inteligencia de Negocio (BI)" },
@@ -354,8 +354,8 @@ const Home = () => {
               Diagnóstico gratuito
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
-            <Link to="/solutions" className="hero-cta inline-flex items-center gap-3 px-7 py-4 border border-hairline text-sm font-medium uppercase tracking-[0.18em] hover:border-primary hover:text-primary transition-all duration-500">
-              Ver soluciones
+            <Link to="/services" className="hero-cta inline-flex items-center gap-3 px-7 py-4 border border-hairline text-sm font-medium uppercase tracking-[0.18em] hover:border-primary hover:text-primary transition-all duration-500">
+              Ver servicios
             </Link>
           </div>
 
@@ -588,7 +588,7 @@ const Home = () => {
                             {phaseDetail.services.map((s) => (
                               <Link
                                 key={s.id}
-                                to={`/solutions#${s.id}`}
+                                to={`/services#${s.id}`}
                                 className="group bg-[hsl(215_60%_11%)] hover:bg-[hsl(215_60%_14%)] p-8 transition-all duration-500 flex flex-col"
                               >
                                 <p className="text-eyebrow text-primary tabular-nums mb-5">{s.num}</p>
@@ -596,7 +596,7 @@ const Home = () => {
                                   {s.title}
                                 </h4>
                                 <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60 group-hover:text-primary group-hover:gap-4 transition-all">
-                                  Ver solución <span>→</span>
+                                  Ver servicio <span>→</span>
                                 </span>
                               </Link>
                             ))}

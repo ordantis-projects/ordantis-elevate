@@ -18,7 +18,7 @@ export const Footer = () => {
           <p className="text-eyebrow mb-5">Navegación</p>
           <ul className="space-y-3 text-sm">
             <li><Link to="/" className="hover:text-primary transition-colors">Inicio</Link></li>
-            <li><Link to="/solutions" className="hover:text-primary transition-colors">Soluciones</Link></li>
+            <li><Link to="/services" className="hover:text-primary transition-colors">Servicios</Link></li>
             <li><Link to="/about" className="hover:text-primary transition-colors">Nosotros</Link></li>
             <li><Link to="/assessment" className="hover:text-primary transition-colors">Diagnóstico</Link></li>
           </ul>

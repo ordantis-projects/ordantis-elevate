@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 
 const links = [
   { to: "/", label: "Inicio" },
-  { to: "/solutions", label: "Soluciones" },
+  { to: "/services", label: "Servicios" },
   { to: "/about", label: "Nosotros" },
   { to: "/faq", label: "FAQ" },
   { to: "/assessment", label: "Diagnóstico" },

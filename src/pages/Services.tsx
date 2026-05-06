@@ -34,7 +34,7 @@ const phases: Phase[] = [
     id: "estrategia",
     num: "1",
     tag: "Fase 1",
-    title: "Estrategia",
+    title: "Diagnóstico y Hoja de Ruta",
     intro:
       "Antes de invertir un solo euro en tecnología hay que saber dónde está tu empresa, hacia dónde quiere ir y qué camino genera más rentabilidad. La estrategia transforma la intención en un plan concreto, medible y rentable.",
     services: [
@@ -45,7 +45,7 @@ const phases: Phase[] = [
         short:
           "Diagnóstico exhaustivo en seis dimensiones críticas para descubrir dónde estás y trazar el camino con mayor ROI.",
         description:
-          "Antes de que cualquier transformación tenga éxito, hay que saber exactamente dónde te encuentras. Realizamos una evaluación del estado actual de la organización en seis dimensiones: infraestructura cloud, calidad e integración de datos, gobernanza y cumplimiento, capacidades de BI, preparación para la IA y cultura organizacional. Entregamos un diagnóstico interactivo que puntúa tu madurez en cinco niveles —de \"Ad Hoc\" a \"Optimizado\"— y produce una hoja de ruta clara que identifica victorias rápidas y prioridades estratégicas.",
+          "Antes de que cualquier transformación tenga éxito, hay que saber exactamente dónde te encuentras. Realizamos una evaluación del estado actual de la organización en seis dimensiones: infraestructura cloud, calidad e integración de datos, gobernanza y cumplimiento, capacidades de BI, preparación para la IA y cultura organizacional. Entregamos un diagnóstico interactivo que puntúa tu madurez en cinco niveles, de \"Ad Hoc\" a \"Optimizado\", y produce una hoja de ruta clara que identifica victorias rápidas y prioridades estratégicas.",
         components: [
           "Entrevistas estructuradas con stakeholders de TI, operaciones, finanzas y unidades de negocio",
           "Evaluación técnica de los sistemas actuales (cloud, bases de datos, integraciones, APIs)",
@@ -70,7 +70,7 @@ const phases: Phase[] = [
     id: "preparacion",
     num: "2",
     tag: "Fase 2",
-    title: "Preparación",
+    title: "Cimientos de Datos",
     intro:
       "La IA es un motor potente, pero necesita gasolina de calidad. Si los datos son un caos disperso, los resultados serán un caos amplificado. Construimos los cimientos —infraestructura, calidad y gobernanza— sobre los que se sostendrá toda la transformación.",
     services: [
@@ -166,7 +166,7 @@ const phases: Phase[] = [
     id: "implementacion",
     num: "3",
     tag: "Fase 3",
-    title: "Implementación",
+    title: "Soluciones de IA",
     intro:
       "Aquí la inversión empieza a generar resultados visibles. Implementar IA no es comprar software y darle al botón: es un proceso quirúrgico, gradual y obsesivamente orientado al ROI. Empezamos por pilotos controlados y solo entonces escalamos.",
     services: [
@@ -407,7 +407,7 @@ const phases: Phase[] = [
     id: "capacitacion",
     num: "4",
     tag: "Fase 4",
-    title: "Capacitación",
+    title: "Adopción y Equipos",
     intro:
       "La mejor tecnología del mundo es un gasto inútil si los equipos siguen trabajando como hace diez años. Aquí cerramos la brecha entre la herramienta desplegada y su uso real, día a día.",
     services: [
@@ -444,7 +444,7 @@ const phases: Phase[] = [
   },
 ];
 
-const Solutions = () => {
+const Services = () => {
   const [activePhase, setActivePhase] = useState(phases[0].id);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   useScrollReveal();
@@ -492,7 +492,7 @@ const Solutions = () => {
       {/* HERO */}
       <section className="pt-40 pb-24 bg-gradient-hero">
         <div className="container-luxe">
-          <p className="text-eyebrow mb-8 reveal">— Soluciones</p>
+          <p className="text-eyebrow mb-8 reveal">— Servicios</p>
           <h1 className="text-display text-[clamp(3rem,7vw,7rem)] max-w-5xl reveal">
             Cuatro fases. <span className="text-primary">Resultados medibles</span>.
           </h1>
@@ -695,7 +695,7 @@ const Solutions = () => {
       <section className="py-24 text-center border-t border-hairline">
         <div className="container-luxe">
           <h3 className="text-display text-4xl md:text-5xl mb-8 reveal">
-            ¿Cuál de estas soluciones encaja con tu negocio?
+            ¿Cuál de estos servicios encaja con tu negocio?
           </h3>
           <Link
             to="/assessment"
@@ -709,4 +709,4 @@ const Solutions = () => {
   );
 };
 
-export default Solutions;
+export default Services;
