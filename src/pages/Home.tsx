@@ -6,6 +6,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import { PhaseShape, type PhaseShapeKind } from "@/components/PhaseShape";
 import flechaOrdantis from "@/assets/flecha_ordantis.svg";
 import flechaOscura from "@/assets/flecha_oscura.svg";
 import artecoinLogo from "@/assets/partners/artecoin.png";
@@ -71,6 +72,7 @@ type MethodPhase = {
   points: DetailPoint[];
   outro: string;
   services: ServiceLink[];
+  shape: PhaseShapeKind;
 };
 
 const methodology: MethodPhase[] = [
@@ -102,6 +104,7 @@ const methodology: MethodPhase[] = [
     services: [
       { num: "1.1", title: "Auditoría de Madurez Digital y Datos", id: "auditoria" },
     ],
+    shape: "cube",
   },
   {
     n: "2",
@@ -133,6 +136,7 @@ const methodology: MethodPhase[] = [
       { num: "2.2", title: "Ingeniería de Datos y Limpieza de Información", id: "ingenieria" },
       { num: "2.3", title: "Gobernanza de Datos y Cumplimiento Normativo", id: "gobernanza" },
     ],
+    shape: "cylinder",
   },
   {
     n: "3",
@@ -168,6 +172,7 @@ const methodology: MethodPhase[] = [
       { num: "3.6", title: "Sistemas de Búsqueda Semántica y RAG", id: "rag" },
       { num: "3.7", title: "Reconocimiento de Imágenes", id: "vision" },
     ],
+    shape: "sphere",
   },
   {
     n: "4",
@@ -197,6 +202,7 @@ const methodology: MethodPhase[] = [
     services: [
       { num: "4.1", title: "Talleres Prácticos de IA y Capacitación Técnica", id: "talleres" },
     ],
+    shape: "pyramid",
   },
 ];
 
@@ -496,6 +502,8 @@ const Home = () => {
                           {m.lead}
                         </p>
                       </div>
+
+                      <PhaseShape kind={m.shape} />
 
                       <span
                         className={`shrink-0 self-center inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground transition-all duration-500 ${
