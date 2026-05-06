@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
 
 const DemoFrame = ({ children, label }: { children: React.ReactNode; label: string }) => (
-  <div className="bg-surface-2/60 border border-hairline">
-    <div className="flex items-center justify-between px-4 py-2 border-b border-hairline">
+  <div className="bg-[hsl(215_60%_8%)] border border-white/10 text-white">
+    <div className="flex items-center justify-between px-4 py-2 border-b border-white/10">
       <div className="flex gap-1.5">
-        <span className="w-2 h-2 rounded-full bg-foreground/20" />
-        <span className="w-2 h-2 rounded-full bg-foreground/20" />
-        <span className="w-2 h-2 rounded-full bg-foreground/20" />
+        <span className="w-2 h-2 rounded-full bg-white/20" />
+        <span className="w-2 h-2 rounded-full bg-white/20" />
+        <span className="w-2 h-2 rounded-full bg-white/20" />
       </div>
-      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+      <p className="text-[10px] uppercase tracking-[0.2em] text-white/50">{label}</p>
     </div>
     <div className="p-6">{children}</div>
   </div>
@@ -17,7 +17,7 @@ const DemoFrame = ({ children, label }: { children: React.ReactNode; label: stri
 const Slider = ({ value, onChange, label, min = 0, max = 100, suffix = "%" }: any) => (
   <div>
     <div className="flex justify-between text-xs mb-2">
-      <span className="text-muted-foreground">{label}</span>
+      <span className="text-white/60">{label}</span>
       <span className="text-primary tabular-nums">{value}{suffix}</span>
     </div>
     <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))}
@@ -67,17 +67,17 @@ export const PredictionDemo = () => {
                 <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
               </linearGradient>
             </defs>
-            <rect x={splitX} y="0" width={w - splitX} height={h} fill="hsl(var(--primary) / 0.05)" />
+            <rect x={splitX} y="0" width={w - splitX} height={h} fill="hsl(var(--primary) / 0.08)" />
             <path d={`${path} L${w},${h} L0,${h} Z`} fill="url(#g)" />
             <path d={path} fill="none" stroke="hsl(var(--primary))" strokeWidth="1.5"
               strokeDasharray={`${splitX} ${w - splitX}`} />
             <path d={path} fill="none" stroke="hsl(var(--primary-glow))" strokeWidth="1.5"
               strokeDasharray="4 4" pathLength="100"
               style={{ strokeDashoffset: -((splitX / w) * 100) }} />
-            <line x1={splitX} y1="0" x2={splitX} y2={h} stroke="hsl(var(--hairline))" strokeDasharray="2 4" />
-            <text x={splitX + 6} y="14" fill="hsl(var(--muted-foreground))" fontSize="10">Predicción IA</text>
+            <line x1={splitX} y1="0" x2={splitX} y2={h} stroke="rgba(255,255,255,0.18)" strokeDasharray="2 4" />
+            <text x={splitX + 6} y="14" fill="rgba(255,255,255,0.55)" fontSize="10">Predicción IA</text>
           </svg>
-          <div className="flex justify-between text-xs text-muted-foreground mt-2">
+          <div className="flex justify-between text-xs text-white/55 mt-2">
             <span>Histórico</span><span>Hoy</span><span>+12 meses</span>
           </div>
         </div>
@@ -91,49 +91,140 @@ export const PredictionDemo = () => {
   );
 };
 
-/* 02 — OPTIMIZATION */
+/* 02 — OPTIMIZATION (rebuilt: budget allocation) */
+type OptChannel = {
+  name: string;
+  hint: string;
+  manual: number;
+  manualReturn: number;
+  optimal: number;
+  optimalReturn: number;
+};
+
 export const OptimizationDemo = () => {
-  const [opt, setOpt] = useState(0);
-  const trucks = [
-    { from: [10, 30], to: [80, 20] }, { from: [20, 70], to: [70, 80] },
-    { from: [15, 50], to: [85, 60] }, { from: [25, 20], to: [75, 90] },
-    { from: [10, 90], to: [90, 40] },
+  const [optimized, setOptimized] = useState(false);
+
+  const channels: OptChannel[] = [
+    { name: "Email Marketing", hint: "Alta eficiencia con poca inversión", manual: 30, manualReturn: 18, optimal: 15, optimalReturn: 14 },
+    { name: "SEO", hint: "Retorno estable a medio plazo", manual: 30, manualReturn: 16, optimal: 25, optimalReturn: 18 },
+    { name: "Social Ads", hint: "Mejor canal — escala bien con presupuesto", manual: 30, manualReturn: 22, optimal: 70, optimalReturn: 48 },
+    { name: "Contenido", hint: "Saturado a partir de €15K", manual: 30, manualReturn: 12, optimal: 10, optimalReturn: 8 },
   ];
-  const points = Array.from({ length: 12 }).map((_, i) => ({ x: 15 + (i % 4) * 22, y: 20 + Math.floor(i / 4) * 25 }));
-  const fuel = Math.round(100 - opt * 0.22);
-  const time = Math.round(100 - opt * 0.3);
+
+  const total = 120;
+  const baseReturn = channels.reduce((a, c) => a + c.manualReturn, 0);
+  const totalReturn = optimized
+    ? channels.reduce((a, c) => a + c.optimalReturn, 0)
+    : channels.reduce((a, c) => a + c.manualReturn, 0);
+  const totalInvest = optimized
+    ? channels.reduce((a, c) => a + c.optimal, 0)
+    : channels.reduce((a, c) => a + c.manual, 0);
+  const roi = ((totalReturn / totalInvest) * 100).toFixed(1);
+  const gain = totalReturn - baseReturn;
+  const gainPct = ((gain / baseReturn) * 100).toFixed(1);
+
+  const investMax = Math.max(...channels.map((c) => Math.max(c.manual, c.optimal)));
+  const returnMax = Math.max(...channels.map((c) => Math.max(c.manualReturn, c.optimalReturn)));
 
   return (
-    <DemoFrame label="Optimización de rutas">
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 relative aspect-[4/3] bg-surface-3/60 border border-hairline overflow-hidden">
-          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
-            {trucks.map((t, i) => {
-              const optimized = opt > 50;
-              const path = optimized
-                ? `M${t.from[0]},${t.from[1]} L${t.to[0]},${t.to[1]}`
-                : `M${t.from[0]},${t.from[1]} Q${50 + (i - 2) * 15},${50 + (i % 2) * 30} ${t.to[0]},${t.to[1]}`;
-              return <path key={i} d={path} fill="none"
-                stroke={optimized ? "hsl(var(--primary))" : "hsl(var(--destructive) / 0.6)"}
-                strokeWidth="0.5" style={{ transition: "all 0.6s ease" }} />;
-            })}
-            {points.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="1.2" fill="hsl(var(--primary-glow))" />)}
-          </svg>
+    <DemoFrame label="Asignación óptima de presupuesto">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5 gap-4 flex-wrap">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/50">Presupuesto disponible</p>
+          <p className="text-display text-2xl text-white mt-1 tabular-nums">€{total}.000</p>
         </div>
-        <div className="space-y-6">
-          <Slider value={opt} onChange={setOpt} label="Activar IA" />
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs"><span>Combustible</span><span className={fuel < 85 ? "text-primary" : "text-destructive"}>−{100 - fuel}%</span></div>
-              <div className="h-1 bg-hairline mt-1"><div className="h-full bg-primary transition-all duration-700" style={{ width: `${fuel}%` }} /></div>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs"><span>Tiempo conductor</span><span className={time < 85 ? "text-primary" : "text-destructive"}>−{100 - time}%</span></div>
-              <div className="h-1 bg-hairline mt-1"><div className="h-full bg-primary transition-all duration-700" style={{ width: `${time}%` }} /></div>
-            </div>
-          </div>
+        <div className="inline-flex border border-white/10">
+          <button
+            onClick={() => setOptimized(false)}
+            className={`px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] transition-colors ${
+              !optimized ? "bg-white/10 text-white" : "text-white/50 hover:text-white/80"
+            }`}
+          >
+            Manual
+          </button>
+          <button
+            onClick={() => setOptimized(true)}
+            className={`px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] transition-colors border-l border-white/10 ${
+              optimized ? "bg-primary text-primary-foreground" : "text-white/50 hover:text-white/80"
+            }`}
+          >
+            IA optimizado
+          </button>
         </div>
       </div>
+
+      {/* Channel rows */}
+      <div className="space-y-2 mb-5">
+        {channels.map((c) => {
+          const invest = optimized ? c.optimal : c.manual;
+          const ret = optimized ? c.optimalReturn : c.manualReturn;
+          return (
+            <div key={c.name} className="bg-white/[0.03] border border-white/10 p-3">
+              <div className="flex items-baseline justify-between mb-2 gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs text-white/90 truncate">{c.name}</p>
+                  <p className="text-[10px] text-white/45 truncate">{c.hint}</p>
+                </div>
+                <p className="text-[10px] font-mono text-white/70 shrink-0 tabular-nums">
+                  €{invest}K <span className="text-primary">→</span> €{ret}K
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-[9px] uppercase tracking-wider text-white/45">Inversión</span>
+                    <span className="text-[9px] font-mono text-white/55 tabular-nums">€{invest}K</span>
+                  </div>
+                  <div className="h-1.5 bg-white/[0.06]">
+                    <div
+                      className="h-full bg-white/40 transition-all duration-700 ease-out"
+                      style={{ width: `${(invest / investMax) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-[9px] uppercase tracking-wider text-white/45">Retorno</span>
+                    <span className="text-[9px] font-mono text-primary tabular-nums">€{ret}K</span>
+                  </div>
+                  <div className="h-1.5 bg-white/[0.06]">
+                    <div
+                      className="h-full bg-primary transition-all duration-700 ease-out"
+                      style={{ width: `${(ret / returnMax) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-white/[0.03] border border-white/10 p-3">
+          <p className="text-[9px] uppercase tracking-wider text-white/45">Retorno total</p>
+          <p className="text-display text-xl text-primary mt-1 tabular-nums">€{totalReturn}K</p>
+        </div>
+        <div className="bg-white/[0.03] border border-white/10 p-3">
+          <p className="text-[9px] uppercase tracking-wider text-white/45">ROI</p>
+          <p className="text-display text-xl text-primary mt-1 tabular-nums">{roi}%</p>
+        </div>
+        <div className="bg-white/[0.03] border border-white/10 p-3">
+          <p className="text-[9px] uppercase tracking-wider text-white/45">vs reparto manual</p>
+          <p className={`text-display text-xl mt-1 tabular-nums ${gain > 0 ? "text-primary" : "text-white/70"}`}>
+            {gain > 0 ? "+" : ""}€{gain}K
+            {gain > 0 && <span className="text-[10px] font-mono text-white/55 ml-1">({gainPct}%)</span>}
+          </p>
+        </div>
+      </div>
+
+      <p className="text-[10px] text-center text-white/45 uppercase tracking-widest mt-4">
+        {optimized
+          ? "El solver redistribuye el capital hacia los canales con mayor retorno marginal"
+          : "Reparto homogéneo · igual inversión en todos los canales"}
+      </p>
     </DemoFrame>
   );
 };
@@ -290,7 +381,7 @@ export const BIDemo = () => {
   return (
     <DemoFrame label="Visión 360º · panel ejecutivo">
       {/* Header: tabs + period */}
-      <div className="flex items-end justify-between mb-4 gap-3 border-b border-hairline">
+      <div className="flex items-end justify-between mb-4 gap-3 border-b border-white/10">
         <div className="flex flex-wrap gap-1">
           {filters.map((f, i) => (
             <button
@@ -299,7 +390,7 @@ export const BIDemo = () => {
               className={`px-3 py-2 text-[10px] uppercase tracking-[0.18em] transition-colors ${
                 active === i
                   ? "text-primary border-b border-primary -mb-px"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-white/55 hover:text-white"
               }`}
             >
               {f}
@@ -313,8 +404,8 @@ export const BIDemo = () => {
               onClick={() => setPeriod(i)}
               className={`px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider border transition-colors ${
                 period === i
-                  ? "border-primary text-primary bg-primary/5"
-                  : "border-hairline text-muted-foreground hover:text-foreground"
+                  ? "border-primary text-primary bg-primary/15"
+                  : "border-white/10 text-white/55 hover:text-white"
               }`}
             >
               {p.id}
@@ -326,10 +417,10 @@ export const BIDemo = () => {
       {/* KPI cards with sparklines */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
         {ds.kpis.map((k, i) => (
-          <div key={k.k} className="bg-surface-3/60 p-3 border border-hairline">
-            <p className="text-[9px] uppercase tracking-wider text-muted-foreground">{k.k}</p>
+          <div key={k.k} className="bg-white/[0.03] p-3 border border-white/10">
+            <p className="text-[9px] uppercase tracking-wider text-white/50">{k.k}</p>
             <div className="flex items-baseline justify-between gap-2 mt-1">
-              <p className="text-display text-xl leading-none">{k.v}</p>
+              <p className="text-display text-xl leading-none text-white">{k.v}</p>
               <span
                 className={`text-[10px] font-mono tabular-nums shrink-0 ${
                   k.neg ? "text-destructive" : "text-primary"
@@ -343,7 +434,7 @@ export const BIDemo = () => {
                 d={sparkPath(active * 5 + i * 3, 60, 16)}
                 fill="none"
                 stroke="hsl(var(--primary))"
-                strokeOpacity="0.7"
+                strokeOpacity="0.85"
                 strokeWidth="1"
                 vectorEffect="non-scaling-stroke"
               />
@@ -354,9 +445,9 @@ export const BIDemo = () => {
 
       {/* Trend + composition */}
       <div className="grid md:grid-cols-3 gap-2 mb-2">
-        <div className="md:col-span-2 bg-surface-3/60 p-4 border border-hairline">
+        <div className="md:col-span-2 bg-white/[0.03] p-4 border border-white/10">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            <p className="text-[10px] uppercase tracking-wider text-white/50">
               Tendencia · {filters[active]}
             </p>
             <p className="text-[9px] font-mono text-primary">
@@ -366,7 +457,7 @@ export const BIDemo = () => {
           <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-24" preserveAspectRatio="none">
             <defs>
               <linearGradient id="bi-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.35" />
+                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.45" />
                 <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
               </linearGradient>
             </defs>
@@ -377,7 +468,7 @@ export const BIDemo = () => {
                 y1={h * t}
                 x2={w}
                 y2={h * t}
-                stroke="hsl(var(--hairline))"
+                stroke="rgba(255,255,255,0.08)"
                 strokeWidth="0.5"
                 strokeDasharray="2 3"
               />
@@ -398,8 +489,8 @@ export const BIDemo = () => {
           </svg>
         </div>
 
-        <div className="bg-surface-3/60 p-4 border border-hairline">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
+        <div className="bg-white/[0.03] p-4 border border-white/10">
+          <p className="text-[10px] uppercase tracking-wider text-white/50 mb-3">
             Composición
           </p>
           <div className="flex items-center gap-3">
@@ -409,7 +500,7 @@ export const BIDemo = () => {
                 cy="40"
                 r={donutR}
                 fill="none"
-                stroke="hsl(var(--hairline))"
+                stroke="rgba(255,255,255,0.08)"
                 strokeWidth="8"
               />
               {ds.breakdown.map((b, i) => {
@@ -444,9 +535,9 @@ export const BIDemo = () => {
                         opacity: 1 - i * 0.2,
                       }}
                     />
-                    <span className="truncate text-foreground/80">{b.l}</span>
+                    <span className="truncate text-white/80">{b.l}</span>
                   </span>
-                  <span className="font-mono tabular-nums text-muted-foreground">
+                  <span className="font-mono tabular-nums text-white/55">
                     {Math.round((b.v / breakTotal) * 100)}%
                   </span>
                 </div>
@@ -457,12 +548,12 @@ export const BIDemo = () => {
       </div>
 
       {/* Ranked table */}
-      <div className="bg-surface-3/60 border border-hairline">
-        <div className="flex items-center justify-between px-4 py-2 border-b border-hairline">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+      <div className="bg-white/[0.03] border border-white/10">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-white/10">
+          <p className="text-[10px] uppercase tracking-wider text-white/50">
             Top movers
           </p>
-          <p className="text-[9px] font-mono text-muted-foreground">
+          <p className="text-[9px] font-mono text-white/45">
             {ds.top.length} registros
           </p>
         </div>
@@ -475,21 +566,21 @@ export const BIDemo = () => {
               return (
                 <tr
                   key={row.n}
-                  className={i < ds.top.length - 1 ? "border-b border-hairline/40" : ""}
+                  className={i < ds.top.length - 1 ? "border-b border-white/5" : ""}
                 >
-                  <td className="pl-4 py-2 w-8 text-[10px] font-mono text-muted-foreground">
+                  <td className="pl-4 py-2 w-8 text-[10px] font-mono text-white/45">
                     {String(i + 1).padStart(2, "0")}
                   </td>
-                  <td className="py-2 text-foreground/90">{row.n}</td>
+                  <td className="py-2 text-white/85">{row.n}</td>
                   <td className="py-2 w-1/3 px-3">
-                    <div className="h-1 bg-hairline">
+                    <div className="h-1 bg-white/[0.06]">
                       <div
-                        className="h-full bg-primary/70 transition-all duration-500"
+                        className="h-full bg-primary/80 transition-all duration-500"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
                   </td>
-                  <td className="py-2 text-right font-mono tabular-nums text-foreground/80">
+                  <td className="py-2 text-right font-mono tabular-nums text-white/80">
                     {row.v}
                   </td>
                   <td className="px-4 py-2 text-right text-[10px] font-mono w-16 tabular-nums">
@@ -565,10 +656,10 @@ export const AgentDemo = () => {
     <DemoFrame label="Onboarding integral · trazabilidad en vivo">
       <div className="grid md:grid-cols-2 gap-3">
         {/* LEFT — checklist */}
-        <div className="border border-primary/40 p-4 bg-primary/5">
+        <div className="border border-primary/40 p-4 bg-primary/10">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[10px] uppercase tracking-wider text-primary">Plan del agente</p>
-            <p className="text-[10px] text-muted-foreground tabular-nums">{step}/{tasks.length}</p>
+            <p className="text-[10px] text-white/55 tabular-nums">{step}/{tasks.length}</p>
           </div>
           <ul className="space-y-2 text-xs">
             {tasks.map((t, i) => {
@@ -578,7 +669,7 @@ export const AgentDemo = () => {
                 <li
                   key={t}
                   className={`flex gap-2 items-center transition-all ${
-                    done ? "text-foreground" : current ? "text-primary" : "text-muted-foreground/40"
+                    done ? "text-white" : current ? "text-primary" : "text-white/35"
                   }`}
                 >
                   <span className={done ? "text-primary" : current ? "text-primary animate-pulse" : ""}>
@@ -593,25 +684,25 @@ export const AgentDemo = () => {
         </div>
 
         {/* RIGHT — live trace terminal */}
-        <div className="border border-hairline bg-background/80 flex flex-col">
-          <div className="flex items-center justify-between px-3 py-2 border-b border-hairline">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono">agent.trace</p>
+        <div className="border border-white/10 bg-black/40 flex flex-col">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+            <p className="text-[10px] uppercase tracking-wider text-white/55 font-mono">agent.trace</p>
             <div className="flex items-center gap-1.5">
-              <span className={`w-1.5 h-1.5 rounded-full ${running ? "bg-primary animate-pulse" : "bg-foreground/20"}`} />
-              <span className="text-[10px] text-muted-foreground font-mono">
+              <span className={`w-1.5 h-1.5 rounded-full ${running ? "bg-primary animate-pulse" : "bg-white/20"}`} />
+              <span className="text-[10px] text-white/55 font-mono">
                 {activeSystem ?? (running ? "init" : "idle")}
               </span>
             </div>
           </div>
           <div className="p-3 h-56 overflow-y-auto font-mono text-[10px] space-y-1 leading-relaxed">
             {trace.length === 0 && (
-              <p className="text-muted-foreground/50">$ esperando ejecución...</p>
+              <p className="text-white/40">$ esperando ejecución...</p>
             )}
             {trace.map((e, idx) => (
               <div key={idx} className="flex gap-2 animate-fade-in">
-                <span className="text-muted-foreground/50 shrink-0">{e.t}</span>
-                <span className="text-primary/70 shrink-0">[{e.system}]</span>
-                <span className={e.status === "ok" ? "text-primary" : "text-foreground/80"}>{e.action}</span>
+                <span className="text-white/40 shrink-0">{e.t}</span>
+                <span className="text-primary/85 shrink-0">[{e.system}]</span>
+                <span className={e.status === "ok" ? "text-primary" : "text-white/85"}>{e.action}</span>
               </div>
             ))}
             {running && (
@@ -634,44 +725,154 @@ export const AgentDemo = () => {
   );
 };
 
-/* 05 — DOCUMENT */
+/* 05 — DOCUMENT (with file selector foldable) */
+type DocSource = { id: string; name: string; size: string; required?: boolean; clauseTitle?: string };
+
 export const DocumentDemo = () => {
   const [risk, setRisk] = useState<"Bajo" | "Alto">("Bajo");
   const [extra, setExtra] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [filesOpen, setFilesOpen] = useState(true);
+
+  const sources: DocSource[] = [
+    { id: "crm", name: "Datos cliente · CRM", size: "2.4 KB", required: true },
+    { id: "tarifa", name: "Tarifa vigente 2026", size: "18 KB", required: true },
+    { id: "plantilla", name: "Plantilla maestra v3", size: "44 KB" },
+    { id: "anexo", name: "Anexo legal RGPD", size: "12 KB", clauseTitle: "Anexo I — Compromiso RGPD" },
+    { id: "historico", name: "Histórico contratación", size: "8 KB", clauseTitle: "Apéndice — Histórico cliente" },
+    { id: "sla", name: "Catálogo de SLAs", size: "6 KB", clauseTitle: "Anexo II — Niveles de servicio" },
+  ];
+
+  const [selected, setSelected] = useState<string[]>(["crm", "tarifa", "plantilla", "anexo"]);
+
+  const toggle = (id: string) => {
+    const src = sources.find((s) => s.id === id);
+    if (src?.required) return;
+    setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setGenerated(false);
+  };
+
+  const optionalSelected = selected.filter((id) => !sources.find((s) => s.id === id)?.required);
+  const pages = 12 + optionalSelected.length * 2;
+  const seconds = (0.6 + optionalSelected.length * 0.12).toFixed(1);
+
   return (
     <DemoFrame label="Ensamblador de contratos">
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="border border-hairline p-4 space-y-3 text-xs">
-          <p className="text-eyebrow text-primary mb-3">— CRM</p>
-          <div><span className="text-muted-foreground">Cliente:</span> Acme S.L.</div>
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Riesgo:</span>
-            {(["Bajo", "Alto"] as const).map((r) => (
-              <button key={r} onClick={() => { setRisk(r); setGenerated(false); }}
-                className={`px-2 py-1 border ${risk === r ? "border-primary text-primary" : "border-hairline text-muted-foreground"}`}>{r}</button>
-            ))}
+        <div className="space-y-3">
+          {/* Sources foldable */}
+          <div className="border border-white/10">
+            <button
+              type="button"
+              onClick={() => setFilesOpen((v) => !v)}
+              aria-expanded={filesOpen}
+              className="w-full flex items-center justify-between px-3 py-2.5 text-xs"
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-primary">▤</span>
+                <span className="text-white/90">Fuentes de datos</span>
+                <span className="text-[10px] font-mono text-white/45">{selected.length} / {sources.length}</span>
+              </span>
+              <span className={`text-primary text-base transition-transform duration-300 ${filesOpen ? "rotate-90" : ""}`}>›</span>
+            </button>
+            {filesOpen && (
+              <div className="border-t border-white/10 divide-y divide-white/5 animate-fade-in">
+                {sources.map((s) => {
+                  const on = selected.includes(s.id);
+                  const req = !!s.required;
+                  return (
+                    <label
+                      key={s.id}
+                      className={`flex items-center gap-2.5 px-3 py-2 text-[11px] transition-colors ${
+                        req ? "cursor-default opacity-90" : "cursor-pointer hover:bg-white/[0.03]"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={on}
+                        disabled={req}
+                        onChange={() => toggle(s.id)}
+                        className="accent-primary"
+                      />
+                      <span className={`flex-1 truncate ${on ? "text-white/90" : "text-white/55"}`}>{s.name}</span>
+                      <span className="text-[9px] font-mono text-white/40 shrink-0 tabular-nums">{s.size}</span>
+                      {req && (
+                        <span className="text-[8px] uppercase tracking-wider text-primary shrink-0">obligatoria</span>
+                      )}
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={extra} onChange={(e) => { setExtra(e.target.checked); setGenerated(false); }} />
-            Producto adicional
-          </label>
-          <button onClick={() => setGenerated(true)}
-            className="w-full mt-3 py-2 bg-primary text-primary-foreground text-[10px] uppercase tracking-[0.2em]">
-            Generar documento
+
+          {/* Other config */}
+          <div className="border border-white/10 p-4 space-y-3 text-xs">
+            <p className="text-eyebrow text-primary mb-1">— Parámetros</p>
+            <div className="text-white/85"><span className="text-white/55">Cliente:</span> Acme S.L.</div>
+            <div className="flex items-center gap-2">
+              <span className="text-white/55">Riesgo:</span>
+              {(["Bajo", "Alto"] as const).map((r) => (
+                <button
+                  key={r}
+                  onClick={() => { setRisk(r); setGenerated(false); }}
+                  className={`px-2 py-1 border transition-colors ${
+                    risk === r ? "border-primary text-primary bg-primary/10" : "border-white/10 text-white/60 hover:text-white/85"
+                  }`}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+            <label className="flex items-center gap-2 text-white/85 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={extra}
+                onChange={(e) => { setExtra(e.target.checked); setGenerated(false); }}
+                className="accent-primary"
+              />
+              Producto adicional
+            </label>
+          </div>
+
+          <button
+            onClick={() => setGenerated(true)}
+            className="w-full py-2.5 bg-primary text-primary-foreground text-[10px] uppercase tracking-[0.2em] hover:shadow-glow transition-all"
+          >
+            Generar documento · {selected.length} fuentes
           </button>
         </div>
-        <div className="border border-hairline p-4 bg-surface-3/40 min-h-[180px] text-[10px] leading-relaxed font-mono">
+
+        {/* Output preview */}
+        <div className="border border-white/10 p-4 bg-black/30 min-h-[260px] text-[10px] leading-relaxed font-mono">
           {generated ? (
             <div className="space-y-1.5 animate-fade-in">
-              <p className="text-foreground">CONTRATO DE SERVICIOS — <mark className="bg-primary/30 text-foreground">Acme S.L.</mark></p>
-              <p className="text-muted-foreground">Cláusula 1. Objeto del contrato...</p>
-              <p className="text-muted-foreground">Cláusula 2. Precios — <mark className="bg-primary/30 text-foreground">€{extra ? "48.000" : "32.000"}/año</mark></p>
-              <p className="text-muted-foreground">Cláusula 3. SLA y soporte...</p>
-              {risk === "Alto" && <p><mark className="bg-primary/30 text-foreground">Cláusula 7-bis. Seguridad reforzada (riesgo alto)</mark></p>}
-              <p className="text-muted-foreground">— 15 páginas generadas en 0.8s</p>
+              <p className="text-white/95">CONTRATO DE SERVICIOS — <mark className="bg-primary/30 text-white px-1">Acme S.L.</mark></p>
+              <p className="text-white/65">Cláusula 1. Objeto del contrato...</p>
+              <p className="text-white/65">
+                Cláusula 2. Precios — <mark className="bg-primary/30 text-white px-1">€{extra ? "48.000" : "32.000"}/año</mark>
+              </p>
+              <p className="text-white/65">Cláusula 3. Soporte y mantenimiento...</p>
+              {sources
+                .filter((s) => s.clauseTitle && selected.includes(s.id))
+                .map((s) => (
+                  <p key={s.id}><mark className="bg-primary/30 text-white px-1">{s.clauseTitle}</mark></p>
+                ))}
+              {risk === "Alto" && (
+                <p><mark className="bg-primary/30 text-white px-1">Cláusula 7-bis. Seguridad reforzada (riesgo alto)</mark></p>
+              )}
+              <p className="text-white/55 mt-2">— {pages} páginas generadas en {seconds}s</p>
+              <p className="text-[9px] text-white/45 border-t border-white/10 pt-1.5 mt-2">
+                Compuesto desde <span className="text-primary">{selected.length}</span> fuentes ·{" "}
+                {selected
+                  .map((id) => sources.find((s) => s.id === id)?.name.split(" · ")[0])
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
             </div>
-          ) : <p className="text-muted-foreground/60">Documento vacío. Pulsa "Generar".</p>}
+          ) : (
+            <p className="text-white/40">Documento vacío. Selecciona las fuentes y pulsa "Generar".</p>
+          )}
         </div>
       </div>
     </DemoFrame>
@@ -690,28 +891,41 @@ export const RAGDemo = () => {
     <DemoFrame label="Analista corporativo híbrido">
       <div className="space-y-3 text-xs">
         <div className="flex gap-2 text-[10px] mb-2">
-          <span className="px-2 py-1 bg-primary/10 text-primary border border-primary/30">● Servidor privado</span>
-          <span className="px-2 py-1 bg-secondary/30 text-foreground border border-hairline">● Búsqueda web</span>
+          <span className="px-2 py-1 bg-primary/15 text-primary border border-primary/40">● Servidor privado</span>
+          <span className="px-2 py-1 bg-white/[0.05] text-white/85 border border-white/10">● Búsqueda web</span>
         </div>
-        <div className="bg-surface-3/40 p-3 border border-hairline">
-          <p className="text-muted-foreground">→ "Según nuestra política, ¿cuál es mi presupuesto diario máximo de viaje? Búscame 3 hoteles en Madrid que cumplan."</p>
+        <div className="bg-white/[0.03] p-3 border border-white/10 text-white/85">
+          <p>→ "Según nuestra política, ¿cuál es mi presupuesto diario máximo de viaje? Búscame 3 hoteles en Madrid que cumplan."</p>
         </div>
-        {step >= 1 && <div className="bg-primary/5 p-3 border border-primary/20 animate-fade-in">
-          <p className="text-primary text-[10px] mb-1">RAG PRIVADO</p>
-          <p>Buscando en Política_Viajes_2026.pdf... <span className="text-primary">Presupuesto: 150€/noche</span></p>
-        </div>}
-        {step >= 2 && <div className="bg-secondary/20 p-3 border border-hairline animate-fade-in">
-          <p className="text-muted-foreground text-[10px] mb-1">WEB</p>
-          <p>Navegando: hoteles Madrid &lt;150€, valoración &gt;4★...</p>
-        </div>}
-        {step >= 3 && <div className="bg-surface-2/60 p-3 border border-hairline animate-fade-in">
-          <p className="text-foreground/90">Tu límite es 150€ (pág. 4). 3 opciones: Hotel A (120€) · Hotel B (145€) · Hotel C (138€).</p>
-        </div>}
-        <button onClick={ask} disabled={step > 0 && step < 3}
-          className="w-full py-2 bg-primary text-primary-foreground text-[10px] uppercase tracking-[0.2em]">
+        {step >= 1 && (
+          <div className="bg-primary/10 p-3 border border-primary/30 animate-fade-in text-white/90">
+            <p className="text-primary text-[10px] mb-1">RAG PRIVADO</p>
+            <p>Buscando en Política_Viajes_2026.pdf... <span className="text-primary">Presupuesto: 150€/noche</span></p>
+          </div>
+        )}
+        {step >= 2 && (
+          <div className="bg-white/[0.04] p-3 border border-white/10 animate-fade-in text-white/85">
+            <p className="text-white/55 text-[10px] mb-1">WEB</p>
+            <p>Navegando: hoteles Madrid &lt;150€, valoración &gt;4★...</p>
+          </div>
+        )}
+        {step >= 3 && (
+          <div className="bg-white/[0.05] p-3 border border-white/10 animate-fade-in text-white/90">
+            <p>Tu límite es 150€ (pág. 4). 3 opciones: Hotel A (120€) · Hotel B (145€) · Hotel C (138€).</p>
+          </div>
+        )}
+        <button
+          onClick={ask}
+          disabled={step > 0 && step < 3}
+          className="w-full py-2 bg-primary text-primary-foreground text-[10px] uppercase tracking-[0.2em] disabled:opacity-60"
+        >
           {step === 0 ? "Enviar consulta" : step < 3 ? "Procesando..." : "Reiniciar"}
         </button>
-        {step === 3 && <button onClick={() => setStep(0)} className="w-full text-[10px] text-muted-foreground">Reiniciar demo</button>}
+        {step === 3 && (
+          <button onClick={() => setStep(0)} className="w-full text-[10px] text-white/55 hover:text-white">
+            Reiniciar demo
+          </button>
+        )}
       </div>
     </DemoFrame>
   );
@@ -746,10 +960,10 @@ export const GovernanceDemo = () => {
   };
 
   const accessLabel: Record<GovAccess, { label: string; cls: string }> = {
-    full: { label: "Total", cls: "bg-primary/15 text-primary border-primary/40" },
-    read: { label: "Lectura", cls: "bg-primary/5 text-foreground/80 border-primary/20" },
-    masked: { label: "Anonimizado", cls: "bg-foreground/5 text-muted-foreground border-hairline" },
-    none: { label: "Bloqueado", cls: "bg-transparent text-muted-foreground/40 border-hairline/50 line-through" },
+    full: { label: "Total", cls: "bg-primary/20 text-primary border-primary/50" },
+    read: { label: "Lectura", cls: "bg-primary/10 text-white/85 border-primary/30" },
+    masked: { label: "Anonimizado", cls: "bg-white/[0.05] text-white/65 border-white/10" },
+    none: { label: "Bloqueado", cls: "bg-transparent text-white/35 border-white/10 line-through" },
   };
 
   const toggleRole = (r: GovRole) =>
@@ -767,7 +981,7 @@ export const GovernanceDemo = () => {
   return (
     <DemoFrame label="Gobernanza de datos">
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 border-b border-hairline">
+      <div className="flex gap-1 mb-5 border-b border-white/10">
         {([
           { id: "access", label: "Acceso por rol" },
           { id: "flow", label: "Flujo de datos" },
@@ -776,7 +990,7 @@ export const GovernanceDemo = () => {
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-4 py-2 text-[10px] uppercase tracking-[0.18em] border-b-2 -mb-px transition-colors ${
-              tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+              tab === t.id ? "border-primary text-primary" : "border-transparent text-white/55 hover:text-white"
             }`}
           >
             {t.label}
@@ -794,21 +1008,21 @@ export const GovernanceDemo = () => {
                   key={r.id}
                   onClick={() => toggleRole(r.id)}
                   className={`text-left px-3 py-2.5 border transition-all ${
-                    on ? "border-primary bg-primary/10" : "border-hairline hover:border-primary/40"
+                    on ? "border-primary bg-primary/15" : "border-white/10 hover:border-primary/40"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs font-medium ${on ? "text-primary" : "text-foreground"}`}>{r.id}</span>
-                    <span className={`w-3 h-3 rounded-full border ${on ? "bg-primary border-primary" : "border-hairline"}`} />
+                    <span className={`text-xs font-medium ${on ? "text-primary" : "text-white/85"}`}>{r.id}</span>
+                    <span className={`w-3 h-3 rounded-full border ${on ? "bg-primary border-primary" : "border-white/15"}`} />
                   </div>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{r.desc}</p>
+                  <p className="text-[10px] text-white/55 mt-0.5">{r.desc}</p>
                 </button>
               );
             })}
           </div>
 
           <table className="w-full text-xs">
-            <thead className="text-[10px] uppercase tracking-wider text-muted-foreground border-b border-hairline">
+            <thead className="text-[10px] uppercase tracking-wider text-white/50 border-b border-white/10">
               <tr>
                 <th className="text-left py-2 font-normal">Base de datos</th>
                 {selected.length === 0 && <th className="text-right font-normal">—</th>}
@@ -819,13 +1033,13 @@ export const GovernanceDemo = () => {
             </thead>
             <tbody>
               {databases.map((db) => (
-                <tr key={db.id} className="border-b border-hairline/50">
-                  <td className="py-2.5">
-                    <span className="text-muted-foreground mr-2 font-mono">{db.icon}</span>
+                <tr key={db.id} className="border-b border-white/5">
+                  <td className="py-2.5 text-white/85">
+                    <span className="text-white/45 mr-2 font-mono">{db.icon}</span>
                     {db.id}
                   </td>
                   {selected.length === 0 && (
-                    <td className="text-right text-[10px] text-muted-foreground">Selecciona un rol</td>
+                    <td className="text-right text-[10px] text-white/45">Selecciona un rol</td>
                   )}
                   {selected.map((r) => {
                     const a = matrix[r][db.id];
@@ -843,7 +1057,7 @@ export const GovernanceDemo = () => {
             </tbody>
           </table>
 
-          <div className="flex flex-wrap gap-3 pt-2 text-[10px] text-muted-foreground">
+          <div className="flex flex-wrap gap-3 pt-2 text-[10px] text-white/55">
             {(["full", "read", "masked", "none"] as GovAccess[]).map((a) => (
               <span key={a} className="flex items-center gap-1.5">
                 <span className={`w-2 h-2 border ${accessLabel[a].cls}`} />
@@ -859,22 +1073,22 @@ export const GovernanceDemo = () => {
           <div className="grid grid-cols-6 gap-2 items-stretch">
             {flowSteps.map((s, i) => (
               <div key={s.id} className="relative">
-                <div className="border border-hairline bg-surface-3/40 p-2.5 h-full hover:border-primary/40 transition-colors">
+                <div className="border border-white/10 bg-white/[0.03] p-2.5 h-full hover:border-primary/40 transition-colors">
                   <p className="text-[9px] uppercase tracking-wider text-primary mb-1.5">{`0${i + 1}`}</p>
-                  <p className="text-xs font-medium mb-1.5">{s.title}</p>
+                  <p className="text-xs font-medium text-white/90 mb-1.5">{s.title}</p>
                   {s.items.map((it) => (
-                    <p key={it} className="text-[10px] text-muted-foreground font-mono leading-tight">{it}</p>
+                    <p key={it} className="text-[10px] text-white/55 font-mono leading-tight">{it}</p>
                   ))}
                 </div>
                 {i < flowSteps.length - 1 && (
-                  <span className="hidden md:block absolute top-1/2 -right-1.5 -translate-y-1/2 text-primary/60 text-xs z-10">›</span>
+                  <span className="hidden md:block absolute top-1/2 -right-1.5 -translate-y-1/2 text-primary/70 text-xs z-10">›</span>
                 )}
               </div>
             ))}
           </div>
 
           {/* Animated pipeline */}
-          <div className="relative mt-6 h-1 bg-hairline overflow-hidden">
+          <div className="relative mt-6 h-1 bg-white/[0.06] overflow-hidden">
             <div
               className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary to-transparent"
               style={{ animation: "flowSlide 2.8s linear infinite" }}
@@ -888,8 +1102,8 @@ export const GovernanceDemo = () => {
               { k: "Linaje", v: "End-to-end" },
               { k: "PII", v: "Cifrado en origen" },
             ].map((m) => (
-              <div key={m.k} className="border border-hairline px-3 py-2">
-                <p className="text-muted-foreground uppercase tracking-wider text-[9px]">{m.k}</p>
+              <div key={m.k} className="border border-white/10 px-3 py-2">
+                <p className="text-white/55 uppercase tracking-wider text-[9px]">{m.k}</p>
                 <p className="text-primary font-mono mt-0.5">{m.v}</p>
               </div>
             ))}
@@ -905,33 +1119,33 @@ export const InfraDemo = () => (
   <DemoFrame label="Arquitectura de datos">
     <div className="grid grid-cols-3 gap-3 text-[10px]">
       <div className="space-y-2">
-        <p className="text-eyebrow text-muted-foreground">Caos</p>
+        <p className="text-eyebrow text-white/55">Caos</p>
         {["Excel", "SQL legado", "JSON", "CRM", "ERP", "IoT"].map((s) => (
-          <div key={s} className="border border-hairline/60 px-2 py-1.5 text-muted-foreground bg-surface-3/30">{s}</div>
+          <div key={s} className="border border-white/10 px-2 py-1.5 text-white/55 bg-white/[0.02]">{s}</div>
         ))}
       </div>
       <div className="space-y-2">
         <p className="text-eyebrow text-primary">Orquestación</p>
-        <div className="border border-primary/40 bg-primary/5 p-3 text-center">
+        <div className="border border-primary/40 bg-primary/10 p-3 text-center">
           <p className="text-primary text-[10px]">CLOUD</p>
-          <p className="font-mono">AWS · GCP · Azure</p>
+          <p className="font-mono text-white/85">AWS · GCP · Azure</p>
         </div>
-        <div className="border border-primary/40 bg-primary/5 p-3 text-center">
+        <div className="border border-primary/40 bg-primary/10 p-3 text-center">
           <p className="text-primary text-[10px]">ON-PREM</p>
-          <p className="font-mono">Servidores privados</p>
+          <p className="font-mono text-white/85">Servidores privados</p>
         </div>
-        <div className="border border-primary bg-primary/10 p-3 text-center">
-          <p className="font-mono text-foreground">Data Lakehouse</p>
+        <div className="border border-primary bg-primary/20 p-3 text-center">
+          <p className="font-mono text-white">Data Lakehouse</p>
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-eyebrow text-muted-foreground">Salida</p>
+        <p className="text-eyebrow text-white/55">Salida</p>
         {["IA / ML", "Dashboards", "Apps de negocio", "API tiempo real"].map((s) => (
-          <div key={s} className="border border-primary/30 px-2 py-1.5 bg-primary/5">{s}</div>
+          <div key={s} className="border border-primary/30 px-2 py-1.5 bg-primary/10 text-white/90">{s}</div>
         ))}
       </div>
     </div>
-    <p className="text-[10px] text-center text-muted-foreground mt-4 uppercase tracking-widest">Mínima latencia · máxima trazabilidad · cero errores</p>
+    <p className="text-[10px] text-center text-white/55 mt-4 uppercase tracking-widest">Mínima latencia · máxima trazabilidad · cero errores</p>
   </DemoFrame>
 );
 
@@ -1006,7 +1220,7 @@ export const VisionDemo = () => {
     <DemoFrame label="Reconocimiento de figuras">
       <div className="space-y-4">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/55 mb-2">
             Selecciona la figura objetivo
           </p>
           <div className="grid grid-cols-4 gap-2">
@@ -1016,8 +1230,8 @@ export const VisionDemo = () => {
                 onClick={() => run(s)}
                 className={`flex flex-col items-center gap-1 py-3 border transition-colors ${
                   target === s
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-hairline text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                    ? "border-primary bg-primary/15 text-primary"
+                    : "border-white/10 text-white/55 hover:text-white hover:border-white/25"
                 }`}
               >
                 <ShapeIcon shape={s} className="w-5 h-5" />
@@ -1031,7 +1245,7 @@ export const VisionDemo = () => {
           {SCENES.map((scene, idx) => (
             <div
               key={idx}
-              className="relative aspect-square bg-surface-3/60 border border-hairline overflow-hidden"
+              className="relative aspect-square bg-white/[0.03] border border-white/10 overflow-hidden"
             >
               {/* Shapes */}
               {scene.map((item, i) => {
@@ -1041,7 +1255,7 @@ export const VisionDemo = () => {
                   <div
                     key={i}
                     className={`absolute transition-colors duration-300 ${
-                      reveal ? "text-primary" : "text-foreground/40"
+                      reveal ? "text-primary" : "text-white/40"
                     }`}
                     style={{
                       left: `${item.x}%`,
@@ -1077,7 +1291,7 @@ export const VisionDemo = () => {
               )}
 
               {/* Status badge */}
-              <div className="absolute top-1.5 left-1.5 text-[8px] uppercase tracking-wider font-mono text-muted-foreground">
+              <div className="absolute top-1.5 left-1.5 text-[8px] uppercase tracking-wider font-mono text-white/55">
                 CAM_{idx + 1}
               </div>
               {done && (
@@ -1089,7 +1303,7 @@ export const VisionDemo = () => {
           ))}
         </div>
 
-        <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest">
+        <p className="text-[10px] text-center text-white/55 uppercase tracking-widest">
           {scanning
             ? `Escaneando · buscando ${labels[target].toLowerCase()}…`
             : done

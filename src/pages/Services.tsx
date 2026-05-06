@@ -558,7 +558,7 @@ const Services = () => {
                               </div>
                               {Demo && (
                                 <div className="lg:col-span-7">
-                                  <div className="glass-card p-2 shadow-card">
+                                  <div className="bg-[hsl(215_60%_9%)] border border-white/10 p-2 shadow-2xl shadow-primary/5">
                                     <Demo />
                                   </div>
                                 </div>
