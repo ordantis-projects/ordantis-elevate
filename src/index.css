@@ -63,7 +63,6 @@
   }
   html {
     scroll-behavior: smooth;
-    font-size: 18px;
   }
   body {
     @apply bg-background text-foreground;
@@ -97,7 +96,7 @@
     line-height: 0.95;
   }
   .text-eyebrow {
-    @apply text-[11px] uppercase tracking-[0.25em] text-muted-foreground font-medium;
+    @apply text-[13px] uppercase tracking-[0.25em] text-muted-foreground font-medium;
   }
   .glass-card {
     background: hsl(var(--surface-1) / 0.6);
