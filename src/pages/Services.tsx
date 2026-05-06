@@ -445,26 +445,8 @@ const phases: Phase[] = [
 ];
 
 const Services = () => {
-  const [activePhase, setActivePhase] = useState(phases[0].id);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   useScrollReveal();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActivePhase(visible.target.id);
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] }
-    );
-    phases.forEach((p) => {
-      const el = document.getElementById(p.id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const openFromHash = () => {
@@ -472,7 +454,6 @@ const Services = () => {
       if (!hash) return;
       const phase = phases.find((p) => p.services.some((s) => s.id === hash));
       if (!phase) return;
-      setActivePhase(phase.id);
       setExpandedId(hash);
       window.setTimeout(() => {
         document
@@ -501,40 +482,6 @@ const Services = () => {
           </p>
         </div>
       </section>
-
-      {/* FLOATING SIDE RAIL — phases */}
-      <nav
-        aria-label="Fases"
-        className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col gap-3"
-      >
-        {phases.map((p) => {
-          const isActive = activePhase === p.id;
-          return (
-            <a
-              key={p.id}
-              href={`#${p.id}`}
-              onClick={() => setActivePhase(p.id)}
-              className="group relative flex items-center justify-end"
-              aria-label={p.title}
-            >
-              <span
-                className={`pointer-events-none absolute right-7 whitespace-nowrap px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] bg-foreground text-background opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 ${
-                  isActive ? "opacity-100 translate-x-0" : ""
-                }`}
-              >
-                {p.title}
-              </span>
-              <span
-                className={`block h-px transition-all duration-500 ${
-                  isActive
-                    ? "w-10 bg-primary"
-                    : "w-4 bg-muted-foreground/40 group-hover:w-6 group-hover:bg-foreground"
-                }`}
-              />
-            </a>
-          );
-        })}
-      </nav>
 
       {/* PHASES */}
       <div className="divide-y divide-hairline">
