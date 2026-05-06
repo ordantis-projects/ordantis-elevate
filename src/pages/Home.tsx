@@ -13,12 +13,11 @@ import odeonLogo from "@/assets/partners/odeon.png";
 import cofrimanLogo from "@/assets/partners/cofriman.png"
 import indivaLogo from "@/assets/partners/indiva.svg";
 import startupvLogo from "@/assets/backers/startupv.svg";
+import startinfLogo from "@/assets/backers/logo_startinf.png";
 import sherpaLogo from "@/assets/backers/sherpa.svg";
 import catedraHpLogo from "@/assets/backers/catedra-hp.png";
-import caixabankRaw from "@/assets/backers/caixabank.svg?raw";
-import levanteRaw from "@/assets/backers/levante.svg?raw";
 // Adobe-exported SVGs with DOCTYPE/foreignObject quirks → inline as raw markup
-import talentoJovenRaw from "@/assets/backers/talento-joven.svg?raw";
+import talentoJovenLogo from "@/assets/backers/talentojoven.png";
 import incibeRaw from "@/assets/backers/incibe.svg?raw";
 
 // Strip the XML prolog and DOCTYPE so the markup is safe to inject via innerHTML
@@ -26,14 +25,11 @@ const cleanSvgMarkup = (raw: string) => {
   const start = raw.indexOf("<svg");
   return start >= 0 ? raw.slice(start) : raw;
 };
-const talentoJovenSvg = cleanSvgMarkup(talentoJovenRaw);
 const incibeSvg = cleanSvgMarkup(incibeRaw);
-const caixabankSvg = cleanSvgMarkup(caixabankRaw);
-const levanteSvg = cleanSvgMarkup(levanteRaw);
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Partner = { name: string; logo?: string; invert?: boolean; rawSvg?: string };
+type Partner = { name: string; logo?: string; invert?: boolean; rawSvg?: string; url?: string };
 const partners: Partner[] = [
   { name: "Artecoin", logo: artecoinLogo },
   { name: "Indiva", logo: indivaLogo },
@@ -44,12 +40,11 @@ const partnersLoop = [...partners, ...partners, ...partners];
 
 const backers: Partner[] = [
   { name: "StartupV", logo: startupvLogo },
-  { name: "Proyecto Sherpa", logo: sherpaLogo },
-  { name: "Premios Talento Joven", rawSvg: talentoJovenSvg },
-  { name: "CaixaBank", rawSvg: caixabankSvg },
-  { name: "Levante", rawSvg: levanteSvg },
+  { name: "Start.inf - ETSINF (UPV)", logo: startinfLogo },
+  { name: "Proyecto Sherpa", logo: sherpaLogo, url: "https://www.feda.es/actualidad/noticias/item/13650-el-programa-sherpa-de-feda-ya-tiene-los-ocho-finalistas-para-un-total-de-15-000-euros-en-premios" },
+  { name: "Premios Talento Joven", logo: talentoJovenLogo, url: "https://www.levante-emv.com/comunitat-valenciana/2026/02/10/finalistas-premios-talento-joven-2026-126518511.html" },
   { name: "Cátedra HP", logo: catedraHpLogo },
-  { name: "Incibe", rawSvg: incibeSvg },
+  { name: "Incibe", rawSvg: incibeSvg, url: "https://www.incibe.es/node/619170" },
 ];
 
 const impact = [
@@ -367,26 +362,36 @@ const Home = () => {
         <div className="container-luxe">
           <p className="reveal text-eyebrow text-center mb-10">— Respaldados por</p>
           <div className="reveal flex flex-wrap justify-center items-center gap-x-16 gap-y-8">
-            {backers.map((b) => (
-              <div key={b.name} className="flex items-center justify-center h-20 opacity-90 hover:opacity-100 transition-opacity duration-500">
-                {b.rawSvg ? (
-                  <div
-                    role="img"
-                    aria-label={b.name}
-                    className="h-16 inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[280px]"
-                    dangerouslySetInnerHTML={{ __html: b.rawSvg }}
-                  />
-                ) : b.logo ? (
-                  <img
-                    src={b.logo}
-                    alt={b.name}
-                    className={`max-h-16 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
-                  />
-                ) : (
-                  <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
-                )}
-              </div>
-            ))}
+            {backers.map((b) => {
+              const content = b.rawSvg ? (
+                <div
+                  role="img"
+                  aria-label={b.name}
+                  className="h-16 inline-flex items-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-[280px]"
+                  dangerouslySetInnerHTML={{ __html: b.rawSvg }}
+                />
+              ) : b.logo ? (
+                <img
+                  src={b.logo}
+                  alt={b.name}
+                  className={`max-h-16 w-auto object-contain ${b.invert ? "brightness-0 invert" : ""}`}
+                />
+              ) : (
+                <span className="text-display text-xl text-muted-foreground/80">{b.name}</span>
+              );
+
+              return (
+                <div key={b.name} className="flex items-center justify-center h-20 opacity-90 hover:opacity-100 transition-opacity duration-500">
+                  {b.url ? (
+                    <a href={b.url} target="_blank" rel="noreferrer" aria-label={b.name} className="inline-flex items-center">
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -626,7 +631,11 @@ const Home = () => {
                   <img
                     src={p.logo}
                     alt={p.name}
-                    className="max-h-16 w-auto object-contain"
+                    className={`w-auto object-contain ${
+                      p.name === "Artecoin" || p.name === "Indiva"
+                        ? "max-h-20"
+                        : "max-h-16"
+                    }`}
                   />
                 ) : (
                   <span className="text-display text-2xl md:text-3xl text-muted-foreground whitespace-nowrap">
