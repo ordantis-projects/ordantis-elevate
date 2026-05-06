@@ -509,10 +509,10 @@ const Services = () => {
                     <article
                       key={svc.id}
                       id={svc.id}
-                      className={`border bg-background scroll-mt-32 transition-all duration-500 ${
+                      className={`border bg-[hsl(215_55%_13%)] text-white scroll-mt-32 transition-all duration-500 ${
                         open
                           ? "border-primary/40 shadow-card"
-                          : "border-hairline hover:border-primary/30"
+                          : "border-white/10 hover:border-primary/40"
                       }`}
                     >
                       {/* Card head — always visible */}
@@ -526,10 +526,10 @@ const Services = () => {
                           {svc.num}
                         </span>
                         <div className="col-span-10 md:col-span-9">
-                          <h3 className="text-display text-xl md:text-2xl mb-2 group-hover:text-primary transition-colors">
+                          <h3 className="text-display text-xl md:text-2xl mb-2 text-white group-hover:text-primary transition-colors">
                             {svc.title}
                           </h3>
-                          <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-w-3xl">
+                          <p className="text-white/60 text-sm md:text-base leading-relaxed max-w-3xl">
                             {svc.short}
                           </p>
                         </div>
@@ -593,7 +593,7 @@ const Services = () => {
 
                             {/* Use cases */}
                             <div>
-                              <p className="text-eyebrow text-primary-glow mb-6">— Casos de uso</p>
+                              <p className="text-eyebrow text-primary-glow mb-6">— Ejemplos de casos de uso</p>
                               <div
                                 className={`grid gap-px bg-white/5 border border-white/10 ${
                                   svc.cases.length >= 4
