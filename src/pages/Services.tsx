@@ -515,14 +515,14 @@ const Services = () => {
               href={`#${p.id}`}
               onClick={() => setActivePhase(p.id)}
               className="group relative flex items-center justify-end"
-              aria-label={`${p.tag} ${p.title}`}
+              aria-label={p.title}
             >
               <span
                 className={`pointer-events-none absolute right-7 whitespace-nowrap px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] bg-foreground text-background opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 ${
                   isActive ? "opacity-100 translate-x-0" : ""
                 }`}
               >
-                {p.tag} · {p.title}
+                {p.title}
               </span>
               <span
                 className={`block h-px transition-all duration-500 ${
@@ -544,8 +544,6 @@ const Services = () => {
               {/* Phase header */}
               <div className="grid lg:grid-cols-12 gap-12 mb-20">
                 <div className="lg:col-span-5 reveal">
-                  <p className="text-eyebrow mb-6">— {phase.tag}</p>
-                  <p className="text-display text-7xl text-primary/30 mb-4 tabular-nums">{phase.num}</p>
                   <h2 className="text-display text-4xl md:text-6xl">{phase.title}</h2>
                 </div>
                 <div className="lg:col-span-7 reveal lg:pt-10">
