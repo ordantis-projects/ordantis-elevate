@@ -92,7 +92,8 @@ const Assessment = () => {
       replyto: data.email || "",
     };
     for (const [k, label] of Object.entries(FIELD_LABELS)) {
-      const v = data[k];
+      let v = data[k];
+      if (v === "Otros" && data[`${k}Other`]) v = `Otros — ${data[`${k}Other`]}`;
       if (v == null || v === "") continue;
       payload[label] = Array.isArray(v) ? v.join(", ") : String(v);
     }
@@ -182,18 +183,29 @@ const Assessment = () => {
                 </label>
 
                 {f.type === "single" && (
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    {f.options.map((o) => (
-                      <button key={o} type="button" onClick={() => set(f.name, o)}
-                        className={`text-left px-5 py-4 border transition-all duration-300 ${
-                          data[f.name] === o
-                            ? "border-primary bg-primary/5 text-foreground"
-                            : "border-hairline text-muted-foreground hover:border-foreground/40 hover:text-foreground"
-                        }`}>
-                        <span className="text-sm">{o}</span>
-                      </button>
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {f.options.map((o) => (
+                        <button key={o} type="button" onClick={() => set(f.name, o)}
+                          className={`text-left px-5 py-4 border transition-all duration-300 ${
+                            data[f.name] === o
+                              ? "border-primary bg-primary/5 text-foreground"
+                              : "border-hairline text-muted-foreground hover:border-foreground/40 hover:text-foreground"
+                          }`}>
+                          <span className="text-sm">{o}</span>
+                        </button>
+                      ))}
+                    </div>
+                    {data[f.name] === "Otros" && f.options.includes("Otros") && (
+                      <input
+                        type="text"
+                        value={data[`${f.name}Other`] || ""}
+                        placeholder="Especifica..."
+                        onChange={(e) => set(`${f.name}Other`, e.target.value)}
+                        className="mt-4 w-full bg-transparent border-b border-hairline px-0 py-3 text-base focus:border-primary focus:outline-none transition-colors"
+                      />
+                    )}
+                  </>
                 )}
 
                 {f.type === "multi" && (
