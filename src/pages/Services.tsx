@@ -494,7 +494,7 @@ const Services = () => {
         <div className="container-luxe">
           <p className="text-eyebrow mb-8 reveal">— Servicios</p>
           <h1 className="text-display text-[clamp(3rem,7vw,7rem)] max-w-5xl reveal">
-            Cuatro fases. <span className="text-primary">Resultados medibles</span>.
+            Servicios Diseñados para <span className="text-primary">Cada Etapa de Tu Negocio</span>.
           </h1>
           <p className="mt-10 max-w-2xl text-lg text-muted-foreground reveal">
             Cada fase de nuestra metodología agrupa los servicios necesarios para llegar al siguiente nivel. Explora cada bloque y abre el detalle de cualquier servicio para ver su demo, componentes y casos de uso.
