@@ -473,6 +473,11 @@ const Home = () => {
               const isActive = openPhase === idx;
               return (
                 <Fragment key={m.n}>
+                  <div className="relative">
+                    <PhaseShape
+                      kind={m.shape}
+                      className="hidden 2xl:block absolute right-[calc(100%+1rem)] top-1/2 -translate-y-1/2 w-28 h-28 pointer-events-none"
+                    />
                   <button
                     type="button"
                     onClick={() => togglePhase(idx)}
@@ -503,8 +508,6 @@ const Home = () => {
                         </p>
                       </div>
 
-                      <PhaseShape kind={m.shape} />
-
                       <span
                         className={`shrink-0 self-center inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground transition-all duration-500 ${
                           isActive ? "rotate-90" : "group-hover:translate-x-1 group-hover:bg-primary/90"
@@ -514,6 +517,7 @@ const Home = () => {
                       </span>
                     </div>
                   </button>
+                  </div>
 
                   {isActive && phaseDetail && (
                     <div

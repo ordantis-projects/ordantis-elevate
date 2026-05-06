@@ -1,7 +1,7 @@
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Edges } from "@react-three/drei";
-import type { Mesh } from "three";
+import type { Group } from "three";
 
 export type PhaseShapeKind = "cube" | "cylinder" | "sphere" | "pyramid";
 
@@ -19,45 +19,98 @@ const TILT: Record<PhaseShapeKind, [number, number, number]> = {
   pyramid:  [ 0.0,  0.0,  0.0],
 };
 
+const FILL_COLOR = "#0E3963";
+const EDGE_COLOR = "#15A3C7";
+
+function ShapeMeshes({ kind }: { kind: PhaseShapeKind }) {
+  switch (kind) {
+    case "cube":
+      return (
+        <mesh>
+          <boxGeometry args={[1.35, 1.35, 1.35]} />
+          <meshStandardMaterial
+            color={FILL_COLOR}
+            metalness={0.55}
+            roughness={0.28}
+            transparent
+            opacity={0.22}
+          />
+          <Edges color={EDGE_COLOR} />
+        </mesh>
+      );
+    case "cylinder":
+      return (
+        <mesh>
+          <cylinderGeometry args={[0.78, 0.78, 1.7, 48, 1]} />
+          <meshStandardMaterial
+            color={FILL_COLOR}
+            metalness={0.55}
+            roughness={0.28}
+            transparent
+            opacity={0.22}
+          />
+          <Edges color={EDGE_COLOR} threshold={1} />
+        </mesh>
+      );
+    case "sphere":
+      return (
+        <>
+          <mesh>
+            <sphereGeometry args={[0.96, 32, 24]} />
+            <meshStandardMaterial
+              color={FILL_COLOR}
+              metalness={0.55}
+              roughness={0.28}
+              transparent
+              opacity={0.22}
+            />
+          </mesh>
+          <mesh>
+            <sphereGeometry args={[1.0, 18, 12]} />
+            <meshBasicMaterial
+              color={EDGE_COLOR}
+              wireframe
+              transparent
+              opacity={0.85}
+            />
+          </mesh>
+        </>
+      );
+    case "pyramid":
+      return (
+        <mesh>
+          <coneGeometry args={[1.05, 1.7, 4, 1]} />
+          <meshStandardMaterial
+            color={FILL_COLOR}
+            metalness={0.55}
+            roughness={0.28}
+            transparent
+            opacity={0.22}
+            flatShading
+          />
+          <Edges color={EDGE_COLOR} threshold={1} />
+        </mesh>
+      );
+  }
+}
+
 function RotatingShape({ kind }: { kind: PhaseShapeKind }) {
-  const meshRef = useRef<Mesh>(null);
+  const groupRef = useRef<Group>(null);
   const rates = SPIN_RATES[kind];
   const tilt = TILT[kind];
 
   useFrame((_, delta) => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
-    mesh.rotation.x += delta * rates[0];
-    mesh.rotation.y += delta * rates[1];
-    mesh.rotation.z += delta * rates[2];
+    const g = groupRef.current;
+    if (!g) return;
+    g.rotation.x += delta * rates[0];
+    g.rotation.y += delta * rates[1];
+    g.rotation.z += delta * rates[2];
   });
 
-  const geometry = useMemo(() => {
-    switch (kind) {
-      case "cube":
-        return <boxGeometry args={[1.35, 1.35, 1.35]} />;
-      case "cylinder":
-        return <cylinderGeometry args={[0.78, 0.78, 1.7, 48, 1]} />;
-      case "sphere":
-        return <sphereGeometry args={[1.0, 48, 32]} />;
-      case "pyramid":
-        return <coneGeometry args={[1.05, 1.7, 4, 1]} />;
-    }
-  }, [kind]);
-
   return (
-    <mesh ref={meshRef} rotation={tilt}>
-      {geometry}
-      <meshStandardMaterial
-        color="#0E3963"
-        metalness={0.55}
-        roughness={0.28}
-        transparent
-        opacity={0.18}
-        flatShading={kind === "pyramid"}
-      />
-      <Edges threshold={kind === "sphere" ? 18 : 1} color="#15A3C7" />
-    </mesh>
+    <group ref={groupRef} rotation={tilt}>
+      <ShapeMeshes kind={kind} />
+    </group>
   );
 }
 
@@ -73,10 +126,7 @@ export function PhaseShape({ kind, className }: Props) {
   }, []);
 
   return (
-    <div
-      className={`hidden md:block w-32 h-32 lg:w-36 lg:h-36 shrink-0 self-center ${className ?? ""}`}
-      aria-hidden="true"
-    >
+    <div className={className} aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 4], fov: 38 }}
         dpr={[1, 2]}
