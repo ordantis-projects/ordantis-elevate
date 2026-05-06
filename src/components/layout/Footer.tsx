@@ -5,7 +5,7 @@ import { useCookieConsent } from "@/lib/cookie-consent";
 export const Footer = () => {
   const { openSettings } = useCookieConsent();
   return (
-    <footer className="relative mt-32 border-t border-hairline">
+    <footer className="relative mt-32 border-t border-hairline bg-background">
       <div className="container-luxe py-20 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="md:col-span-2">
           <img src={logo} alt="Ordantis" className="h-8 w-auto mb-6" />
