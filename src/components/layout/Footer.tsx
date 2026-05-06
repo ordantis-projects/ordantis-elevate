@@ -11,7 +11,7 @@ export const Footer = () => {
           <img src={logo} alt="Ordantis" className="h-8 w-auto mb-6 brightness-0 invert" />
           <p className="text-white/70 max-w-md text-sm leading-relaxed">
             Tu departamento externo de Datos e IA. Estrategia, infraestructura
-            e implementación con ROI medible desde el primer piloto.
+            e implementación.
           </p>
         </div>
         <div>
