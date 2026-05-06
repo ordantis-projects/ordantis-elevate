@@ -183,16 +183,24 @@ const Assessment = () => {
 
                 {f.type === "single" && (
                   <div className="grid sm:grid-cols-2 gap-2">
-                    {f.options.map((o) => (
-                      <button key={o} type="button" onClick={() => set(f.name, o)}
-                        className={`text-left px-5 py-4 border transition-all duration-300 ${
-                          data[f.name] === o
-                            ? "border-primary bg-primary/5 text-foreground"
-                            : "border-hairline text-muted-foreground hover:border-foreground/40 hover:text-foreground"
-                        }`}>
-                        <span className="text-sm">{o}</span>
-                      </button>
-                    ))}
+                    {f.options.map((o) => {
+                      const active = data[f.name] === o;
+                      return (
+                        <button key={o} type="button" onClick={() => set(f.name, o)}
+                          className={`group/opt text-left px-5 py-4 border transition-all duration-300 flex items-center gap-3 ${
+                            active
+                              ? "border-primary bg-primary/5 text-foreground shadow-[0_8px_30px_-12px_hsl(192_81%_43%/0.3)]"
+                              : "border-hairline text-muted-foreground hover:border-primary/50 hover:text-foreground hover:bg-primary/[0.02]"
+                          }`}>
+                          <span className={`shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                            active ? "border-primary bg-primary" : "border-muted-foreground/40 group-hover/opt:border-primary/60"
+                          }`}>
+                            {active && <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground" />}
+                          </span>
+                          <span className="text-sm">{o}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 

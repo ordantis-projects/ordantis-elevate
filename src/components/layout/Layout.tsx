@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { CookieConsent } from "@/components/CookieConsent";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { CookieConsentProvider } from "@/lib/cookie-consent";
 
 export const Layout = () => {
@@ -30,6 +31,7 @@ export const Layout = () => {
           <Outlet />
         </main>
         <Footer />
+        <ScrollToTop />
         <CookieConsent />
       </div>
     </CookieConsentProvider>

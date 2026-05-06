@@ -509,12 +509,18 @@ const Services = () => {
                     <article
                       key={svc.id}
                       id={svc.id}
-                      className={`border bg-[hsl(215_55%_13%)] text-white scroll-mt-32 transition-all duration-500 ${
+                      className={`relative border bg-[hsl(215_55%_13%)] text-white scroll-mt-32 transition-all duration-500 ${
                         open
                           ? "border-primary/40 shadow-card"
-                          : "border-white/10 hover:border-primary/40"
+                          : "border-white/10 hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-[0_20px_60px_-30px_hsl(192_81%_43%/0.4)]"
                       }`}
                     >
+                      <span
+                        className={`absolute left-0 top-0 bottom-0 w-[3px] bg-primary transition-opacity duration-500 ${
+                          open ? "opacity-100" : "opacity-0"
+                        }`}
+                        aria-hidden="true"
+                      />
                       {/* Card head — always visible */}
                       <button
                         type="button"
@@ -533,7 +539,10 @@ const Services = () => {
                             {svc.short}
                           </p>
                         </div>
-                        <div className="hidden md:flex col-span-2 items-center justify-end pt-1">
+                        <div className="hidden md:flex col-span-2 items-center justify-end pt-1 gap-3">
+                          <span className="hidden lg:inline-block text-[11px] uppercase tracking-[0.2em] text-white/40 group-hover:text-primary-glow transition-colors duration-500">
+                            {open ? "Cerrar" : "Ver detalle"}
+                          </span>
                           <span
                             className={`inline-flex items-center justify-center w-10 h-10 bg-primary text-primary-foreground transition-transform duration-500 ${
                               open ? "rotate-45" : "group-hover:translate-x-1"
