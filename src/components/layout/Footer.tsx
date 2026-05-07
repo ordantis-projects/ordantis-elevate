@@ -53,8 +53,7 @@ export const Footer = () => {
               >
                 Gestionar cookies
               </button>
-            </li>
-            <li className="text-white/40">Datos &amp; IA</li>
+            </li>status
           </ul>
         </div>
       </div>
