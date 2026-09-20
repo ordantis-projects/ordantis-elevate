@@ -78,10 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: application
     env:
-      # Synthetic identifier and mailbox, only in an isolated mocked test build.
-      NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: 00000000-0000-0000-0000-000000000001
+      # Cloudflare's documented test key and a synthetic mailbox, only in an isolated mocked test build.
+      NEXT_PUBLIC_TURNSTILE_SITEKEY: 1x00000000000000000000AA
       DIAGNOSTIC_RECIPIENT: recipient@example.test
-      DIAGNOSTIC_DELIVERY_READY: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

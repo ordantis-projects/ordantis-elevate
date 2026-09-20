@@ -55,7 +55,7 @@ export function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="cookie-panel" data-consent-initial={initializing ? "" : undefined}
+    <div className="cookie-panel" data-consent-initial={initializing ? "" : undefined} inert={initializing || undefined}
       aria-labelledby="cookie-title" aria-describedby="cookie-description" role="dialog" aria-modal="false"
       onKeyDown={(event) => {
         if (customizing && event.key === "Escape") { event.stopPropagation(); back(); }
