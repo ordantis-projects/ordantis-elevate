@@ -8,7 +8,7 @@
     "directory": "dist/client",
     "binding": "ASSETS",
     "not_found_handling": "none",
-    "run_worker_first": true
+    "run_worker_first": false
   },
   "cache": {
     "enabled": true
