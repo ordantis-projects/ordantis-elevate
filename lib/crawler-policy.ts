@@ -1,5 +1,5 @@
-// Search/retrieval access is independent of permission for model development.
-// Google-Extended also controls grounding in Gemini Apps/Vertex, not Google Search.
+// Search/retrieval and model-development crawlers are both allowed by the owner.
+// API routes remain excluded because they are not public content.
 import { siteConfig } from "../content/identity.ts";
 
 export const searchCrawlers = [
@@ -13,15 +13,16 @@ export const searchCrawlers = [
   "Bravebot",
 ] as const;
 
-export const restrictedModelCrawlers = ["GPTBot", "CCBot", "Google-Extended", "ClaudeBot"] as const;
+export const modelDevelopmentCrawlers = ["GPTBot", "CCBot", "Google-Extended", "ClaudeBot"] as const;
+
+export const allowedCrawlers = [...searchCrawlers, ...modelDevelopmentCrawlers] as const;
 
 export function crawlerRules() {
   // Specific user-agent groups do not inherit the wildcard group's exclusions.
   // Markdown remains crawlable so consumers can read its canonical/noindex headers.
   const publicContent = { allow: "/", disallow: ["/api/", "/api$"] };
   return [
-    { userAgent: [...searchCrawlers], ...publicContent },
-    { userAgent: [...restrictedModelCrawlers], disallow: "/" },
+    { userAgent: [...allowedCrawlers], ...publicContent },
     { userAgent: "*", ...publicContent },
   ];
 }
