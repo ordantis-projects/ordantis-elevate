@@ -24,6 +24,9 @@
   --shadow: 0 20px 60px -30px hsl(215 70% 20% / 0.2);
   --shell: min(1272px, calc(100% - 8rem));
   --gradient-hero: linear-gradient(180deg, var(--paper), var(--surface));
+  --section-space: clamp(3.25rem, 6vw, 5.25rem);
+  --section-heading-gap: clamp(1.75rem, 3vw, 2.75rem);
+  --section-space-compact: clamp(3rem, 5vw, 4.5rem);
 }
 
 * {
@@ -298,7 +301,7 @@ input, textarea { caret-color: var(--brand-text); }
 }
 
 .page-hero {
-  padding-block: 10rem 6rem;
+  padding-block: 10rem 5rem;
   background: var(--gradient-hero);
   border-bottom: 1px solid var(--line);
 }
@@ -312,13 +315,13 @@ input, textarea { caret-color: var(--brand-text); }
 }
 
 .content-section {
-  padding-block: clamp(4.5rem, 10vw, 8rem);
+  padding-block: var(--section-space);
   border-bottom: 1px solid var(--line);
 }
 
 .section-heading {
   max-width: 780px;
-  margin-bottom: clamp(2.25rem, 5vw, 4rem);
+  margin-bottom: var(--section-heading-gap);
 }
 
 .section-heading > p:last-child {
@@ -522,7 +525,7 @@ input, textarea { caret-color: var(--brand-text); }
 }
 
 .contact-band {
-  padding-block: clamp(4rem, 9vw, 7rem);
+  padding-block: var(--section-space-compact);
   color: var(--ink);
   background: var(--gradient-hero);
 }
@@ -1198,7 +1201,7 @@ details[open] > summary .square-arrow { transform: rotate(90deg); }
   .backers-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 1rem; }
   .backer-logo { width: 100%; height: 64px; }
   .backer-logo img { max-width: 100%; max-height: 64px; }
-  .backers-section, .partners-section { padding-block: 3.5rem; }
+  .backers-section, .partners-section { padding-block: 2.75rem; }
   .capability-row { grid-template-columns: 1.5rem minmax(0, 1fr); padding: 1.75rem 0; gap: 0.75rem; }
   .overview-arrow { display: none; }
   .phase-shape { display: none; }
@@ -1295,7 +1298,15 @@ details[open] > summary .square-arrow { transform: rotate(90deg); }
   }
 
   .page-hero {
-    padding-block: 8rem 3.5rem;
+    padding-block: 7.5rem 3rem;
+  }
+
+  .content-section {
+    padding-block: 3.25rem;
+  }
+
+  .section-heading {
+    margin-bottom: 2rem;
   }
 
   .cards-grid {
