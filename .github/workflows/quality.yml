@@ -3,7 +3,7 @@ name: Quality gate
 on:
   pull_request:
   push:
-    branches: [main, "feat/**"]
+    branches: [main]
 
 permissions:
   contents: read
@@ -26,15 +26,16 @@ jobs:
         run: |
           dotnet tool install --global SignsOfAI.Cli --version 0.5.0
           npm run quality:signsofai
-      - name: Vale style gate
-        uses: errata-ai/vale-action@v2.1.1
-        with:
-          version: "3.19.0"
-          files: .quality/pages
-          reporter: github-check
-          fail_on_error: true
-          filter_mode: nofilter
+      - name: Install Vale 3.19.0
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/errata-ai/vale/releases/download/v3.19.0/vale_3.19.0_Linux_64-bit.tar.gz \
+            --output /tmp/vale.tar.gz
+          tar --extract --gzip --file /tmp/vale.tar.gz --directory /tmp vale
+          /tmp/vale --version
       - name: Verify Vale rules and every exported page
+        env:
+          VALE_BIN: /tmp/vale
         run: npm run quality:vale
 
   lighthouse:
