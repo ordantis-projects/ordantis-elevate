@@ -1,0 +1,93 @@
+name: Quality gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run quality
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - name: SignsOfAI Spanish content gate
+        run: |
+          dotnet tool install --global SignsOfAI.Cli --version 0.5.0
+          npm run quality:signsofai
+      - name: Install Vale 3.19.0
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/errata-ai/vale/releases/download/v3.19.0/vale_3.19.0_Linux_64-bit.tar.gz \
+            --output /tmp/vale.tar.gz
+          tar --extract --gzip --file /tmp/vale.tar.gz --directory /tmp vale
+          /tmp/vale --version
+      - name: Verify Vale rules and every exported page
+        env:
+          VALE_BIN: /tmp/vale
+        run: npm run quality:vale
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: application
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lighthouse
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: lhci_reports
+
+  browser:
+    runs-on: ubuntu-latest
+    needs: application
+    env:
+      # Test-only IDs: analytics-consent.spec.ts intercepts every vendor request.
+      NEXT_PUBLIC_GA_ID: G-ORDANTISTEST
+      NEXT_PUBLIC_CLARITY_ID: ordantistest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run test:e2e
+
+  form-delivery:
+    runs-on: ubuntu-latest
+    needs: application
+    env:
+      # Cloudflare's documented test key and a synthetic mailbox, only in an isolated mocked test build.
+      NEXT_PUBLIC_TURNSTILE_SITEKEY: 1x00000000000000000000AA
+      DIAGNOSTIC_RECIPIENT: recipient@example.test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run test:delivery

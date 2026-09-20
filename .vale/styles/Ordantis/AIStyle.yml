@@ -1,0 +1,15 @@
+extends: existence
+message: "Patrón editorial genérico: '%s'. Sustitúyelo por un hecho, mecanismo o decisión concreta."
+level: error
+ignorecase: true
+tokens:
+  - "no solo.{1,100}sino"
+  - "no se trata (solo|únicamente|solamente) de"
+  - "en (la )?(era|época|mundo) (digital|actual|moderna)"
+  - "cabe (destacar|señalar|mencionar)"
+  - "es importante destacar"
+  - "solución (innovadora|robusta|de vanguardia)"
+  - "sin precedentes"
+  - "cambio de paradigma"
+  - "en conclusión"
+  - "en definitiva"

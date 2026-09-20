@@ -10,7 +10,22 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+out
+coverage
+.unlighthouse
+.lighthouseci
+lhci_reports
+.quality
+.vale/styles/write-good/
+playwright-report
+test-results
+quality/mobile-ux-preview/
+quality/mobile-ux-delivery/
+tsconfig.tsbuildinfo
 *.local
+.env*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -24,7 +39,8 @@ dist-ssr
 *.sw?
 
 
-.claude 
+.claude
 *.docx
-*.md
 skills-lock.json
+.vinext/
+.wrangler/

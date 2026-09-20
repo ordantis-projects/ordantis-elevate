@@ -1,0 +1,107 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 2rem;
+  border: 0;
+  color: var(--ink);
+  background: var(--paper);
+  overscroll-behavior: contain;
+  z-index: 10001;
+}
+
+/* Cerrada por defecto: sin JavaScript se ve directamente la portada. */
+.intro:not([open]) { display: none; }
+:global(html[data-brand-intro-pending]) .intro,
+.intro[open] {
+  display: grid;
+  place-items: center;
+  animation: depart var(--intro-duration) linear both;
+}
+.intro::backdrop { background: transparent; }
+
+/* Bloqueo modal temporal, no ocultación de desbordamientos del contenido. */
+:global(html):has(.intro[open]) { overflow: hidden; scrollbar-gutter: stable; }
+
+/* Cover even an early streamed header before the intro markup arrives. */
+:global(html[data-brand-intro-pending]):not(:has([data-brand-intro]))::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--paper);
+}
+
+.identity { width: min(34rem, calc(100vw - 5rem)); }
+.stage { position: relative; }
+.wordmark { clip-path: inset(0 100% 0 0); }
+.wordmark img { display: block; width: 100%; height: auto; }
+.sweep { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.sweep img {
+  position: absolute;
+  top: 29%;
+  left: 0;
+  width: auto;
+  height: 71%;
+  transform: translateX(-30%);
+}
+.caption {
+  margin: 1.75rem 0 0;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  line-height: 1.9;
+  letter-spacing: 0.16em;
+  opacity: 0;
+}
+:global(html[data-brand-intro-pending]) .intro .wordmark,
+.intro[open] .wordmark { animation: reveal var(--intro-duration) cubic-bezier(0.65, 0, 0.35, 1) both; }
+:global(html[data-brand-intro-pending]) .intro .sweep,
+.intro[open] .sweep { animation: sweep var(--intro-duration) cubic-bezier(0.65, 0, 0.35, 1) both; }
+:global(html[data-brand-intro-pending]) .intro .caption,
+.intro[open] .caption { animation: caption var(--intro-duration) ease both; }
+
+.skip { position: absolute; right: max(1.5rem, env(safe-area-inset-right)); bottom: max(1.5rem, env(safe-area-inset-bottom)); margin: 0; }
+.skip button {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.skip button:hover { color: var(--ink); border-color: var(--brand); }
+.skip button span { color: var(--brand-text); font-size: 1.15rem; }
+
+@keyframes reveal {
+  0%, 12% { clip-path: inset(0 100% 0 0); }
+  58%, 100% { clip-path: inset(0); }
+}
+@keyframes sweep {
+  0% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; transform: translateX(0); }
+  58% { opacity: 1; transform: translateX(100%); }
+  68%, 100% { opacity: 0; transform: translateX(calc(100% + 1rem)); }
+}
+@keyframes caption {
+  0%, 48% { opacity: 0; transform: translateY(0.35rem); }
+  67%, 100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes depart {
+  0%, 82% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-brand-intro-pending]) .intro, .intro[open] { display: none; }
+  .intro[open], .intro[open] * { animation: none; }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "route": "/insights",
+    "sha256": "84fadaef7fd511a075b2682f875a0a624d6c05fd45519c2f3f27c232633ae161",
+    "reviewedAt": "2026-09-17",
+    "reason": "Revisado de nuevo el directorio de 37 guías, con mantenimiento predictivo y análisis de cambios en datos de operación para empresas. La alerta principal mide cadencia uniforme en un directorio de enlaces, no en un artículo continuo. Las alertas léxicas y de enumeración corresponden a términos necesarios de las guías; no se cambian títulos precisos para alterar el detector. Las dos guías nuevas declaran alcance metodológico y ejemplos inventados, sin resultados de modelos ni clientes. Se distinguen los protocolos de propuestas de la investigación publicada de EXIST. Sin artefactos ni patrones de afirmaciones no respaldadas. Esto no certifica autoría humana."
+  },
+  {
+    "route": "/faq",
+    "sha256": "6cf244f175809654b930e19bd5d4adff3c66a3f66167bded4db6bdf5ceddb234",
+    "reviewedAt": "2026-09-17",
+    "reason": "Revisadas de nuevo las diez respuestas tras equilibrar desarrollo, investigación e integración. El encaje incluye empresas y administraciones; el presupuesto no fuerza I+D en cualquier trabajo. Las respuestas son autónomas, acotan entregables, operación y confidencialidad y no prometen resultados ni seguridad absoluta. Las alertas de ritmo y enumeración no identifican relleno ni duplicados; no se alargan respuestas breves para modificar su cadencia. Sin artefactos ni patrones de afirmaciones no respaldadas. Esto no certifica autoría humana."
+  }
+]

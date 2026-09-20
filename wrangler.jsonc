@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ordantis-web-preview",
+  "compatibility_date": "2026-08-30",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "vinext/server/fetch-handler",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "cache": {
+    "enabled": true
+  },
+  "vars": {
+    "ORDANTIS_DEPLOYMENT": "preview",
+    "NEXT_PUBLIC_TURNSTILE_SITEKEY": "0x4AAAAAAEjAR_Ym99kxPell",
+    "TURNSTILE_HOSTNAMES": "staging-ordantis-web-preview.ordantis-solutions.workers.dev"
+  },
+  "secrets": {
+    "required": [
+      "TURNSTILE_SECRET",
+      "DIAGNOSTIC_RECIPIENT"
+    ]
+  },
+  "send_email": [
+    {
+      "name": "DIAGNOSTIC_EMAIL",
+      "allowed_sender_addresses": [
+        "web@ordantis.com"
+      ],
+      "allowed_destination_addresses": [
+        "contacto@ordantis.com"
+      ]
+    }
+  ],
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
