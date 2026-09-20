@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { allIndexableRoutes } from "../../content/pages";
 import { siteConfig } from "../../content/identity";
 import { insights } from "../../content/site";
-import { searchCrawlers, restrictedModelCrawlers } from "../../lib/crawler-policy";
+import { allowedCrawlers } from "../../lib/crawler-policy";
 
 test.use({ javaScriptEnabled: false });
 
@@ -95,17 +95,13 @@ test("robots respect the deployment policy and expose Markdown noindex/canonical
     expect(robots.headers()["cache-control"]).toBe("private, no-store");
   } else {
     const groups = robotsText.split(/\r?\n\s*\r?\n/);
-    for (const bot of [...searchCrawlers, "*"]) {
+    for (const bot of [...allowedCrawlers, "*"]) {
       const group = groups.find((item) => item.split(/\r?\n/).includes(`User-Agent: ${bot}`));
       expect(group, bot).toBeTruthy();
       expect(group, bot).toMatch(/^Allow: \/$/m);
       expect(group, bot).toContain("Disallow: /api/");
       expect(group, bot).not.toMatch(/^Disallow: \/$/m);
       expect(group, bot).not.toContain("Disallow: /markdown");
-    }
-    for (const bot of restrictedModelCrawlers) {
-      const group = groups.find((item) => item.split(/\r?\n/).includes(`User-Agent: ${bot}`));
-      expect(group, bot).toMatch(/^Disallow: \/$/m);
     }
     expect(robotsText).not.toMatch(/^Content-Signal:/m);
   }

@@ -28,7 +28,7 @@ const assertions = [
   [layout.includes("organizationGraph"), "Falta el grafo Organization/WebSite."],
   [robots.includes("renderRobotsText()"), "robots.txt debe utilizar la política común probada."],
   [["OAI-SearchBot", "PerplexityBot", "Claude-SearchBot", "Claude-User", "Bravebot"].every((bot) => crawlers.includes(bot)), "Faltan crawlers de búsqueda generativa."],
-  [crawlers.includes("restrictedModelCrawlers") && crawlers.includes("GPTBot"), "Falta separar búsqueda y entrenamiento."],
+  [crawlers.includes("modelDevelopmentCrawlers") && crawlers.includes("GPTBot"), "Falta declarar acceso para crawlers de desarrollo de modelos."],
   [!schema.includes('"Person"'), "La decisión del propietario excluye Person schema."],
   [schema.includes("schema-dts"), "JSON-LD debe estar tipado con schema-dts."],
   [home.includes("<h1>"), "La home necesita un H1 renderizado en servidor."],
