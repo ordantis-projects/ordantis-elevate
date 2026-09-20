@@ -3,6 +3,7 @@ import { allIndexableRoutes } from "../../content/pages";
 import { siteConfig } from "../../content/identity";
 import { insights } from "../../content/site";
 import { allowedCrawlers } from "../../lib/crawler-policy";
+import { contentSignalPolicy } from "../../lib/agent-discovery";
 
 test.use({ javaScriptEnabled: false });
 
@@ -100,15 +101,16 @@ test("robots respect the deployment policy and expose Markdown noindex/canonical
       expect(group, bot).toBeTruthy();
       expect(group, bot).toMatch(/^Allow: \/$/m);
       expect(group, bot).toContain("Disallow: /api/");
+      expect(group, bot).toContain(`Content-Signal: ${contentSignalPolicy}`);
       expect(group, bot).not.toMatch(/^Disallow: \/$/m);
       expect(group, bot).not.toContain("Disallow: /markdown");
     }
-    expect(robotsText).not.toMatch(/^Content-Signal:/m);
   }
   const llms = await request.get("/llms.txt");
   expect(llms.status()).toBe(200);
   expect(llms.headers()["content-type"]).toContain("text/markdown");
   expect(llms.headers()["x-robots-tag"]).toContain("noindex");
+  expect(llms.headers()["content-signal"]).toBe(contentSignalPolicy);
   const llmsText = await llms.text();
   expect(llmsText).toMatch(/^# Ordantis\n\n> /);
   expect(llmsText).toContain("/markdown/inteligencia-artificial-albacete");
@@ -120,12 +122,16 @@ test("robots respect the deployment policy and expose Markdown noindex/canonical
     const markdown = await request.get(path === "/" ? "/markdown" : `/markdown${path}`);
     expect(markdown.status()).toBe(200);
     expect(markdown.headers()["x-robots-tag"]).toContain("noindex");
+    expect(markdown.headers()["content-signal"]).toBe(contentSignalPolicy);
     expect(markdown.headers().link).toContain(`<${new URL(path, siteConfig.url)}>; rel="canonical"`);
     expect(markdown.headers().link).toContain(`<${siteConfig.url}/llms.txt>; rel="describedby"`);
     for (const bot of ["Googlebot", "OAI-SearchBot", "Claude-SearchBot"]) {
       const html = await request.get(path, { headers: { "User-Agent": bot, Accept: "text/html" } });
       expect(html.status(), `${bot} ${path}`).toBe(200);
       expect(html.headers()["content-type"]).toContain("text/html");
+      expect(html.headers()["content-signal"]).toBe(contentSignalPolicy);
+      expect(html.headers().link).toContain(`rel="alternate"; type="text/markdown"`);
+      expect(html.headers().link).toContain(`<${siteConfig.url}/llms.txt>; rel="describedby"`);
       if (testInfo.config.metadata.deployment === "preview") {
         expect(html.headers()["x-robots-tag"] ?? "").toMatch(/\bnoindex\b/i);
       } else {

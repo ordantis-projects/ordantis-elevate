@@ -1,6 +1,7 @@
 // Search/retrieval and model-development crawlers are both allowed by the owner.
 // API routes remain excluded because they are not public content.
 import { siteConfig } from "../content/identity.ts";
+import { contentSignalPolicy } from "./agent-discovery.ts";
 
 export const searchCrawlers = [
   "Googlebot",
@@ -20,7 +21,11 @@ export const allowedCrawlers = [...searchCrawlers, ...modelDevelopmentCrawlers] 
 export function crawlerRules() {
   // Specific user-agent groups do not inherit the wildcard group's exclusions.
   // Markdown remains crawlable so consumers can read its canonical/noindex headers.
-  const publicContent = { allow: "/", disallow: ["/api/", "/api$"] };
+  const publicContent = {
+    allow: "/",
+    disallow: ["/api/", "/api$"],
+    contentSignal: contentSignalPolicy,
+  };
   return [
     { userAgent: [...allowedCrawlers], ...publicContent },
     { userAgent: "*", ...publicContent },
@@ -36,6 +41,7 @@ export function renderRobotsText() {
   const groups = crawlerRules().map((rule) => {
     return [
       ...values(rule.userAgent).map((agent) => `User-Agent: ${agent}`),
+      `Content-Signal: ${rule.contentSignal}`,
       ...values("allow" in rule ? rule.allow : undefined).map((path) => `Allow: ${path}`),
       ...values(rule.disallow).map((path) => `Disallow: ${path}`),
     ].join("\n");

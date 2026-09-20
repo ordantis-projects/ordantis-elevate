@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { allowedCrawlers, crawlerRules, modelDevelopmentCrawlers, renderRobotsText } from "../lib/crawler-policy.ts";
+import { contentSignalPolicy } from "../lib/agent-discovery.ts";
 
 test("search and model-development crawlers are explicitly allowed", () => {
   const allowed = new Set<string>(allowedCrawlers);
@@ -12,6 +13,7 @@ test("search and model-development crawlers are explicitly allowed", () => {
     userAgent: [...allowedCrawlers],
     allow: "/",
     disallow: ["/api/", "/api$"],
+    contentSignal: contentSignalPolicy,
   });
 });
 
@@ -21,6 +23,8 @@ test("named crawlers and wildcard carry the same API exclusions", () => {
   assert.equal(fallback.allow, "/");
   assert.deepEqual(search.disallow, ["/api/", "/api$"]);
   assert.deepEqual(search.disallow, fallback.disallow);
+  assert.equal(search.contentSignal, contentSignalPolicy);
+  assert.equal(fallback.contentSignal, contentSignalPolicy);
 });
 
 test("canonical content and Markdown headers remain accessible to every crawler", () => {
@@ -30,7 +34,7 @@ test("canonical content and Markdown headers remain accessible to every crawler"
   }
 });
 
-test("robots uses standard directives and allows model-development crawlers", () => {
+test("robots declares allowed content uses and allows model-development crawlers", () => {
   const robots = renderRobotsText();
   const groups = robots.split(/\r?\n\s*\r?\n/);
   const search = groups.find((group) => group.includes("User-Agent: OAI-SearchBot"));
@@ -38,6 +42,7 @@ test("robots uses standard directives and allows model-development crawlers", ()
   assert.match(search!, /^Allow: \/$/m);
   assert.match(training!, /^Allow: \/$/m);
   assert.doesNotMatch(training!, /^Disallow: \/$/m);
-  assert.doesNotMatch(robots, /^Content-Signal:/m);
+  assert.match(search!, new RegExp(`^Content-Signal: ${contentSignalPolicy}$`, "m"));
+  assert.match(training!, new RegExp(`^Content-Signal: ${contentSignalPolicy}$`, "m"));
   assert.match(robots, /Sitemap: https:\/\/www\.ordantis\.com\/sitemap\.xml/);
 });
