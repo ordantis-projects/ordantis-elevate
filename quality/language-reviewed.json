@@ -1,0 +1,20 @@
+[
+  { "route": "/", "rule": "SI_AFIRMACION", "excerpt": "Si", "contextIncludes": "Si se investiga una técnica", "reason": "Introduce una condición explícita para formular una hipótesis, no una afirmación. El si condicional no lleva tilde." },
+  { "route": "/insights/mantenimiento-predictivo-pocas-averias", "rule": "UPPERCASE_SENTENCE_START", "excerpt": "scikit", "contextIncludes": "scikit-learn documenta particiones", "reason": "Nombre oficial de la biblioteca scikit-learn, escrito en minúsculas; no es una palabra común al inicio de la oración." },
+  { "route": "/govtech", "rule": "EN_TORNO", "excerpt": "entorno de", "contextIncludes": "entorno de prueba", "reason": "Designa el ambiente de prueba; no significa alrededor de." },
+  { "route": "/privacidad", "rule": "AGREEMENT_ADJ_NOUN", "excerpt": "sola datos", "contextIncludes": "no borra por sí sola datos", "reason": "Sola se refiere a la retirada del consentimiento, no modifica el sustantivo datos." },
+  { "route": "/privacidad", "rule": "ESPACIO_DESPUES_DE_PUNTO", "excerpt": ".a", "contextIncludes": "artículo 6.1.a RGPD", "reason": "Referencia al apartado y letra de un artículo, no final de oración." },
+  { "route": "/privacidad", "rule": "ESPACIO_DESPUES_DE_PUNTO", "excerpt": ".b", "contextIncludes": "artículo 6.1.b RGPD", "reason": "Referencia al apartado y letra de un artículo, no final de oración." },
+  { "route": "/privacidad", "rule": "ESPACIO_DESPUES_DE_PUNTO", "excerpt": ".f", "contextIncludes": "artículo 6.1.f RGPD", "reason": "Referencia al apartado y letra de un artículo, no final de oración." },
+  { "route": "/capacidades", "rule": "AUN", "excerpt": "aún", "contextIncludes": "una hipótesis aún sin comprobar", "reason": "Equivale a todavía y lleva tilde. No se cambia por la sugerencia automática." },
+  { "route": "/faq", "rule": "EN_TORNO", "excerpt": "entorno de", "contextIncludes": "entorno de ejecución", "reason": "Entorno es el sustantivo que designa el ambiente de ejecución; no es la locución en torno." },
+  { "route": "/capacidades/document-intelligence", "rule": "DIACRITICS_OTHERS", "excerpt": "valida", "contextIncludes": "quien valida el resultado", "reason": "Forma verbal de validar, no el adjetivo válida." },
+  { "route": "/insights/cuando-no-usar-agente-ia", "rule": "SI_AFIRMACION", "excerpt": "Si", "contextIncludes": "Si existe una referencia determinista", "reason": "Introduce una condición, no una afirmación." },
+  { "route": "/capacidades/data-intelligence", "rule": "AGREEMENT_ADJ_NOUN", "excerpt": "rellena campos", "contextIncludes": "ni rellena campos ausentes", "reason": "Rellena es un verbo y campos su complemento; no hay discordancia." },
+  { "route": "/research/exist-2026", "rule": "AGREEMENT_PARTICIPLE_NOUN", "excerpt": "publicado\nResultados", "contextIncludes": "Paper publicado Resultados", "reason": "Son títulos de dos enlaces distintos, no una construcción nominal." },
+  { "route": "/insights/mcp-frente-api", "rule": "AGREEMENT_ADJ_NOUN", "excerpt": "semántica HTTP", "contextIncludes": "RFC 9110: semántica HTTP", "reason": "Semántica es el sustantivo del título técnico, no un adjetivo referido a HTTP." },
+  { "route": "/insights/expediente-computable", "rule": "AGREEMENT_PARTICIPLE_NOUN", "excerpt": "estado conserva", "contextIncludes": "cada hecho o estado conserva", "reason": "Estado es el sujeto y conserva el verbo; no es un participio." },
+  { "route": "/insights/expediente-computable", "rule": "AGREEMENT_POSTPONED_ADJ", "excerpt": "basta", "contextIncludes": "rara vez basta", "reason": "Es el verbo bastar, no el adjetivo basto." },
+  { "route": "/insights/rag-no-es-chatbot-sobre-pdfs", "rule": "NOUN_PLURAL2", "excerpt": "tabla", "contextIncludes": "una fila de tabla", "reason": "Una fila puede pertenecer a una sola tabla. No procede pluralizar." },
+  { "route": "/insights/medir-agua-datos-incompletos", "rule": "AGREEMENT_POSTPONED_ADJ", "excerpt": "huecos", "contextIncludes": "Reserva huecos con incidencias", "reason": "Reserva es un imperativo; huecos es el complemento plural." }
+]

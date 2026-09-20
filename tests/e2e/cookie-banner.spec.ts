@@ -1,0 +1,95 @@
+import { expect, test } from "@playwright/test";
+
+test("customization is optional, starts without analytics and only saves an explicit choice", async ({ page }, testInfo) => {
+  await page.goto("/empresa");
+  const banner = page.getByRole("dialog", { name: "Cookies y privacidad" });
+  const customize = banner.getByRole("button", { name: "Personalizar", exact: true });
+  await customize.click();
+  const title = banner.getByRole("heading", { name: "Personalizar cookies", exact: true });
+  await expect(title).toBeFocused();
+  await expect(banner.getByText("Siempre activas", { exact: true })).toBeVisible();
+  const analytics = banner.getByRole("checkbox", { name: "Analítica Opcional", exact: true });
+  await expect(analytics).not.toBeChecked();
+  await analytics.check();
+  expect(await page.evaluate(() => localStorage.getItem("ordantis-cookie-consent"))).toBeNull();
+  await page.keyboard.press("Escape");
+  await expect(customize).toBeFocused();
+  await expect(title).not.toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("ordantis-cookie-consent"))).toBeNull();
+  await customize.click();
+  await analytics.uncheck();
+  await banner.screenshot({ path: `.quality/cookies-personalizar-${testInfo.project.name}.png` });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  const box = await banner.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(0);
+  expect(box!.y + box!.height).toBeLessThanOrEqual(page.viewportSize()!.height + 1);
+  const save = banner.getByRole("button", { name: "Guardar preferencias", exact: true });
+  expect((await save.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await save.click();
+  await expect(banner).not.toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ordantis-cookie-consent")!))).toMatchObject({ analytics: false });
+  await page.getByRole("button", { name: "Gestionar cookies", exact: true }).click();
+  await customize.click();
+  await expect(analytics).not.toBeChecked();
+  await analytics.check();
+  await save.click();
+  await page.reload();
+  await expect(banner).not.toBeVisible();
+  await page.getByRole("button", { name: "Gestionar cookies", exact: true }).click();
+  await customize.click();
+  await expect(analytics).toBeChecked();
+  await analytics.uncheck();
+  await save.click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ordantis-cookie-consent")!))).toMatchObject({ analytics: false });
+});
+
+test("cookie first layer explains the purpose and offers equally visible acceptance and rejection", async ({ page }, testInfo) => {
+  await page.goto("/empresa");
+  const banner = page.getByRole("dialog", { name: "Cookies y privacidad" });
+  await expect(banner).toBeVisible();
+  await expect(banner).toHaveAccessibleDescription(/En Ordantis.*tecnologías necesarias.*cookies de terceros.*Google Analytics.*Microsoft Clarity.*mapas de interacción.*reconstrucciones de sesión/);
+  await expect(banner).not.toContainText("B23922552");
+  await expect(banner.getByRole("link", { name: "Política de cookies", exact: true })).toHaveAttribute("href", "/cookies");
+  const reject = banner.getByRole("button", { name: "Rechazar cookies", exact: true });
+  const accept = banner.getByRole("button", { name: "Aceptar cookies", exact: true });
+  const rejection = await reject.boundingBox();
+  const acceptance = await accept.boundingBox();
+  expect(rejection!.height).toBeGreaterThanOrEqual(44);
+  expect(acceptance!.height).toBeGreaterThanOrEqual(44);
+  expect(Math.abs(rejection!.width - acceptance!.width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(rejection!.height - acceptance!.height)).toBeLessThanOrEqual(1);
+  const appearance = async (button: typeof accept) => button.evaluate((node) => {
+    const css = getComputedStyle(node);
+    return [css.backgroundColor, css.color, css.borderColor, css.fontSize, css.fontWeight];
+  });
+  expect(await appearance(reject)).toEqual(await appearance(accept));
+  const box = await banner.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(0);
+  expect(box!.y + box!.height).toBeLessThanOrEqual(page.viewportSize()!.height + 1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  await banner.screenshot({ path: `.quality/cookies-aepd-${testInfo.project.name}.png` });
+  await reject.click();
+  await expect(banner).not.toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ordantis-cookie-consent")!))).toMatchObject({ analytics: false });
+  await page.getByRole("button", { name: "Gestionar cookies", exact: true }).click();
+  await expect(banner).toBeVisible();
+  await expect(reject).toBeVisible();
+  await expect(accept).toBeVisible();
+});
+
+test("reading and navigating are not consent and do not dismiss the undecided cookie notice", async ({ page }) => {
+  const vendorRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/googletagmanager\.com|google-analytics\.com|clarity\.ms/.test(request.url())) vendorRequests.push(request.url());
+  });
+  await page.goto("/empresa");
+  const banner = page.getByRole("dialog", { name: "Cookies y privacidad" });
+  await expect(banner).toBeVisible();
+  await page.getByRole("heading", { level: 1 }).click();
+  await page.keyboard.press("PageDown");
+  await page.getByRole("banner").getByRole("link", { name: "Ordantis, inicio", exact: true }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(banner).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("ordantis-cookie-consent"))).toBeNull();
+  expect(vendorRequests).toEqual([]);
+});

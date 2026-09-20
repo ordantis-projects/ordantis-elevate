@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "capturedAt": "2026-08-29",
+  "status": "exploratory_relative_signal",
+  "source": "Google Trends",
+  "scope": {
+    "country": "España",
+    "startDate": "2025-08-01",
+    "endDate": "2026-07-31",
+    "searchType": "Búsqueda web",
+    "inputType": "Término de búsqueda"
+  },
+  "metricDefinition": "Media del índice relativo y normalizado que Google Trends muestra dentro de cada comparación de cinco términos. No es volumen mensual ni permite comparar cifras entre los dos grupos como si compartieran una escala absoluta.",
+  "interpretationRules": [
+    "Un valor 0 significa señal insuficiente o redondeada dentro de esa comparación; no demuestra cero búsquedas.",
+    "Los grupos no se suman ni se comparan entre sí como si sus índices fueran volúmenes absolutos.",
+    "Las consultas relacionadas se usan para detectar mezcla de intenciones, no para estimar conversiones.",
+    "Keyword Planner y Search Console siguen siendo necesarios antes de priorizar una URL por demanda cuantificada."
+  ],
+  "comparisons": [
+    {
+      "id": "terminos-amplios",
+      "url": "https://trends.google.com/trends/explore?date=2025-08-01%202026-07-31&geo=ES&q=inteligencia%20artificial%20empresas,agentes%20de%20IA,RAG%20empresas,modelos%20predictivos,calidad%20de%20datos&hl=es",
+      "rows": [
+        {
+          "term": "inteligencia artificial empresas",
+          "averageRelativeIndex": 18,
+          "intentEvidence": "Las relacionadas incluyen intención de proveedor, pero también búsquedas de empresas de IA en bolsa.",
+          "risk": "mixta",
+          "decision": "Mantener como término de descubrimiento y contrastar la intención comercial en SERP y Planner."
+        },
+        {
+          "term": "agentes de IA",
+          "averageRelativeIndex": 38,
+          "intentEvidence": "Las relacionadas crecientes incluyen Claude y n8n, lo que mezcla producto, tutorial y actualidad con compra B2B.",
+          "risk": "amplia",
+          "decision": "Priorizar contenidos y página de capacidad existentes; no crear otra landing solo por este índice."
+        },
+        {
+          "term": "RAG empresas",
+          "averageRelativeIndex": 0,
+          "intentEvidence": "Google Trends no mostró datos suficientes de consultas relacionadas.",
+          "risk": "señal escasa",
+          "decision": "Conservar como tema técnico de apoyo hasta obtener volumen y consultas reales."
+        },
+        {
+          "term": "modelos predictivos",
+          "averageRelativeIndex": 0,
+          "intentEvidence": "El promedio nacional se redondea a cero aunque aparecen señales regionales aisladas.",
+          "risk": "señal escasa",
+          "decision": "No interpretar como ausencia de demanda; esperar Planner y datos de la página publicada."
+        },
+        {
+          "term": "calidad de datos",
+          "averageRelativeIndex": 34,
+          "intentEvidence": "La principal relacionada fue mejorar calidad de imagen, ajena al servicio de gobierno y calidad del dato.",
+          "risk": "ambigua",
+          "decision": "No usar el término aislado como argumento para ampliar la landing comercial."
+        }
+      ]
+    },
+    {
+      "id": "calificadores-comerciales",
+      "url": "https://trends.google.com/trends/explore?date=2025-08-01%202026-07-31&geo=ES&q=inteligencia%20artificial%20para%20empresas,consultor%C3%ADa%20inteligencia%20artificial,agentes%20IA%20para%20empresas,anal%C3%ADtica%20predictiva,calidad%20de%20datos%20empresarial&hl=es",
+      "rows": [
+        {
+          "term": "inteligencia artificial para empresas",
+          "averageRelativeIndex": 5,
+          "intentEvidence": "La consulta es comercial, pero la señal semanal es muy dispersa y no hubo relacionadas suficientes.",
+          "risk": "escasa",
+          "decision": "Conservar en el grupo de Planner y resolverla en la página general de capacidades."
+        },
+        {
+          "term": "consultoría inteligencia artificial",
+          "averageRelativeIndex": 0,
+          "intentEvidence": "Solo aparece una señal regional aislada y no hay relacionadas suficientes.",
+          "risk": "señal escasa",
+          "decision": "No crear una landing separada sin volumen, SERP diferenciada y evidencia de servicio."
+        },
+        {
+          "term": "agentes IA para empresas",
+          "averageRelativeIndex": 2,
+          "intentEvidence": "La consulta aparece en semanas aisladas y no tiene relacionadas suficientes.",
+          "risk": "escasa",
+          "decision": "Reforzar la capacidad existente si Planner o Search Console confirman intención."
+        },
+        {
+          "term": "analítica predictiva",
+          "averageRelativeIndex": 0,
+          "intentEvidence": "Google Trends no mostró datos suficientes nacionales o relacionados.",
+          "risk": "señal escasa",
+          "decision": "Mantener la página actual y esperar demanda cuantificada."
+        },
+        {
+          "term": "calidad de datos empresarial",
+          "averageRelativeIndex": 0,
+          "intentEvidence": "Google Trends no mostró datos suficientes nacionales o relacionados.",
+          "risk": "señal escasa",
+          "decision": "No multiplicar URLs; mantener la intención dentro de Data Intelligence."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+name: Full-site audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unlighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Scan local build only
+        run: |
+          npm start -- --hostname 127.0.0.1 > /tmp/ordantis-audit-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run unlighthouse
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unlighthouse-report
+          path: .unlighthouse
+          retention-days: 14

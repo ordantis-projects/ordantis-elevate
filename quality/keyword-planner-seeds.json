@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "preparedAt": "2026-08-28",
+  "status": "measured_2026-08-29",
+  "resultFile": "quality/keyword-planner-results-2026-08-29.json",
+  "account": "Redes Ordantis",
+  "requestedContext": {
+    "country": "España",
+    "language": "es",
+    "network": "Google",
+    "startDate": "2025-08-01",
+    "endDate": "2026-07-31",
+    "currency": "EUR"
+  },
+  "limits": [
+    "Son consultas propuestas para investigar, no keywords con demanda comprobada.",
+    "La intención y la URL son hipótesis que se contrastarán con SERP y Search Console.",
+    "No se rellenan ceros ni se estiman volúmenes si Google no los proporciona.",
+    "Competencia publicitaria y coste por clic no equivalen a dificultad SEO.",
+    "No crear páginas nuevas si una URL existente responde la misma intención.",
+    "Usar doce meses completos; no mezclar agosto parcial con meses cerrados."
+  ],
+  "clusters": [
+    {
+      "id": "servicios-ia",
+      "targetPath": "/capacidades",
+      "intentHypothesis": "Seleccionar un proveedor de IA y datos para un proceso empresarial concreto.",
+      "keywords": ["inteligencia artificial para empresas", "consultoría inteligencia artificial", "desarrollo inteligencia artificial a medida", "empresa de inteligencia artificial", "soluciones de inteligencia artificial", "consultora de inteligencia artificial España"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "agentes",
+      "targetPath": "/capacidades/agentes-ia",
+      "intentHypothesis": "Valorar diseño e integración de agentes con herramientas y supervisión.",
+      "keywords": ["agentes de IA para empresas", "desarrollo de agentes de IA", "agentes inteligentes para empresas", "automatización con agentes de IA", "integración agentes IA", "consultoría agentes IA"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "documentos",
+      "targetPath": "/capacidades/document-intelligence",
+      "intentHypothesis": "Contratar extracción documental o recuperación con evidencia y permisos.",
+      "keywords": ["inteligencia documental", "procesamiento inteligente de documentos", "extracción de datos de documentos", "RAG para empresas", "automatización documental con IA", "IA para expedientes administrativos"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "prediccion",
+      "targetPath": "/capacidades/modelos-predictivos",
+      "intentHypothesis": "Valorar un modelo predictivo y su evaluación antes de usarlo en operación.",
+      "keywords": ["modelos predictivos para empresas", "analítica predictiva", "predicción de demanda", "mantenimiento predictivo inteligencia artificial", "desarrollo de modelos predictivos", "machine learning para empresas"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "datos",
+      "targetPath": "/capacidades/data-intelligence",
+      "intentHypothesis": "Resolver integración, trazabilidad y calidad de datos para análisis o IA.",
+      "keywords": ["calidad de datos", "consultoría de datos", "integración de datos empresariales", "gobierno del dato", "ingeniería de datos", "calidad de datos sensores"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "investigacion",
+      "targetPath": "/capacidades/investigacion-desarrollo",
+      "intentHypothesis": "Buscar un colaborador técnico para una prueba o proyecto de I+D aplicada.",
+      "keywords": ["I+D inteligencia artificial", "investigación aplicada inteligencia artificial", "desarrollo experimental inteligencia artificial", "prueba de concepto inteligencia artificial", "validación modelos de inteligencia artificial", "proyectos I+D inteligencia artificial"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "govtech",
+      "targetPath": "/govtech",
+      "intentHypothesis": "Valorar IA para procedimientos y datos de una administración pública.",
+      "keywords": ["inteligencia artificial administraciones públicas", "inteligencia artificial ayuntamientos", "GovTech España", "automatización expedientes administrativos", "inteligencia artificial gestión municipal", "datos territoriales ayuntamientos"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "rag-abstencion",
+      "targetPath": "/insights/rag-abstencion-evidencia",
+      "intentHypothesis": "Decidir cómo evaluar respuestas de RAG, citas y ausencia de evidencia.",
+      "keywords": ["evaluación RAG", "RAG alucinaciones", "RAG con fuentes", "RAG abstención"],
+      "measuredMetrics": null
+    },
+    {
+      "id": "mcp-api",
+      "targetPath": "/insights/mcp-frente-api",
+      "intentHypothesis": "Comparar MCP con una integración directa por API.",
+      "keywords": ["MCP vs API", "MCP frente a API", "integración MCP empresas", "servidor MCP seguridad"],
+      "measuredMetrics": null
+    }
+  ]
+}

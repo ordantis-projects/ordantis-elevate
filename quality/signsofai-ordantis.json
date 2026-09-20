@@ -1,0 +1,14 @@
+{
+  "language": "es",
+  "lexical": [
+    { "id": "ordantis.vanguardia", "terms": ["vanguardia", "vanguardista"], "weight": 5.5, "severity": "High", "suggestion": "Nombra la técnica o evidencia concreta." },
+    { "id": "ordantis.revolucionar", "terms": ["revolucionar", "revoluciona", "revolucionario"], "weight": 5.5, "severity": "High", "suggestion": "Describe el cambio medible o elimina la palabra." },
+    { "id": "ordantis.potenciar", "terms": ["potenciar", "potenciamos"], "weight": 3.5, "severity": "Medium", "suggestion": "Indica qué mejora y cómo se comprueba." },
+    { "id": "ordantis.transformador", "terms": ["transformador", "transformadora", "transformacional"], "weight": 4.5, "severity": "High", "suggestion": "Sustituye la valoración por un hecho." }
+  ],
+  "patterns": [
+    { "id": "ordantis.solucion-innovadora", "category": "Lexical", "regex": "\\bsoluci[oó]n (innovadora|robusta|de vanguardia)\\b", "weight": 5.0, "severity": "High", "message": "Claim portátil que podría aparecer en cualquier consultora.", "suggestion": "Explica el mecanismo, el dato o la restricción concreta." },
+    { "id": "ordantis.roi-sin-fuente", "category": "Rhetorical", "regex": "\\b(roi|retorno de la inversi[oó]n|ahorro) (garantizado|inmediato|r[aá]pido)\\b", "weight": 6.0, "severity": "High", "message": "Resultado económico sin evidencia visible.", "suggestion": "Añade fuente, muestra y periodo, o elimina el claim." },
+    { "id": "ordantis.lider", "category": "Rhetorical", "regex": "\\b(l[ií]der|referente) (en|del sector|nacional)\\b", "weight": 5.0, "severity": "High", "message": "Posición de mercado sin fuente.", "suggestion": "Sustituye por una evidencia verificable." }
+  ]
+}

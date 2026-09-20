@@ -1,0 +1,10 @@
+extends: existence
+message: "Afirmación absoluta que necesita fuente o reformulación: '%s'."
+level: error
+ignorecase: true
+tokens:
+  - "garantiza(mos|r)?"
+  - "cero errores"
+  - "elimina por completo"
+  - "los expertos coinciden"
+  - "los estudios demuestran"
