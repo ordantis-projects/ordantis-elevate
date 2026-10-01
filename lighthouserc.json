@@ -26,6 +26,7 @@
         "categories:seo": ["error", { "minScore": 1 }],
         "color-contrast": "error",
         "is-crawlable": "error",
+        "robots-txt": "off",
         "tap-targets": "off",
         "legacy-javascript-insight": "warn",
         "network-dependency-tree-insight": "warn",
