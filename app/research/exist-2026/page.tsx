@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/metadata";
 import { articleSchema, breadcrumbSchema, webPageSchema } from "@/lib/schema";
 
 const path = "/research/exist-2026";
+const repository = researchEvidence.links[0];
 export const metadata = createMetadata({ title: researchEvidence.title, description: researchEvidence.description, path, type: "article" });
 
 export default function ExistResearchPage() {
@@ -31,6 +32,9 @@ export default function ExistResearchPage() {
       <article className="content-section">
         <div className="shell narrow prose">
           <SourceNote>Las posiciones se toman del repositorio de la submission y del overview oficial de EXIST 2026. Mostramos también los resultados débiles y las limitaciones publicadas.</SourceNote>
+          <div className="inline-actions">
+            <a className="button" href={repository.url}>Ver código y guía de reproducción</a>
+          </div>
           <h2>Qué se investigó</h2>
           {researchEvidence.context.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
 

@@ -9,7 +9,7 @@ test("all internal links resolve and pages retain their agreed discovery paths",
   for (const route of allIndexableRoutes) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    await expect(page.locator('a[href*="llms.txt"], a[href*="llms-full.txt"], a[href*="sitemap.xml"], a[href*="github.com/cofrian/exist2026-ordantis"]'), `${route}: no technical/repository shortcuts in the interface`).toHaveCount(0);
+    await expect(page.locator('a[href*="llms.txt"], a[href*="llms-full.txt"], a[href*="sitemap.xml"]'), `${route}: no technical shortcuts in the interface`).toHaveCount(0);
     pages.set(route, {
       hrefs: await page.locator("a[href]").evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute("href")!)),
       ids: await page.locator("[id]").evaluateAll((nodes) => nodes.map((node) => node.id)),

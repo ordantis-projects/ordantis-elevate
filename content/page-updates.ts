@@ -23,7 +23,7 @@ const editedPages: Record<string, string> = {
   "/labs/rag-evaluacion": "2026-09-02",
   "/labs/evaluacion-agentes": "2026-09-02",
   "/labs/inteligencia-documental": "2026-09-13",
-  "/research/exist-2026": "2026-08-26",
+  "/research/exist-2026": "2026-10-19",
 };
 const insightDates = new Map(insights.map((item) => ["/insights/" + item.slug, item.updatedAt]));
 export function pageUpdatedAt(path: string) {

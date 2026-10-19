@@ -691,7 +691,7 @@ export const researchEvidence = {
     "El conjunto de datos tiene condiciones de uso propias y no se redistribuye en el repositorio.",
   ],
   links: [
-    { label: "Repositorio y guía de reproducción", url: "https://github.com/cofrian/exist2026-ordantis" },
+    { label: "Código y guía de reproducción en GitHub", url: "https://github.com/ordantis-projects/exist2026-ordantis" },
     { label: "Paper publicado", url: "https://clef-staging.pages.dev/paper174.pdf" },
     { label: "Resultados oficiales EXIST 2026", url: "https://clef-staging.pages.dev/paper152.pdf" },
   ] satisfies ReferenceLink[],

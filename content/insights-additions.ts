@@ -10,7 +10,7 @@ const mcpSource = {
 const existSources = [
   { label: "Paper GEMF", url: "https://clef-staging.pages.dev/paper174.pdf" },
   { label: "Resultados oficiales de EXIST 2026", url: "https://clef-staging.pages.dev/paper152.pdf" },
-  { label: "Código y guía de reproducción", url: "https://github.com/cofrian/exist2026-ordantis" },
+  { label: "Código y guía de reproducción", url: "https://github.com/ordantis-projects/exist2026-ordantis" },
 ];
 
 export const additionalInsights: Insight[] = [

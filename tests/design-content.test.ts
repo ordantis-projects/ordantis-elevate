@@ -75,7 +75,7 @@ test("page dates advance only when their editorial content changes", () => {
   for (const route of ["/empresa", "/faq", "/diagnostico", "/inteligencia-artificial-albacete", "/govtech", "/capacidades/investigacion-desarrollo", "/capacidades/modelos-predictivos", "/capacidades/data-intelligence"]) {
     assert.equal(pageUpdatedAt(route), "2026-09-17");
   }
-  assert.equal(pageUpdatedAt("/research/exist-2026"), "2026-08-26");
+  assert.equal(pageUpdatedAt("/research/exist-2026"), "2026-10-19");
   assert.ok(renderMarkdownForPath("/faq")!.includes("Updated: 2026-09-17"));
 });
 

@@ -1,6 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-const technicalLinks = 'a[href*="llms.txt"], a[href*="llms-full.txt"], a[href*="sitemap.xml"], a[href*="github.com/cofrian/exist2026-ordantis"]';
+const technicalLinks = 'a[href*="llms.txt"], a[href*="llms-full.txt"], a[href*="sitemap.xml"]';
+
+test("EXIST links to the public Ordantis repository", async ({ page }) => {
+  await page.goto("/research/exist-2026");
+  const repository = page.getByRole("link", { name: "Ver código y guía de reproducción", exact: true });
+  await expect(repository).toHaveAttribute("href", "https://github.com/ordantis-projects/exist2026-ordantis");
+  await expect(page.locator('a[href="https://github.com/cofrian/exist2026-ordantis"]')).toHaveCount(0);
+});
 
 test("footer exposes accessible customer navigation, not crawler files or the research repository", async ({ page, request }, testInfo) => {
   await page.goto("/");
